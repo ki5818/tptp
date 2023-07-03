@@ -1,0 +1,21 @@
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- head -->	  
+<head th:replace="~{fragments/config :: config}">
+</head>
+<!-- body -->
+<body id="body">
+	<!-- navigation(상단메뉴) -->
+	<div th:replace="~{fragments/navigation :: navigation}"></div>
+	
+	<!-- contents -->
+	<th:block layout:fragment="customContents"></th:block>
+			
+	<!-- footer(하단메뉴) -->
+	<div th:replace="~{fragments/footer :: footer}"></div>
+	
+	<!-- customJs(화면이 다 만들어지고 실행되어야하는 JS File -->
+	<div th:replace="~{fragments/customJs :: customJs}"></div>
+</body>
+</html>
