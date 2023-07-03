@@ -12,7 +12,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String main(Model model) {
-
+		
 		return "index";
 	}
 }   
