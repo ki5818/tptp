@@ -3,11 +3,12 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <!-- head -->	  
 <head th:replace="~{fragments/config :: config}">
+
 </head>
 <!-- body -->
 <body id="body">
 	<!-- navigation(상단메뉴) -->
-	<div th:replace="~{fragments/navigation :: navigation}"></div>
+	<div th:replace="~{fragments/header :: header}"></div>
 	
 	<!-- contents -->
 	<th:block layout:fragment="customContents"></th:block>
