@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tptp.mapper.TptpMapper">
+	<!-- tptpResultMap -->
+	<resultMap type="Tptp" id="tptpResultMap">
+		<id property="id" column="id" />
+		<result property="category_id" column="category_id" />
+		<result property="detail" column="detail" />
+		<result property="lat" column="lat" />
+		<result property="lng" column="lng" />
+		<result property="place" column="place" />
+		<result property="region" column="region" />
+	</resultMap>
+	
+	<select id="getTptpList" resultMap="tptpResultMap">
+		SELECT *
+		FROM tptp
+		LIMIT 10;
+	</select>
+</mapper>
