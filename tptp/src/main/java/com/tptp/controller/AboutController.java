@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/app")
 public class AboutController {
 
-	@GetMapping("/about")
+	@GetMapping("/aboutUs")
 	public String main(Model model) {
 		System.out.println("AboutContoller");
-		
+		model.addAttribute("discription","이 프로젝트를 만든 사람들");
 		return "/app/about";
 	}
 

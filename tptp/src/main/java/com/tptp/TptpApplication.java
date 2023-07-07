@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @SpringBootApplication
 public class TptpApplication {
 
+	/**
+	 * main함수
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(TptpApplication.class, args);
 	}

@@ -4,7 +4,72 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/defaultLayout}">
 	  
-<th:block layout:fragment="customContents">
-	map
+<th:block layout:fragment="customContents" >
+	<main id="main">
+	    <!-- ======= Breadcrumbs ======= -->
+	    <section class="breadcrumbs">
+	      <div class="container">
+	        <div class="d-flex justify-content-between align-items-center">
+	          <h2>MAP</h2>
+	          <ol>
+	            <li><a th:href="@{/}">HOME</a></li>
+	            <li>MAP</li>
+	          </ol>
+	        </div>
+	      </div>
+	    </section><!-- End Breadcrumbs -->
+	
+		<div class="container position-relative">
+			<div id="map" style="width:70%;height:350px; margin:30px;"></div>
+			<p><em>지도를 클릭해주세요!</em></p> 
+			<p id="result"></p>
+		</div>
+	</main>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f"></script>
+	<script>
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
+	
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	// 지도에 클릭 이벤트를 등록합니다
+	// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+	    
+	    // 클릭한 위도, 경도 정보를 가져옵니다 
+	    var latlng = mouseEvent.latLng;
+	    
+	    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+	    message += '경도는 ' + latlng.getLng() + ' 입니다';
+	    
+	    var resultDiv = document.getElementById('result'); 
+	    resultDiv.innerHTML = message;
+	    
+	    var lat = latlng.getLat();
+	    var lng = latlng.getLng();
+	    console.log(lat, lng);
+	    
+	    request = $.ajax({
+            url: "/mapLatLng",
+            type: "GET",
+            dataType: "text",
+            data: {"lat" : lat, "lng" : lng}
+		});
+		//성공
+		request.done(function(data){
+			console.log("success");
+			
+		});
+		//실패
+		request.fail(function(jqXHR, textStatus){
+				console.log('Request failed: ' + textStatus);
+		});
+	    
+	});
+	</script>
+		
 </th:block>
 </html>
