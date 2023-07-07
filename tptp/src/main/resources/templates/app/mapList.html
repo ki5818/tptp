@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/defaultLayout}">
+	  
+<th:block layout:fragment="customContents" >
+		<div class="row" >
+			<div class="col" style="display:none">
+				<table class="table table-responsive-sm text-center" id="lsit" style="font-size: 10pt;">
+					<thead>
+						<tr>
+							<th style="display:none">id</th>
+							<th style="display:none">categoryId</th>
+							<th>detail</th>
+							<th>lat</th>
+							<th>lng</th>
+							<th>place</th>
+							<th style="display:none">region</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:if="${not #lists.isEmpty(tptpList)}" th:each="l : ${tptpList}">	
+						<tr>
+					      <td th:text="${l.id}" style="display:none"></td>
+					      <td th:text="${l.categoryId}" style="display:none"></td>
+					      <td th:text="${l.detail}"></td>
+					      <td th:text="${l.lat}"></td>
+					      <td th:text="${l.lng}"></td>
+					      <td th:text="${l.place}"></td>
+					      <td th:text="${l.region}" style="display:none"></td>
+					    </tr>
+					      </th:block>
+					    <tr th:unless="${not #lists.isEmpty(tptpList)}">
+					    	<td colspan="9">테이블 조회 실패</td>
+					    </tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col map_wrap">
+				   <div id="map"style="height:80%; position:relative;"></div>
+			</div>
+		</div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=633a62fa4428539f7b44a833f0d39488&libraries=services"></script>
+	<script th:inline="javascript">
+	 
+ 	var markers=[];
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    
+	mapOption = { 
+        center: new kakao.maps.LatLng(35.95, 128.25), // 지도의 중심좌표
+        level: 14 // 지도의 확대 레벨
+    };
+
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	let select = "#body > div > div:nth-child(1) > table > tbody > tr:nth-child(";
+
+	// 마커가 표시될 위치입니다 
+	for(let i = 1; i <= 50; i++) {
+		let selectId = select + i + ") > td:nth-child(1)";
+		let selectCategory = select + i + ") > td:nth-child(2)";
+		let selectDetail = select + i + ") > td:nth-child(3)";
+		let selectLat = select + i + ") > td:nth-child(4)";
+		let selectLng = select + i + ") > td:nth-child(5)";
+		let selectPlace = select + i + ") > td:nth-child(6)";
+		let selectRegion = select + i + ") > td:nth-child(7)";
+		
+		let id = document.querySelector(selectId).innerText;
+		let category = document.querySelector(selectCategory).innerText;
+		let detail = document.querySelector(selectDetail).innerText;
+		let lat = document.querySelector(selectLat).innerText;
+		let lng = document.querySelector(selectLng).innerText;
+		let place = document.querySelector(selectPlace).innerText;
+		let region = document.querySelector(selectRegion).innerText;
+		
+		markers.push({"id":id, "category":category, "detail":detail,  "lat":lat, "lng":lng, "place":place, "region":region});
+		
+		// 마커의 위치
+		var markerPosition  = new kakao.maps.LatLng(lat, lng);
+		
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: markerPosition, // 마커를 표시할 위치
+	        title : place // 마커 타이틀
+    	});
+		
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);
+		
+	}
+	
+	// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+	// marker.setMap(null);
+	
+	/* // 마커에 마우스오버 이벤트를 등록합니다
+	kakao.maps.event.addListener(marker, 'mouseover', function() {
+	  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+	  infowindow.open(map, marker);
+	});
+	
+	// 마커에 마우스아웃 이벤트를 등록합니다
+	kakao.maps.event.addListener(marker, 'mouseout', function() {
+	    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+	    infowindow.close(); 
+});*/
+
+</script>
+		
+</th:block>
+</html>

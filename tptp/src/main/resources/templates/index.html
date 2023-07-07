@@ -3,56 +3,162 @@
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/defaultLayout}">
-  
 <th:block layout:fragment="customContents">
+
+    <style>
+        .chart-box {
+            width: 600px;
+        }
+        .chart-box-1 {
+            width: 350px;
+        }
+        
+    </style>
+	<!-- ======= Hero Section ======= -->
+	<section id="hero">
+	  <div class="hero-container">
+	    <h1>이 곳, 저 곳</h1>
+	    <h2 th:text="${discription}"></h2>
+	    <a href="#" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
+	  </div>
+	</section>
+	<!-- End Hero -->
 	<main id="main">
-	  <!-- ======= My Services Section ======= -->
-	  <section id="services" class="services">
-	    <div class="container">
-	      <div class="section-title">
-	        <span>Chart</span>
-	        <h2>Chart</h2>
-	        <p>지역별 관광지 데이터 시각화</p>
+		<!-- ======= Breadcrumbs ======= -->
+	    <section class="breadcrumbs" style="margin-top: 0px">
+	      <div class="container">
+	        <div class="d-flex justify-content-between align-items-center">
+	          <h2>DATA VISUALIZTION</h2>
+	          <ol>
+	            <li><a href="/">HOME</a></li>
+	            <li>DATA VISUALIZTION</li>
+	          </ol>
+	        </div>
 	      </div>
-	
-	      <div class="row">
-	        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-	          <div class="icon-box">
-	            <div class="icon"><i class="bx bxl-dribbble"></i></div>
-	            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-	            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
-	          </div>
-	        </div>
-	
-	        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-	          <div class="icon-box">
-	            <div class="icon"><i class="bx bx-file"></i></div>
-	            <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-	            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
-	          </div>
-	        </div>
-	
-	        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-	          <div class="icon-box">
-	            <div class="icon"><i class="bx bx-tachometer"></i></div>
-	            <h4 class="title"><a href="">Magni Dolores</a></h4>
-	            <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-	          </div>
-	        </div>
-	
-	        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-	          <div class="icon-box">
-	            <div class="icon"><i class="bx bx-world"></i></div>
-	            <h4 class="title"><a href="">Nemo Enim</a></h4>
-	            <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
-	          </div>
-	        </div>
-	
-	      </div>
-	
-	    </div>
-	  </section><!-- End My Services Section -->	         
-	  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-	</main><!-- End #main -->
+	    </section><!-- End Breadcrumbs -->
+	    <!-- ======= Chart ======= -->
+	    <div class="container position-relative services" >
+	    	<div class="section-title" style="margin: 15px">
+		       	<span>CHART</span>
+		       	<h2>CHART</h2>
+		     </div>
+	    	<div class="row d-flex justify-content-center">
+		        <div class="chart-box-1 chart-box icon-box" style="margin:15px; padding: 10px;"><canvas id="chart1"></canvas></div>
+		        <div class="chart-box-2 chart-box icon-box" style="margin:15px; padding: 10px;"><canvas id="chart2"></canvas></div>
+	    	</div>
+	    	<div class="row d-flex justify-content-center" >
+		        <section class="chart-box-3 chart-box"><canvas id="chart3"></canvas></section>
+		        <section class="chart-box-4 chart-box"><canvas id="chart4"></canvas></section>
+	    	</div>
+    	</div>
+    	<!-- End Chart -->
+	</main>
+	<!-- End #main -->
+    
+    <script th:inline="javascript">
+    	/*<![CDATA[*/
+    	const ctx1 = document.getElementById("chart1").getContext('2d');
+        const ctx2 = document.getElementById("chart2").getContext('2d');
+        const ctx3 = document.getElementById("chart3").getContext('2d');
+        const ctx4 = document.getElementById("chart4").getContext('2d');
+        
+        const xval = ["경상남도", "경상북도", "전라남도", "경기도", "전라북도", "강원도", "충청남도", "충청북도", "서울특별시", "부산광역시", "제주특별자치도", 
+            "대구광역시", "울산광역시", "인천광역시", "광주광역시", "대전광역시", "세종특별자치시"];
+		var yval = [5428, 4952, 4576, 3527, 2960, 2396, 2203, 1984, 1796, 1289, 1065, 906, 796, 541, 445, 393, 145];
+		var barCol = ["darkred", "brown", "sienna","saddlebrown","indianred", "rosybrown", "lightcoral", "salmon", "darksalmon", "coral", "tomato", 
+		            "sandybrown", "lightsalmon", "peru", "chocolate", "red", "crimson"];
+		
+		const mychart1 = new Chart(ctx1, {
+		type: "doughnut",
+		data: {
+		    labels: xval,
+		    datasets: [{
+		    backgroundColor: barCol,
+		    data: yval
+		    }]
+		},
+		options: {
+		    plugins: {
+		        legend: {display: true},
+		        title: {
+		            display: true,
+		            text: "국내 관광지 분포 현황"
+		        }
+		    }
+		}
+		});
+        
+        
+
+    	// 3-1. tptpRegionCategoryCountNat
+    	let tptpRegionCategoryCountNat = [[${tptpRegionCategoryCountNat}]];
+    	
+    	// 3-2. tptpRegionCategoryCountCul
+    	let tptpRegionCategoryCountCul = [[${tptpRegionCategoryCountCul}]];
+    	
+    	// 3-3. tptpRegionCategoryCountThem
+    	let tptpRegionCategoryCountThem = [[${tptpRegionCategoryCountThem}]];
+    	
+    	// 3-4. tptpRegionCategoryCountTour
+    	let tptpRegionCategoryCountTour = [[${tptpRegionCategoryCountTour}]];
+    	
+    	let regions = [];
+    	let natCounts = [];
+    	let culCounts = [];
+    	let themCounts = [];
+    	let tourCounts = [];
+
+    	for(let i = 0; i< tptpRegionCategoryCountNat.length; i ++) {
+    		regions.push(tptpRegionCategoryCountNat[i].region);
+    		natCounts.push(tptpRegionCategoryCountNat[i].count);
+    		culCounts.push(tptpRegionCategoryCountCul[i].count);
+    		themCounts.push(tptpRegionCategoryCountThem[i].count);
+    		tourCounts.push(tptpRegionCategoryCountTour[i].count);
+    	}
+        const myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: regions,
+                datasets: [{
+                    label: "자연경관",
+                    backgroundColor: "turquoise",
+                    data: natCounts
+
+                	},
+                {
+                    label: "문화재",
+                    backgroundColor: "slateblue",
+                    data: culCounts
+                }, 
+                {
+                    label: "테마공원",
+                    backgroundColor: "thistle",
+                    data: themCounts
+                },
+                {
+                    label: "관광지",
+                    backgroundColor: "lemonchiffon",
+                    data: tourCounts
+                }],
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "국내 관광요소 유형별 지역 분포도",
+                    },
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
 </th:block>
 </html>
