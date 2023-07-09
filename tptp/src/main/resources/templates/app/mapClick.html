@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/defaultLayout}">
+	  
+	  
+<th:block layout:fragment="customContents" >
+	<div id="map" style="width:100%;height:350px;"></div>
+<p><em>지도를 클릭해주세요!</em></p> 
+<div id="clickLatlng"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
+<script>
+	
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
+	
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+	var zoomControl = new kakao.maps.ZoomControl();
+	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	
+	// 지도에 클릭 이벤트를 등록합니다
+	// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+	kakao.maps.event.addListener(map, 'click', function(mouseEvent) { 
+	    
+	    // 클릭한 위도, 경도 정보를 가져옵니다 
+	    var latlng = mouseEvent.latLng;
+	    
+	    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+	    message += '경도는 ' + latlng.getLng() + ' 입니다';
+	    
+	    var resultDiv = document.getElementById('clickLatlng'); 
+	    resultDiv.innerHTML = message;
+	    
+	    var lat = latlng.getLat();
+	    var lng = latlng.getLng();
+	    console.log(lat, lng);
+	    
+	    var imageSrc = '/assets/img/natureIcon.png', // 마커이미지의 주소입니다    
+	    imageSize = new kakao.maps.Size(30, 30), // 마커이미지의 크기입니다
+	    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	      
+		// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+		var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+	    markerPosition = new kakao.maps.LatLng(lat, lng); // 마커가 표시될 위치입니다
+	    
+	 	// 마커를 생성합니다
+	    var marker = new kakao.maps.Marker({
+	        position: markerPosition, 
+	        image: markerImage // 마커이미지 설정 
+	    }); 
+	
+	    // 마커가 지도 위에 표시되도록 설정합니다
+	    marker.setMap(map);
+	    
+		 // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+		 // marker.setMap(null);  
+	    
+	    //ajax를 이용하여 사용자가 클릭한 위도 경도 정보를 controller로 보냅니다.
+	    request = $.ajax({
+	        url: "/mapLatLng",
+	        type: "GET",
+	        dataType: "text",
+	        data: {"lat" : lat, "lng" : lng}
+		});
+		//성공
+		request.done(function(data){
+			console.log("success");
+			
+		});
+		//실패
+		request.fail(function(jqXHR, textStatus){
+				console.log('Request failed: ' + textStatus);
+		});
+	    
+	});
+
+	</script>
+		
+</th:block>
+</html>

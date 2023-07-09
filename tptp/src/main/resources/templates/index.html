@@ -19,7 +19,7 @@
 	  <div class="hero-container">
 	    <h1>이 곳, 저 곳</h1>
 	    <h2 th:text="${discription}"></h2>
-	    <a href="#" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
+	    <a href="#chart" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
 	  </div>
 	</section>
 	<!-- End Hero -->
@@ -37,7 +37,7 @@
 	      </div>
 	    </section><!-- End Breadcrumbs -->
 	    <!-- ======= Chart ======= -->
-	    <div class="container position-relative services" >
+	    <div class="container position-relative services" id="chart">
 	    	<div class="section-title" style="margin: 15px">
 		       	<span>CHART</span>
 		       	<h2>CHART</h2>
@@ -47,8 +47,8 @@
 		        <div class="chart-box-2 chart-box icon-box" style="margin:15px; padding: 10px;"><canvas id="chart2"></canvas></div>
 	    	</div>
 	    	<div class="row d-flex justify-content-center" >
-		        <section class="chart-box-3 chart-box"><canvas id="chart3"></canvas></section>
-		        <section class="chart-box-4 chart-box"><canvas id="chart4"></canvas></section>
+		        <div class="chart-box-3 chart-box icon-box" style="margin:15px; padding: 10px;"><canvas id="chart3"></canvas></div>
+		        <div class="chart-box-4 chart-box icon-box" style="margin:15px; padding: 10px;"><canvas id="chart4"></canvas></div>
 	    	</div>
     	</div>
     	<!-- End Chart -->
@@ -87,20 +87,14 @@
 		    }
 		}
 		});
+		
+		/* ---- 3번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
         
-        
-
-    	// 3-1. tptpRegionCategoryCountNat
-    	let tptpRegionCategoryCountNat = [[${tptpRegionCategoryCountNat}]];
-    	
-    	// 3-2. tptpRegionCategoryCountCul
-    	let tptpRegionCategoryCountCul = [[${tptpRegionCategoryCountCul}]];
-    	
-    	// 3-3. tptpRegionCategoryCountThem
-    	let tptpRegionCategoryCountThem = [[${tptpRegionCategoryCountThem}]];
-    	
-    	// 3-4. tptpRegionCategoryCountTour
-    	let tptpRegionCategoryCountTour = [[${tptpRegionCategoryCountTour}]];
+		// thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
+    	let regionCategoryCountNat = [[${regionCategoryCountNat}]];
+    	let regionCategoryCountCul = [[${regionCategoryCountCul}]];
+    	let regionCategoryCountThem = [[${regionCategoryCountThem}]];
+    	let regionCategoryCountTour = [[${regionCategoryCountTour}]];
     	
     	let regions = [];
     	let natCounts = [];
@@ -108,12 +102,12 @@
     	let themCounts = [];
     	let tourCounts = [];
 
-    	for(let i = 0; i< tptpRegionCategoryCountNat.length; i ++) {
-    		regions.push(tptpRegionCategoryCountNat[i].region);
-    		natCounts.push(tptpRegionCategoryCountNat[i].count);
-    		culCounts.push(tptpRegionCategoryCountCul[i].count);
-    		themCounts.push(tptpRegionCategoryCountThem[i].count);
-    		tourCounts.push(tptpRegionCategoryCountTour[i].count);
+    	for(let i = 0; i < regionCategoryCountNat.length; i ++) {
+    		regions.push(regionCategoryCountNat[i].region);
+    		natCounts.push(regionCategoryCountNat[i].count);
+    		culCounts.push(regionCategoryCountCul[i].count);
+    		themCounts.push(regionCategoryCountThem[i].count);
+    		tourCounts.push(regionCategoryCountTour[i].count);
     	}
         const myChart2 = new Chart(ctx2, {
             type: 'bar',
@@ -158,6 +152,8 @@
                 }
             }
         });
+        
+        /* ---- 3번째 차트 END ----*/
         /*]]>*/
     </script>
 </th:block>

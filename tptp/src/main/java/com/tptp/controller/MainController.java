@@ -3,90 +3,78 @@ package com.tptp.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.tptp.dto.Tptp;
-import com.tptp.mapper.TptpMapper;
+import com.tptp.service.MainService;
 
 
 @Controller
 public class MainController {
 	
-	private final TptpMapper tptpMapper;
+	private MainService mainService;
 	
-	
-	public MainController(TptpMapper tptpMapper) {
-		this.tptpMapper = tptpMapper;
+	@Autowired
+	public MainController(MainService mainService) {
+		this.mainService = mainService;
 	}
-
+	
 	/**
 	 * @brief home 화면
 	 * @param model 
 	 * @return index.html
+	 * @throws Exception 
 	 */
 	
 	@GetMapping("/")
-	public String main(Model model) {
+	public String main(Model model) throws Exception {
 		System.out.println("MainContoller");
 		model.addAttribute("discription","대한민국 전국의 관광지를 소개해드립니다. 장소별, 지역별 차트를 확인 할 수 있습니다!");
-		Tptp tptp = new Tptp();
-		getTptpList(model, tptp);
-		
-		return "index";
-	}
-	
-	/**
-	 * @brief db로 받아온 tptp 테이블을 리스트에 매핑
-	 * 
-	 * @param tptp
-	 */
-	public void getTptpList(Model model, Tptp tptp) {
-		//0
-		List<Tptp> tptpList = tptpMapper.getTptpList();
-		model.addAttribute("tptpList", tptpList);
-		System.out.println(tptpList);
-		
+
 		//1
-		List<Tptp> tptpRegionCount = tptpMapper.getRegionCount();
-		model.addAttribute("tptpRegionCount", tptpRegionCount);
-		System.out.println(tptpRegionCount);
+		List<Tptp> regionCount = mainService.getRegionCount();
+		model.addAttribute("regionCount", regionCount);
+		System.out.println(regionCount);
 		
 		//2
-		List<Tptp> tptpCategoryCount = tptpMapper.getCategoryCount();
-		model.addAttribute("tptpCategoryCount", tptpCategoryCount);
-		System.out.println(tptpCategoryCount);
+		List<Tptp> categoryCount = mainService.getCategoryCount();
+		model.addAttribute("categoryCount", categoryCount);
+		System.out.println(categoryCount);
 		
 		//3
-		List<Tptp> tptpRegionCategoryCount = tptpMapper.getRegionCategoryCount();
-		model.addAttribute("tptpRegionCategoryCount", tptpRegionCategoryCount);
-		System.out.println(tptpRegionCategoryCount);		
+		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount();
+		model.addAttribute("regionCategoryCount", regionCategoryCount);
+		System.out.println(regionCategoryCount);		
 		
 		//3-1
-		List<Tptp> tptpRegionCategoryCountNat = tptpMapper.getRegionCategoryCountNat();
-		model.addAttribute("tptpRegionCategoryCountNat", tptpRegionCategoryCountNat);
-		System.out.println(tptpRegionCategoryCountNat);
+		List<Tptp> regionCategoryCountNat = mainService.getRegionCategoryCountNat();
+		model.addAttribute("regionCategoryCountNat", regionCategoryCountNat);
+		System.out.println(regionCategoryCountNat);
 		
 		//3-2. tptpRegionCategoryCountCul
-		List<Tptp> tptpRegionCategoryCountCul = tptpMapper.gettptpRegionCategoryCountCul();
-		model.addAttribute("tptpRegionCategoryCountCul", tptpRegionCategoryCountCul);
-		System.out.println(tptpRegionCategoryCountCul);
+		List<Tptp> regionCategoryCountCul = mainService.getRegionCategoryCountCul();
+		model.addAttribute("regionCategoryCountCul", regionCategoryCountCul);
+		System.out.println(regionCategoryCountCul);
 		
 		//3-1
-		List<Tptp> tptpRegionCategoryCountThem = tptpMapper.getRegionCategoryCountThem();
-		model.addAttribute("tptpRegionCategoryCountThem", tptpRegionCategoryCountThem);
-		System.out.println(tptpRegionCategoryCountThem);
+		List<Tptp> regionCategoryCountThem = mainService.getRegionCategoryCountThem();
+		model.addAttribute("regionCategoryCountThem", regionCategoryCountThem);
+		System.out.println(regionCategoryCountThem);
 		
 		//3-1
-		List<Tptp> tptpRegionCategoryCountTour = tptpMapper.getRegionCategoryCountTour();
-		model.addAttribute("tptpRegionCategoryCountTour", tptpRegionCategoryCountTour);
-		System.out.println(tptpRegionCategoryCountTour);
+		List<Tptp> regionCategoryCountTour = mainService.getRegionCategoryCountTour();
+		model.addAttribute("regionCategoryCountTour", regionCategoryCountTour);
+		System.out.println(regionCategoryCountTour);
 		
 		//4
-		List<Tptp> categoryDetailCount = tptpMapper.getCategoryDetailCount();
+		List<Tptp> categoryDetailCount = mainService.getCategoryDetailCount();
 		model.addAttribute("categoryDetailCount", categoryDetailCount);
 		System.out.println(categoryDetailCount);
+		
+		return "index";
 	}
 	
 }   
