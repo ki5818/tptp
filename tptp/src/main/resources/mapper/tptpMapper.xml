@@ -34,7 +34,8 @@
 		FROM tptp AS t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		LIMIT 10;
+		ORDER BY t.id
+		LIMIT 50;
 	</select>
 	
 	<select id="getRegionCount" resultMap="tptpResultMap" resultType="Tptp">
@@ -73,7 +74,7 @@
 		ORDER BY t.region;
 	</select>
 	
-		<select id="gettptpRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
+		<select id="getRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
 		/* 3-1. 지역별 카테고리별 관광지 개수 -> 문화재 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
