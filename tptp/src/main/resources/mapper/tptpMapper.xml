@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapping mybatis -->
+<mapper namespace="com.tptp.mapper.TptpMapper">
+	<!-- tptpResultMap -->
+	<resultMap type="Tptp" id="tptpResultMap">
+		<id property="id" column="id" />
+		<result property="categoryId" column="category_id" />
+		<result property="detail" column="detail" />
+		<result property="lat" column="lat" />
+		<result property="lng" column="lng" />
+		<result property="place" column="place" />
+		<result property="region" column="region" />
+		<result property="count" column="count" />
+		<collection property="cg" javaType="Category">
+			<id property="categoryId" column="category_id"></id>
+			<result property="categoryName" column="category_name"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getTptpList" resultMap="tptpResultMap" resultType="Tptp">
+		/* 0. 테이블 전체 조회 */
+		SELECT
+			t.id,
+			t.category_id,
+			c.category_name,
+			t.detail,
+			t.lat,
+			t.lng,
+			t.place,
+			t.region
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		ORDER BY t.id
+		LIMIT 50;
+	</select>
+	
+	<select id="getRegionCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 1. 지역별 관광지 개수 */
+		SELECT t.region, COUNT(t.id) AS `COUNT`
+		FROM tptp AS t
+		GROUP BY t.region
+	</select>
+	
+	<select id="getCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 2. 카테고리별 관광지 개수 */
+		SELECT c.category_name, COUNT(t.id) AS `COUNT`
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		GROUP BY c.category_id;
+	</select>
+
+	<select id="getRegionCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3. 지역별 카테고리별 관광지 개수 */
+		SELECT t.region, c.category_name, COUNT(t.id) as `count`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		GROUP BY t.region, c.category_id;
+	</select>
+	
+	<select id="getRegionCategoryCountNat" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3-1. 지역별 카테고리별 관광지 개수 -> 자연경관 */
+		SELECT t.region, c.category_name, COUNT(t.id) as `count`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE c.category_name = '자연경관'
+		GROUP BY t.region, c.category_id
+		ORDER BY t.region;
+	</select>
+	
+		<select id="getRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3-1. 지역별 카테고리별 관광지 개수 -> 문화재 */
+		SELECT t.region, c.category_name, COUNT(t.id) as `count`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE c.category_name = '문화재'
+		GROUP BY t.region, c.category_id
+		ORDER BY t.region;
+	</select>
+	
+		<select id="getRegionCategoryCountThem" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3-1. 지역별 카테고리별 관광지 개수 -> 테마공원 */
+		SELECT t.region, c.category_name, COUNT(t.id) as `count`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE c.category_name = '테마공원'
+		GROUP BY t.region, c.category_id
+		ORDER BY t.region;
+	</select>
+	
+		<select id="getRegionCategoryCountTour" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3-1. 지역별 카테고리별 관광지 개수 -> 관광지 */
+		SELECT t.region, c.category_name, COUNT(t.id) as `count`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE c.category_name = '관광지'
+		GROUP BY t.region, c.category_id
+		ORDER BY t.region;
+	</select>
+	
+	<select id="getCategoryDetailCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 4. 카테고리별 디테일별 관광지 개수 */
+		SELECT c.category_name, t.detail, COUNT(t.id) AS `COUNT`
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		GROUP BY c.category_id, t.detail;
+	</select>
+</mapper>
