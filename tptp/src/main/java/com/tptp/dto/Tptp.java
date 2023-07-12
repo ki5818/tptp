@@ -2,24 +2,39 @@ package com.tptp.dto;
 
 public class Tptp {
 	private String id;
-	private String category_id;
+	private String categoryId;
 	private String detail;
 	private double lat;
 	private double lng;
 	private String place;
 	private String region;
+	private int count;
 	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	Category cg;
+
+	public Category getCategory() {
+		return cg;
+	}
+	public void setCategory(Category cg) {
+		this.cg = cg;
+	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getCategory_id() {
-		return category_id;
+	public String getCategoryId() {
+		return categoryId;
 	}
-	public void setCategory_id(String category_id) {
-		this.category_id = category_id;
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 	public String getDetail() {
 		return detail;

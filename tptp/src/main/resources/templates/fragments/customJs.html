@@ -1,9 +1,32 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="customJs">
-	
+
 	<!-- Template Main JS File -->
 	<script th:src="@{/assets/js/main.js}"></script>
 	
 	<!-- Custom JS File -->
+	<script>	
+		<!-- nav 색깔 -->
+		const classNameInit = "nav-link scrollto";
+		let nav = document.getElementsByClassName(classNameInit);
+		let html = window.location.href;
+		html = html.split('/')[3];
+		if(html == "aboutUs") {
+			nav[2].className += ' active';
+			nav[0].className = classNameInit;
+			nav[1].className = classNameInit;
+		}
+		else if (html == "map") {
+			nav[1].className += ' active';
+			nav[0].className = classNameInit;
+			nav[2].className = classNameInit;
+		}
+		else {
+			nav[0].className += ' active';
+			nav[1].className = classNameInit;
+			nav[2].className = classNameInit;
+		}
+	</script>
 	
 </html>
