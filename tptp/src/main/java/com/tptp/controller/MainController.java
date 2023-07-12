@@ -22,11 +22,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String main(Model model) {
-<<<<<<< HEAD
-		
-=======
 		getTptpList();
->>>>>>> refs/heads/main
 		return "index";
 	}
 	
