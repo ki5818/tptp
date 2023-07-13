@@ -25,41 +25,40 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	// 2. 카테고리별 관광지 개수
-	public List<Tptp> getCategoryCount() throws Exception {
-		return tptpMapper.getCategoryCount();
-	}
-
-	@Override
-	// 3. 지역별 카테고리별 관광지 개수
+	// 2. 지역별 카테고리별 관광지 개수
 	public List<Tptp> getRegionCategoryCount() throws Exception {
 		return tptpMapper.getRegionCategoryCount();
 	}
 
 	@Override
+	// 2-1.  tptpRegionCategoryCountNat
 	public List<Tptp> getRegionCategoryCountNat() throws Exception {
 		return tptpMapper.getRegionCategoryCountNat();
 	}
 
 	@Override
+	// 2-2. tptpRegionCategoryCountCul
 	public List<Tptp> getRegionCategoryCountCul() throws Exception {
 		return tptpMapper.getRegionCategoryCountCul();
 	}
 
 	@Override
+	// 2-3. tptpRegionCategoryCountThem
 	public List<Tptp> getRegionCategoryCountThem() throws Exception {
 		return tptpMapper.getRegionCategoryCountThem();
 	}
 
 	@Override
+	// 2-4. tptpRegionCategoryCountTour
 	public List<Tptp> getRegionCategoryCountTour() throws Exception {
 		return tptpMapper.getRegionCategoryCountTour();
 	}
 
 	@Override
-	// 4. 카테고리별 디테일별 관광지 개수
-	public List<Tptp> getCategoryDetailCount() throws Exception {
-		return tptpMapper.getCategoryDetailCount();
+	// 3. 카테고리별 관광지 개수
+	public List<Tptp> getCategoryCount() throws Exception {
+		return tptpMapper.getCategoryCount();
 	}
+
 
 }
