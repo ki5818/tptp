@@ -180,8 +180,9 @@
    * Testimonials slider
    */
   new Swiper('.testimonials-slider', {
-    speed: 800,
-    loop: true,
+    speed: 1000,
+    loop: false,
+    loopAdditionalSlides : 1,
     autoplay: {
       delay: 4000,
       disableOnInteraction: false
@@ -191,7 +192,7 @@
       el: '.swiper-pagination',
       type: 'bullets',
       clickable: true
-    }
+    },
   });
 
   /**

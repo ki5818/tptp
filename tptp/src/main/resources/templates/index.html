@@ -4,31 +4,25 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/defaultLayout}">
 <th:block layout:fragment="customContents">
-
     <style>
-    	.portfolio-item {
-    		margin:30px;
-
-    	}
         .chart-box {
-            width: 600px;
+            width: 800px;
+            height: 500px;
+            margin: auto;
+            margin-bottom: 50px;
         }
-        .chart-box-1 {
-            width: 350px;
-        }
-        
     </style>
 	<!-- ======= Hero Section ======= -->
 	<section id="hero">
 	  <div class="hero-container">
 	    <h1>이 곳, 저 곳</h1>
 	    <h2>"대한민국 전국의 관광지를 소개해드립니다. 아래 버튼을 클릭해 관광지 데이터차트를 볼 수 있습니다."</h2>
-	    <a href="#chart" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
+	    <a href="#testimonials" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
 	  </div>
 	</section>
 	<!-- End Hero -->
 	<main id="main">
-		<!-- ======= Breadcrumbs ======= -->
+	    <!-- ======= Breadcrumbs ======= -->
 	    <section class="breadcrumbs" style="margin-top: 0px">
 	      <div class="container">
 	        <div class="d-flex justify-content-between align-items-center">
@@ -39,232 +33,201 @@
 	          </ol>
 	        </div>
 	      </div>
-	    </section><!-- End Breadcrumbs -->
-	    <!-- ======= Chart ======= -->
-<!-- 	    <section id="portfolio" class="portfolio">
-			<div class="section-title" style="margin: 15px">
-			    	<span>CHART</span>
-			    	<h2>CHART</h2>
-			 </div>
-			<div class="container position-relative services" id="chart">
-				<div class="row portfolio-container">
-				     <div class="col-lg-5 col-md-6 portfolio-item filter-app">
-				       <div class="portfolio-img"><canvas id="chart1"></canvas></div>
-				       <div class="portfolio-info">
-				       	<h4>Chart 1</h4>
-              			<p>Chart</p>
-              			</div>
-				     </div>
-				     <div class="col-lg-5 col-md-6 portfolio-item filter-app">
-				       <div class="portfolio-img"><canvas id="chart2"></canvas></div>
-				       <div class="portfolio-info"></div>
-				     </div>
-				     <div class="col-lg-5 col-md-6 portfolio-item filter-app">
-				       <div class="portfolio-img"><canvas id="chart3"></canvas></div>
-				       <div class="portfolio-info"></div>
-				     </div>
-				     <div class="col-lg-5 col-md-6 portfolio-item filter-app">
-				       <div class="portfolio-img"><canvas id="chart4"></canvas></div>
-				       <div class="portfolio-info"></div>
-			     </div> 
-			   </div>
-			</div>
-        </section> -->
-        <section id="services" class="services">
-			<div class="section-title" style="margin: 15px">
-			   	<span>CHART</span>
-			   	<h2>CHART</h2>
-			 </div>
-			 <div class="container position-relative services" id="chart">
-			<div class="row d-flex justify-content-center">
-			    <div class="chart-box-1 chart-box icon-box" style="margin:15px; padding: 10px; width:600px; height: 400px;"><canvas id="chart1"></canvas></div>
-			<div class="chart-box-2 chart-box icon-box" style="margin:15px; padding: 10px;"><canvas id="chart2"></canvas></div>
-			</div>
-			<div class="row d-flex justify-content-center" >
-			    <div class="chart-box-3 chart-box icon-box" style="margin:15px; padding: 10px; width:600px; height: 400px;"><canvas id="chart3"></canvas></div>
-			<div class="chart-box-4 chart-box icon-box" style="margin:15px; padding: 10px; width:600px; height: 400px;"><canvas id="chart4"></canvas></div>
-			</div>
-			</div>
 	    </section>
-    	<!-- End Chart -->
-	</main>
-	<!-- End #main -->
+	    <!-- End Breadcrumbs -->
+		<!-- ======= Testimonials Section ======= -->
+		 <section id="testimonials" class="testimonials">
+		   <div class="container position-relative">
+			<div class="section-title"  style="margin-bottom: 10px; margin-top: 0px; padding:0px;">
+		       	<span>CHART</span>
+		       	<h2>CHART</h2>
+		     </div>
+		     <div class="testimonials-slider swiper services" data-aos="fade-up" data-aos-delay="100">
+		       <div class="swiper-wrapper">
+		         <div class="swiper-slide">
+		           <div class="testimonial-item">
+		           	<div class="chart-box-1 chart-box icon-box d-flex justify-content-center align-items-center">
+		           		<canvas id="chart1"></canvas>
+		           	</div>
+		           </div>
+		         </div>
+		         <div class="swiper-slide">
+		           <div class="testimonial-item">
+					<div class="chart-box-2 chart-box icon-box d-flex justify-content-center align-items-center">
+						<canvas id="chart2"></canvas>
+					</div>
+		           </div>
+		         </div>
+		         <div class="swiper-slide">
+		           <div class="testimonial-item">
+						<div class="chart-box-3 chart-box icon-box d-flex justify-content-center align-items-center">
+							<canvas id="chart3"></canvas>
+						</div>
+		           </div>
+		         </div>
+				<!-- End testimonial item -->
+		       </div>
+		       <div class="swiper-pagination"></div>
+		     </div>
+		   </div>
+		 </section><!-- End Testimonials Section -->
+  		</main>
+  	<!-- End #main END index -->
     
     <script th:inline="javascript">
-    	/*<![CDATA[*/
-    	const ctx1 = document.getElementById("chart1").getContext('2d');
-        const ctx2 = document.getElementById("chart2").getContext('2d');
-        const ctx3 = document.getElementById("chart3").getContext('2d');
-        const ctx4 = document.getElementById("chart4").getContext('2d');
-        
-        /* ---- 1번째 차트 : 국내 관광지 분포 현황 ----*/
-        const regionCount = [[${regionCount}]];
-        console.log(regionCount);
-        console.log(regionCount[0]['region']);
-        
-        let xval_1 = [];
-        let yval_1 = [];
-        for(let i = 0; i < regionCount.length; i++) {
-        	xval_1.push(regionCount[i]['region']);
-        	yval_1.push(regionCount[i]['count']);
-        }
+    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하기 위해 선언해줘야함 
+    /*<![CDATA[*/
+	    	const ctx1 = document.getElementById("chart1").getContext('2d');
+	        const ctx2 = document.getElementById("chart2").getContext('2d');
+	        const ctx3 = document.getElementById("chart3").getContext('2d');
+	        
+	        /* ---- 1번째 차트 : 국내 관광지 분포 현황 ----*/
+	        // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
+	        const regionCount = [[${regionCount}]];
+	        console.log(regionCount);
+	        console.log(regionCount[0]['region']);
+	        
+	        let xval_1 = [];
+	        let yval_1 = [];
+	        for(let i = 0; i < regionCount.length; i++) {
+	        	xval_1.push(regionCount[i]['region']);
+	        	yval_1.push(regionCount[i]['count']);
+	        }
+			
+			const barCol = ["darkred", "brown", "sienna","saddlebrown","indianred", "rosybrown", "lightcoral", "salmon", "darksalmon", "coral", "tomato", 
+			            "sandybrown", "lightsalmon", "peru", "chocolate", "red", "crimson"];
+			const mychart1 = new Chart(ctx1, {
+			type: "bar",
+			data: {
+			    labels: xval_1,
+			    datasets: [{
+			    backgroundColor: barCol,
+			    data: yval_1,
+			    datalabels: {
+	                color: 'white',
+	                font: {size: 10}
+			    	}
+			    }]
+			},
+			plugins: [ChartDataLabels],
+			options: {
+			    plugins: {
+			        legend: {display: false},
+			        title: {
+			            display: true,
+			            text: "국내 관광지 분포 현황",
+			            font: {size: 20}
+				        }
+				    }
+				}
+			});
+			/* ---- 1번째 차트 END ----*/
+			
+			/* ---- 2번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
+		    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
+		  	const regionCategoryCountNat = [[${regionCategoryCountNat}]];
+		  	const regionCategoryCountCul = [[${regionCategoryCountCul}]];
+		  	const regionCategoryCountThem = [[${regionCategoryCountThem}]];
+		  	const regionCategoryCountTour = [[${regionCategoryCountTour}]];
+		  	
+		  	let xval_2 = [];
+		  	let natCounts = [];
+		  	let culCounts = [];
+		  	let themCounts = [];
+		  	let tourCounts = [];
 		
-		const barCol = ["darkred", "brown", "sienna","saddlebrown","indianred", "rosybrown", "lightcoral", "salmon", "darksalmon", "coral", "tomato", 
-		            "sandybrown", "lightsalmon", "peru", "chocolate", "red", "crimson"];
-		const mychart1 = new Chart(ctx1, {
-		type: "bar",
-		data: {
-		    labels: xval_1,
-		    datasets: [{
-		    backgroundColor: barCol,
-		    data: yval_1
-		    }]
-		},
-		options: {
-		    plugins: {
-		        legend: {display: false},
-		        title: {
-		            display: true,
-		            text: "국내 관광지 분포 현황"
-			        }
-			    }
+		  	for(let i = 0; i < regionCategoryCountNat.length; i ++) {
+		  		xval_2.push(regionCategoryCountNat[i].region);
+		  		natCounts.push(regionCategoryCountNat[i].count);
+		  		culCounts.push(regionCategoryCountCul[i].count);
+		  		themCounts.push(regionCategoryCountThem[i].count);
+		  		tourCounts.push(regionCategoryCountTour[i].count);
+		  	}
+		  	
+		  	console.log(natCounts);
+	        const myChart2 = new Chart(ctx2, {
+	            type: 'bar',
+	            data: {
+	                labels: xval_2,
+	                datasets: [{
+	                    label: "1. 자연경관",
+	                    backgroundColor: "teal",
+	                    data: natCounts
+	
+	                	},
+	                {
+	                    label: "2. 문화재",
+	                    backgroundColor: "yellow",
+	                    data: culCounts
+	                }, 
+	                {
+	                    label: "3. 테마공원",
+	                    backgroundColor: "red",
+	                    data: themCounts
+	                },
+	                {
+	                    label: "4. 관광지",
+	                    backgroundColor: "skyblue",
+	                    data: tourCounts
+	                }],
+	            },
+	            options: {
+	                plugins: {
+	                    title: {
+	                        display: true,
+	                        text: "국내 관광요소 유형별 지역 분포도",
+	                        font: {size: 20}
+	                    },
+	                },
+	                scales: {
+	                    x: {
+	                        stacked: true,
+	                    },
+	                    y: {
+	                        stacked: true
+	                    }
+	                }
+	            }
+	        });
+	        /* ---- 2번째 차트 END ----*/
+			
+			/* ---- 3번째 차트 : 관광지 카테고리별 개수 ----*/
+			const categoryCount = [[${categoryCount}]];
+			console.log(categoryCount);
+			let xval_3 = [];
+			let yval_3 = [];
+			
+			for(let i = 0; i < categoryCount.length; i++) {
+				xval_3.push(categoryCount[i].category['categoryName']);
+				yval_3.push(categoryCount[i]['count']);
 			}
-		});
-		/* ---- 2번째 차트 END ----*/
-		/* ---- 2번째 차트 : 관광지 카테고리별 개수 ----*/
-		const categoryCount = [[${categoryCount}]];
-		console.log(categoryCount);
-		let xval_2 = [];
-		let yval_2 = [];
-		
-		for(let i = 0; i < categoryCount.length; i++) {
-			xval_2.push(categoryCount[i].category['categoryName']);
-			yval_2.push(categoryCount[i]['count']);
-		}
-		
-		const mychart2 = new Chart(ctx2, {
-		    type: "polarArea",
-		    data: {
-		        labels: xval_2,
-		        datasets: [{
-		        data: yval_2
-		        }]
-		    },
-		    options: {
-		        responsive: true,
-		        plugins: {
-		            legend: {position: 'top'},
-		            title: {
-		                display: true,
-		                text: "관광지 카테고리별 개수"
-		                }
-		            }
-		        }
-		  });
-	    /* ---- 2번째 차트 END ----*/
-	
-		/* ---- 3번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
-	      
-	    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
-	  	const regionCategoryCountNat = [[${regionCategoryCountNat}]];
-	  	const regionCategoryCountCul = [[${regionCategoryCountCul}]];
-	  	const regionCategoryCountThem = [[${regionCategoryCountThem}]];
-	  	const regionCategoryCountTour = [[${regionCategoryCountTour}]];
-	  	
-	  	let xval_3 = [];
-	  	let natCounts = [];
-	  	let culCounts = [];
-	  	let themCounts = [];
-	  	let tourCounts = [];
-	
-	  	for(let i = 0; i < regionCategoryCountNat.length; i ++) {
-	  		xval_3.push(regionCategoryCountNat[i].region);
-	  		natCounts.push(regionCategoryCountNat[i].count);
-	  		culCounts.push(regionCategoryCountCul[i].count);
-	  		themCounts.push(regionCategoryCountThem[i].count);
-	  		tourCounts.push(regionCategoryCountTour[i].count);
-	  	}
-        const myChart3 = new Chart(ctx3, {
-            type: 'bar',
-            data: {
-                labels: xval_3,
-                datasets: [{
-                    label: "자연경관",
-                    backgroundColor: "skyblue",
-                    data: natCounts
+			
+			const mychart3 = new Chart(ctx3, {
+			    type: "doughnut",
+			    data: {
+			        labels: xval_3,
+			        datasets: [{
+			        data: yval_3,
+			        datalabels: {
+	                    color: 'black',
+	                    font: {size: 16}
+	            	}}]
+			    },
+			    plugins: [ChartDataLabels],
+			    options: {
+			        responsive: true,
+			        plugins: {
+			            legend: {position: 'top'},
+			            title: {
+			                display: true,
+			                text: "관광지 카테고리별 개수",
+			                font: {size: 20}
+			                }
+			            }
+			        }
+			  });
+	    /* ---- 3번째 차트 END ----*/
 
-                	},
-                {
-                    label: "문화재",
-                    backgroundColor: "teal",
-                    data: culCounts
-                }, 
-                {
-                    label: "테마공원",
-                    backgroundColor: "red",
-                    data: themCounts
-                },
-                {
-                    label: "관광지",
-                    backgroundColor: "lemonchiffon",
-                    data: tourCounts
-                }],
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: "국내 관광요소 유형별 지역 분포도",
-                    },
-                },
-                scales: {
-                    x: {
-                        stacked: true,
-                    },
-                    y: {
-                        stacked: true
-                    }
-                }
-            }
-        });
-        /* ---- 3번째 차트 END ----*/
-        
-        /* ---- 4번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/ 
-        
-        const xval_4 = ["자연경관(호수/저수지)", "자연경관(휴양림/수목원)","자연경관(관광농원/허브마을)", "자연경관(해수욕장)",
-                        "자연경관(폭포.계곡)", "문화재(사찰)", "문화재(서원/향교/서당)", "테마공원(동물원)", "테마공원(식물원)", "테마공원(놀이공원)",
-                        "테마공원(수족관)", "관광지(지역상권)", "관광지(지역관광지)"];
-        const yval_4 = [12705, 596, 931, 549, 955, 11604, 858, 44, 146, 713, 29, 3389, 2883];
-        const barCol_2 = ["green", "green", "green", "green", "green", "palegoldenrod", "palegoldenrod", "royalblue", "royalblue", "purple", "purple", "purple", "gray", "gray"];
-
-        const mychart4 = new Chart(ctx4, {
-            type: "bar",
-            data: {
-                labels: xval_4,
-                datasets:[{
-                    backgroundColor: "orange",
-                    data: yval_4,
-                    backgroundColor: barCol_2,
-                    // pointStyle: "rounded",
-                    // pointRadius: 1
-                }]
-            },
-            legend: {
-                usePointStyle: true
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    title: {
-                        display: true,
-                        text: "카테고리 세부 관광지 개수"
-                    }
-                }
-            }
-        });
-        /* ---- 4번째 차트 END ----*/
         /*]]>*/
     </script>
 </th:block>

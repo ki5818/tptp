@@ -18,20 +18,21 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public List<Tptp> getTptpList() throws Exception {
 		List<Tptp> tptpList = tptpMapper.getTptpList();
-		List<Tptp> listCT1 = new ArrayList<>();
-		System.out.println(tptpList);
-		
-		for(int i = 0; i< tptpList.size(); i++) {
-			if(tptpList.get(i).getCategoryId().equals("CT1")) {
-				System.out.println(tptpList.get(i).getCategoryId());
-				listCT1.add(tptpList.get(i));
-			}
-			
-		}
-		System.out.println(listCT1);
-		
 		return tptpList;
 	}
 	
-
+	public List<Tptp> getViewList(ArrayList<String> checkedList) throws Exception {
+		List<Tptp> tptpList = tptpMapper.getTptpList();
+		List<Tptp> viewList = new ArrayList<Tptp>(tptpList.size());
+		System.out.println(checkedList);
+		for(Tptp element : tptpList) {
+			for(int i = 0; i < checkedList.size(); i++) {
+				if(element.getCategoryId().equals(checkedList.get(i))) {
+					viewList.add(element);
+				}
+			}
+		}
+		System.out.println(viewList.toString());
+		return viewList;
+	}
 }
