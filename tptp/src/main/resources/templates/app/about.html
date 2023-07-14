@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/defaultLayout}">
+	  
+<th:block layout:fragment="customContents">
+<main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>ABOUT US</h2>
+          <ol>
+            <li><a th:href="@{/}">HOME</a></li>
+          </ol>
+        </div>
+      </div>
+    </section><!-- End Breadcrumbs -->
+        <!-- ======= ABOU US Section ======= -->
+	    <section id="services" class="services">
+	      <div class="container">
+			<div class="section-title">
+	       	<span>ABOUT US</span>
+	       	<h2>ABOUT US</h2>
+	       	</br>
+	       	<p id="ab-title">🔎 <i><B>tptp</B></i>는 this place, that place의 약자로 국내 <i><B>35,402</B></i>개의 관광지를 소개하는 홈페이지입니다.</p>
+	        </div>
+	        <div class="row">
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon" ><img class="character" th:src="@{/assets/img/about/kms.png}" alt="김민선"></div>
+	              <h4 class="title"><a href="">김민선</a></h4>
+	              <p class="description">👤 홈페이지 제작</p>
+	              <p class="description">🗣️ Java, Javascript, SQL</p>
+	              <p class="description">📧 minseonnn@naver.com</p>
+	              <p class="description">🔗 github.com/minseonn</p>
+	            </div>
+	          </div>
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon"><img class="character" th:src="@{/assets/img/about/kyj.png}" alt="김예진"></div>
+	              <h4 class="title"><a href="">김예진</a></h4>
+	              <p class="description">👤 홈페이지 제작</p>
+	              <p class="description">🗣️ Java, Javascript, SQL</p>
+	              <p class="description">📧 ki5818@gmail.com</p>
+	              <p class="description">🔗 github.com/ki5818</p>
+	            </div>
+	          </div>
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon"><img class="character" th:src="@{/assets/img/about/pmj.png}" alt="박민정"></div>
+	              <h4 class="title"><a href="">박민정</a></h4>
+	              <p class="description">👤 맵 적용 알고리즘 작성</p>
+	              <p class="description">🗣️ Java, Javascript, Python, SQL</p>
+	              <p class="description">📧 minwjd1028@g.skku.edu</p>
+	              <p class="description">🔗 github.com/Park-Min-Jeong</p>
+	            </div>
+	          </div>
+	
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon"><img class="character" th:src="@{/assets/img/about/whr.png}" alt="우하림"></div>
+	              <h4 class="title"><a href="">우하림</a></h4>
+	              <p class="description">👤 데이터 시각화</p>
+	              <p class="description">🗣️ Python, Javascript, SQL</p>
+	              <p class="description">📧 hannah.woo.2022@gmail.com</p>
+	              <p class="description">🔗 github.com/Hannah-0111</p>
+	            </div>
+	          </div>
+	        </div>
+	        
+	      </div>
+	    </section><!-- End My Services Section -->
+	</main><!-- End #main -->
+</th:block>
+</html>
