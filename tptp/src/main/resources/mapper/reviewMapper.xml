@@ -3,15 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mapping mybatis -->
-<mapper namespace="com.tptp.mapper.TptpMapper">
+<mapper namespace="com.tptp.mapper.ReviewMapper">
 	<!-- reviewResultMap -->
-	<resultMap type="Review" id="reviewResultMap">
+	<resultMap type="Review" id="reviewResultMap"> <!-- ResultMap이 뭔지 잘 모르겠다. -->
 		<id property="reviewId" column="review_id" />
 		<result property="placeId" column="place_id" />
 		<result property="contents" column="contents" />
 		<result property="photo" column="photo" />
 		<result property="password" column="password" />
 		<result property="writeDate" column="write_date" />
+		
+		<!-- collection이 join인가요? tptpMapper.xml에 있는 collection을 복붙하면 되는지 -->
+		
 	</resultMap>
 	<!-- END reviewResultMap -->
 	
@@ -26,4 +29,24 @@
 			r.write_date
 		FROM review AS r;
 	</select>
+	
+	<!-- 사용하지 않아서 오류 -->
+	<insert id="addReviewList" resultMap="reviewResultMap" resultType="Review">
+		/*1. 리뷰게시판 데이터 추가*/
+		INSERT INTO review (review_id, place_id, contents, password,)
+		values(#{review_id),#{place_id}, #{contents}, #{password});
+	</insert>
+	
+	<update id="modReviewList" resultMap = "reviewResultMap" resultType = "Review">
+		/*2. 리뷰게시판 데이터 수정*/
+		UPDATE review set contents=? WHERE password = #{password};
+	</update>
+	
+	<delete id="delReviewList" resultMap = "reviewResultMap" resultType = "Review">
+		/*3. 리뷰게시판 데이터 삭제*/
+		DELETE FROM review where review_id = ?;
+	</delete>
+	
+	
+		
 </mapper>
