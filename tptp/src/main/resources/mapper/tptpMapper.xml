@@ -13,11 +13,27 @@
 		<result property="lng" column="lng" />
 		<result property="place" column="place" />
 		<result property="region" column="region" />
+		<result property="address" column="address" />
+		<result property="clusterId" column="cluster_id" />
 		<result property="count" column="count" />
-		<collection property="cg" javaType="Category">
+		<collection property="category" javaType="Category">
 			<id property="categoryId" column="category_id"></id>
 			<result property="categoryName" column="category_name"/>
 		</collection>
+		<collection property="review" javaType="Review">
+			<id property="reviewId" column="review_id"></id>
+			<result property="placeId" column="place_id"/>
+			<result property="contents" column="contents"/>
+			<result property="photo" column="photo"/>
+			<result property="password" column="password"/>
+			<result property="writeDate" column="write_date"/>
+		</collection>
+		<collection property="cluster" javaType="Cluster">
+			<id property="clusterId" column="cluster_id"></id>
+			<result property="centerLat" column="center_lat"/>
+			<result property="centerLng" column="center_lng"/>
+		</collection>
+		
 	</resultMap>
 	
 	<select id="getTptpList" resultMap="tptpResultMap" resultType="Tptp">
@@ -30,12 +46,14 @@
 			t.lat,
 			t.lng,
 			t.place,
-			t.region
+			t.region,
+			t.address,
+			t.cluster_id
 		FROM tptp AS t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
 		ORDER BY t.id
-		LIMIT 50;
+		LIMIT 1000;
 	</select>
 	
 	<select id="getRegionCount" resultMap="tptpResultMap" resultType="Tptp">
@@ -43,19 +61,11 @@
 		SELECT t.region, COUNT(t.id) AS `COUNT`
 		FROM tptp AS t
 		GROUP BY t.region
-	</select>
-	
-	<select id="getCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
-		/* 2. 카테고리별 관광지 개수 */
-		SELECT c.category_name, COUNT(t.id) AS `COUNT`
-		FROM tptp AS t
-		INNER JOIN category c
-		ON t.category_id = c.category_id
-		GROUP BY c.category_id;
+		ORDER BY t.region ASC;
 	</select>
 
 	<select id="getRegionCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
-		/* 3. 지역별 카테고리별 관광지 개수 */
+		/* 2. 지역별 카테고리별 관광지 개수 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
 		INNER JOIN category c
@@ -64,55 +74,55 @@
 	</select>
 	
 	<select id="getRegionCategoryCountNat" resultMap="tptpResultMap" resultType="Tptp">
-		/* 3-1. 지역별 카테고리별 관광지 개수 -> 자연경관 */
+		/* 2-1. 지역별 카테고리별 관광지 개수 -> 자연경관 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		WHERE c.category_name = '자연경관'
+		WHERE c.category_id = 'CT1'
 		GROUP BY t.region, c.category_id
-		ORDER BY t.region;
+		ORDER BY t.region ASC;
 	</select>
 	
 		<select id="getRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
-		/* 3-1. 지역별 카테고리별 관광지 개수 -> 문화재 */
+		/* 2-2. 지역별 카테고리별 관광지 개수 -> 문화재 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		WHERE c.category_name = '문화재'
+		WHERE c.category_id = 'CT2'
 		GROUP BY t.region, c.category_id
-		ORDER BY t.region;
+		ORDER BY t.region ASC;
 	</select>
 	
-		<select id="getRegionCategoryCountThem" resultMap="tptpResultMap" resultType="Tptp">
-		/* 3-1. 지역별 카테고리별 관광지 개수 -> 테마공원 */
+	<select id="getRegionCategoryCountThem" resultMap="tptpResultMap" resultType="Tptp">
+		/* 2-3. 지역별 카테고리별 관광지 개수 -> 테마공원 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		WHERE c.category_name = '테마공원'
+		WHERE c.category_id = 'CT3'
 		GROUP BY t.region, c.category_id
-		ORDER BY t.region;
+		ORDER BY t.region ASC;
 	</select>
 	
-		<select id="getRegionCategoryCountTour" resultMap="tptpResultMap" resultType="Tptp">
-		/* 3-1. 지역별 카테고리별 관광지 개수 -> 관광지 */
+	<select id="getRegionCategoryCountTour" resultMap="tptpResultMap" resultType="Tptp">
+		/* 2-4. 지역별 카테고리별 관광지 개수 -> 관광지 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		WHERE c.category_name = '관광지'
+		WHERE c.category_id = 'CT4'
 		GROUP BY t.region, c.category_id
-		ORDER BY t.region;
+		ORDER BY t.region ASC;
 	</select>
-	
-	<select id="getCategoryDetailCount" resultMap="tptpResultMap" resultType="Tptp">
-		/* 4. 카테고리별 디테일별 관광지 개수 */
-		SELECT c.category_name, t.detail, COUNT(t.id) AS `COUNT`
+		
+	<select id="getCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3. 카테고리별 관광지 개수 */
+		SELECT c.category_name, COUNT(t.id) AS `COUNT`
 		FROM tptp AS t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		GROUP BY c.category_id, t.detail;
+		GROUP BY c.category_id;
 	</select>
 </mapper>
