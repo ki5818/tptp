@@ -23,12 +23,12 @@ public class ReviewController {
 
 	@GetMapping("/review")
 	public String review(Model model) throws Exception{
-		System.out.println("ReviewController review()");
 		List<Review> reviewList = reviewMapper.getReviewList();
 	
 		System.out.println(reviewList);
 		model.addAttribute("reviewList", reviewList);
 		return "/app/review";
+
 	}
 
 }

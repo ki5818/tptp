@@ -125,4 +125,29 @@
 		ON t.category_id = c.category_id
 		GROUP BY c.category_id;
 	</select>
+	
+	<select id="getListOffset" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
+		SELECT
+			t.id,
+			t.category_id,
+			c.category_name,
+			t.detail,
+			t.lat,
+			t.lng,
+			t.place,
+			t.region,
+			t.address,
+			t.cluster_id
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE t.category_id = #{category.ct1}
+			  OR t.category_id = #{category.ct2}
+			  OR t.category_id = #{category.ct3}
+			  OR t.category_id = #{category.ct4}
+		ORDER BY t.id
+		LIMIT 10
+		OFFSET #{currentNumber.num};
+	</select>
+	
 </mapper>

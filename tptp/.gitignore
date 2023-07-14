@@ -31,6 +31,7 @@ build/
 
 ### Custom ###
 log/
+application.properties
 
 ### VS Code ###
 .vscode/
