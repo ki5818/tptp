@@ -1,12 +1,14 @@
 package com.tptp.dto;
 
+import java.util.Date;
+
 public class Review {
 	private String reviewId;
 	private String placeId;
 	private String contents;
 	private String photo;
 	private String password;
-	private String writeDate;
+	private Date writeDate;
 	
 	public String getReviewId() {
 		return reviewId;
@@ -38,10 +40,10 @@ public class Review {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getWriteDate() {
+	public Date getWriteDate() {
 		return writeDate;
 	}
-	public void setWriteDate(String writeDate) {
+	public void setWriteDate(Date writeDate) {
 		this.writeDate = writeDate;
 	}
 	@Override

@@ -1,6 +1,8 @@
 package com.tptp.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import com.tptp.dto.Tptp;
 
@@ -29,5 +31,8 @@ public interface TptpMapper {
 	
 	// 3. 카테고리별 관광지 개수
 	public List<Tptp> getCategoryCount() throws Exception;
+	
+	//paging 처리를 위한 mapper
+	public List<Tptp> getListOffset(Map<String, String> category , Map<String, Integer> currentNumber) throws Exception;
 	
 }

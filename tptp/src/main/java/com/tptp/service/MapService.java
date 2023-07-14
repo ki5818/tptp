@@ -14,6 +14,6 @@ public interface MapService {
 	public List<Tptp> getTptpList() throws Exception;
 	
 	// map 화면에서 사용자에게 보여줄 리스트
-	public List<Tptp> getViewList(ArrayList<String> chekedList) throws Exception;
+	public List<Tptp> getViewList(ArrayList<String> chekedList, Integer currentNum) throws Exception;
 	
 }
