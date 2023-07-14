@@ -88,20 +88,11 @@
 		   	
 			<div class="review_area">
             <form action="" method="get" enctype="multipart/form-data">
-                <ul class="write_info_wrap">
-                
-                    <li class="area_card_item">
-                        <!-- 리뷰 내용 들어감
-                        content, write_date, review_id -->
-                        <!-- ul li를 사용해서 만들었을 때  -->
-                        <ul class="view_detail">
-                            <li class="view_content">
-								<p th:text="${reviewList[0].contents}"></p>
-                            </li>
-                            <ul class="view_place_date">
-								<li class="view_place">
-									<span>장소 : </span>
-                                	<span th:text="${reviewList[0].placeId}"></span>
+                <ul class="area_card_item" th:each="r : ${reviewList}">
+                    <li class="" th:text = "${r.contents}"></li>  
+					<li class="view_place">
+						<span>장소 : </span>
+                        <span th:text="${reviewList[0].placeId}"></span>
                                		<!--
                                		<p th:text="${reviewList[0].placeId}"></p>
                                		-->
