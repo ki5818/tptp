@@ -19,7 +19,7 @@
  |👩‍🦰|👩|👩‍🦱|👩
  |:---:|:---:|:---:|:---:|
  |kim_minseon|kim_yejin|park_minjeong|woo_harim|
- |https://github.com/?|https://github.com/ki5818|https://github.com/Park-Min-Jeong|https://github.com/Hannah-0111
+ |https://github.com/minseonn|https://github.com/ki5818|https://github.com/Park-Min-Jeong|https://github.com/Hannah-0111
  |homepage 제작|homepage 제작|알고리즘 작성|데이터 시각화|
  |Java, SQL|Java, SQL|Java,Python, SQL|Python, SQL|
 
