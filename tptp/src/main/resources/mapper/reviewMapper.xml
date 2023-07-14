@@ -5,13 +5,16 @@
 <!-- mapping mybatis -->
 <mapper namespace="com.tptp.mapper.ReviewMapper">
 	<!-- reviewResultMap -->
-	<resultMap type="Review" id="reviewResultMap">
+	<resultMap type="Review" id="reviewResultMap"> <!-- ResultMap이 뭔지 잘 모르겠다. -->
 		<id property="reviewId" column="review_id" />
 		<result property="placeId" column="place_id" />
 		<result property="contents" column="contents" />
 		<result property="photo" column="photo" />
 		<result property="password" column="password" />
 		<result property="writeDate" column="write_date" />
+		
+		<!-- collection이 join인가요? tptpMapper.xml에 있는 collection을 복붙하면 되는지 -->
+		
 	</resultMap>
 	<!-- END reviewResultMap -->
 	
@@ -26,4 +29,6 @@
 			r.write_date
 		FROM review AS r;
 	</select>
+	
+		
 </mapper>
