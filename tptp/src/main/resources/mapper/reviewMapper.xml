@@ -30,23 +30,5 @@
 		FROM review AS r;
 	</select>
 	
-	<!-- 사용하지 않아서 오류 -->
-	<insert id="addReviewList" resultMap="reviewResultMap" resultType="Review">
-		/*1. 리뷰게시판 데이터 추가*/
-		INSERT INTO review (review_id, place_id, contents, password,)
-		values(#{review_id),#{place_id}, #{contents}, #{password});
-	</insert>
-	
-	<update id="modReviewList" resultMap = "reviewResultMap" resultType = "Review">
-		/*2. 리뷰게시판 데이터 수정*/
-		UPDATE review set contents=? WHERE password = #{password};
-	</update>
-	
-	<delete id="delReviewList" resultMap = "reviewResultMap" resultType = "Review">
-		/*3. 리뷰게시판 데이터 삭제*/
-		DELETE FROM review where review_id = ?;
-	</delete>
-	
-	
 		
 </mapper>
