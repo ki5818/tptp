@@ -8,8 +8,16 @@ public class Review {
 	private String contents;
 	private String photo;
 	private String password;
-	private Date writeDate;
+	private String writeDate;
 	
+	Tptp tptp;
+	
+	public Tptp getTptp() {
+		return tptp;
+	}
+	public void setTptp(Tptp tptp) {
+		this.tptp = tptp;
+	}
 	public String getReviewId() {
 		return reviewId;
 	}
@@ -40,10 +48,10 @@ public class Review {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getWriteDate() {
+	public String getWriteDate() {
 		return writeDate;
 	}
-	public void setWriteDate(Date writeDate) {
+	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
 	}
 	@Override
