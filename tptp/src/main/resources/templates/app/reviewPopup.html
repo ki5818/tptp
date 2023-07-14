@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlkns:th = "http://www.thymeLeaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+
+        #write_content{
+			width: 100%;
+			height: 80px;
+			padding: 10px;
+			box-sizing: border-box;
+			border: solid 2px #1E90FF;
+            resize: none;
+			border-radius: 5px;
+			font-size: 16px;
+			resize: both;
+		}
+
+        .area_card_item {
+            border: 2px solid #ddd;
+            padding: 20px 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+	<div id = "wrap">
+        <h2>리뷰</h2>
+        <div class="write_wrap">
+            <div class="textLengthWrap">
+                <p class="textCount">0자</p>
+                <p class="textTotal">/100자</p>
+              </div>
+            <form action="" method="get" enctype="multipart/form-data">
+                <ul class="write_info_wrap">
+                    <li class="write_content_wrap">
+                        <textarea name="content" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100"></textarea>
+                    </li>
+                    <li class="write_btn_wrap">
+                        <input type="submit" class="write_submit" value="입력하기">
+                        <!-- <input type="button" value="취소하기"> -->
+                    </li>
+
+                <hr>
+                    <li class="area_card_item">
+                        <!-- 리뷰 내용 들어감
+                        content, write_date, review_id -->
+                        <ul class="view_detail">
+                            <li class="view_content">
+                                <p class="">
+                                    여기에 데이터베이스 content를 넣어야 합니다.. 나오면 좋을텐데ㅔ... 타입리프는 어떻게 해야하나요 jsp는 대충 기억은 안나는데 param 설정하고 ${board.content}이렇게 했던 거 같아요.... 와 진짜 큰일났네요 
+                                </p>
+                            </li>
+                            <li class="view_place">
+                                <span class="">장소</span>
+                                명동..? ${board.place}
+                            </li>
+                            
+                            <li class="view_date">
+                                <span class="">작성일</span>
+                                    ${board.write_date}? 2023-07-13 
+                                
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="area_card_item">
+                        <!-- 리뷰 내용 들어감
+                        content, write_date, review_id -->
+                        <ul class="view_detail">
+                            <li class="view_content">
+                                <p class="">
+                                    여기에 데이터베이스 content를 넣어야 합니다.. 나오면 좋을텐데ㅔ... 타입리프는 어떻게 해야하나요 jsp는 대충 기억은 안나는데 param 설정하고 ${board.content}이렇게 했던 거 같아요.... 와 진짜 큰일났네요 반복문 돌리면 될거같은데...
+                                </p>
+                            </li>
+                            <li class="view_place">
+                                <span class="">장소</span>
+                                명동..? ${board.place}
+                            </li>
+                            
+                            <li class="view_date">
+                                <span class="">작성일</span>
+                                    ${board.write_date}? 2023-07-13 
+                                
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="area_card_item">
+                        <!-- 리뷰 내용 들어감
+                        content, write_date, review_id -->
+                        <ul class="view_detail">
+                            <li class="view_content">
+                                <p class="">
+                                    명동 좋아요 먹을 거 많고 구경할 거 많고 쇼핑하기 좋고 야시장 최고 와아
+                                </p>
+                            </li>
+                            <li class="view_place">
+                                <span class="">장소</span>
+                                명동 ${board.place}
+                            </li>
+                            
+                            <li class="view_date">
+                                <span class="">작성일</span>
+                                    ${board.write_date}? 2023-07-13 
+                                
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="area_card_item">
+                        <!-- 리뷰 내용 들어감
+                        content, write_date, review_id -->
+                        <ul class="view_detail">
+                            <li class="view_content">
+                                <p class="">
+                                    명동 외국인만 너무 많았어요 사람들 엄청 많아요 야시장 사람 미어터져요 먹을거 별로 없고 비싸서 별로.. 
+                                </p>
+                            </li>
+                            <li class="view_place">
+                                <span class="">장소</span>
+                                명동 ${board.place}
+                            </li>
+                            
+                            <li class="view_date">
+                                <span class="">작성일</span>
+                                    ${board.write_date}? 2023-07-10 
+                                
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="board_btn_wrap">
+                        <input type="button" value="창닫기">
+                        <input type="button" value="게시판 가기" onclick="go_board()">
+                    </li>
+                </ul>
+        
+            </form>
+        </div>
+
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+    $('#write_content').keyup(function (e) {
+        let content = $(this).val();  
+        // 글자수 세기
+        if (content.length == 0 || content == '') {
+            $('.textCount').text('0자');
+        } else {
+            $('.textCount').text(content.length + '자');
+        }
+        //글자수 제한
+        if(content.length >= 100) {
+            $(this).val($(this).val().substring(0,100));
+            alert("글자수는 100자까지 입력 가능합니다.")
+        }
+    })
+
+</script>
+</html>
