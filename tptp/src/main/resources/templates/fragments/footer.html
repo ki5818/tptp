@@ -6,16 +6,19 @@
     <div class="container">
       <h3><a href="https://github.com/ki5818/tptp"><i class="bi bi-github"></i>     HAN SOOL</a></h3>
       <p>Our project source is shared at the GitHub URL.</p>
-      <div class="copyright">
-        &copy; Copyright <strong><span>Laura</span></strong>. All Rights Reserved
+      <div class="credits">
+        
       </div>
       <div class="credits">
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-      <div class="credits">
-        Icon by <a href="https://www.flaticon.com/kr/" title="즐거움 아이콘">Freepik - Flaticon</a>
+      	저작권 및 프로젝트 정보 <a href="#" id="popup">Information</a>
       </div>
     </div>
   </footer>
 <!-- End Footer -->
+ <script th:inline="javascript">
+    	var popup = document.getElementById("popup");
+    	popup.addEventListener('click', function() {
+    		window.open("/information", "popup", "width=500, height=700");
+		});
+    </script>
 </html>

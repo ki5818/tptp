@@ -4,20 +4,16 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/defaultLayout}">
 <th:block layout:fragment="customContents">
-    <style>
-        .chart-box {
-            width: 800px;
-            height: 500px;
-            margin: auto;
-            margin-bottom: 50px;
-        }
-        ${"}
-    </style>
+	<style>
+		.row {
+			margin: 50px;
+		}
+	</style>
 	<!-- ======= Hero Section ======= -->
 	<section id="hero">
 	  <div class="hero-container">
 	    <h1>이 곳, 저 곳</h1>
-	    <h2>"대한민국 전국의 관광지를 소개해드립니다. 아래 버튼을 클릭해 관광지 데이터차트를 볼 수 있습니다."</h2>
+	    <h2>"대한민국 전국의 관광지를 소개해드립니다. 아래 버튼을 클릭해 관광지 데이터 차트를 볼 수 있습니다."</h2>
 	    <a href="#testimonials" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
 	  </div>
 	</section>
@@ -43,41 +39,145 @@
 		       	<span>CHART</span>
 		       	<h2>CHART</h2>
 		     </div>
-		     <div class="testimonials-slider swiper services" data-aos="fade-up" data-aos-delay="100">
-		       <div class="swiper-wrapper">
-		         <div class="swiper-slide">
-		           <div class="testimonial-item">
-		           	<div class="chart-box-1 chart-box icon-box d-flex justify-content-center align-items-center">
-		           		<canvas id="chart1"></canvas>
-		           	</div>
-		           </div>
-		         </div>
-		         <div class="swiper-slide">
-		           <div class="testimonial-item">
-					<div class="chart-box-2 chart-box icon-box d-flex justify-content-center align-items-center">
-						<canvas id="chart2"></canvas>
-					</div>
-		           </div>
-		         </div>
-		         <div class="swiper-slide">
-		           <div class="testimonial-item">
-						<div class="chart-box-3 chart-box icon-box d-flex justify-content-center align-items-center">
-							<canvas id="chart3"></canvas>
+		    <!-- FOUR TAB -->
+			<ul class="nav nav-tabs nav-pills nav-justified" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="tabAll" data-toggle="tab" role="tab" aria-selected="true">ALL</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tabChart1" data-toggle="tab" role="tab">Chart1</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tabChart2" data-toggle="tab" role="tab">Chart2</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tabChart3" data-toggle="tab" role="tab">Chart3</a>
+				</li>
+			</ul><br/><br/>
+		     <div class="container">
+		            <div class="row" style="margin: 50px;">
+
+		            </div>
+		            <div class="row">
+		            	<div class="item testimonial-item2 col-md-6">
+							<div class="chart-box-2 chart-box">
+								<canvas id="chart2" style="width:100%; height:500PX;"></canvas>
+							</div>
 						</div>
-		           </div>
-		         </div>
-				<!-- End testimonial item -->
+						<div class="item testimonial-item2 col-md-6">
+							<div id="map" style="width:100%; height:100%;" ></div>
+			           </div>
+		            </div>
+		            <div class="row">
+			            <div class="item testimonial-item3 col-md-6">
+							<div class="chart-box-3 chart-box icon-box d-flex justify-content-center align-items-center">
+								<canvas id="chart3"></canvas>
+							</div>
+		     			</div>
+		          </div>
 		       </div>
-		       <div class="swiper-pagination"></div>
-		     </div>
 		   </div>
-		 </section><!-- End Testimonials Section -->
+		 </section>
+		 <!-- End Testimonials Section -->
+		     <!-- ======= Pricing Section ======= -->
+    <section id="pricing" class="pricing">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="box" style="height:40rem;">
+            	<h3>Business</h3>
+				<div class="chart-box-1 chart-box" style="width:100%; height:100%">
+					<canvas id="chart1" style="width:100%; height:35rem;"></canvas>
+				</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="box" style="height:40rem;">
+              <h3>Map</h3>
+              <div id="koreaMap">
+              	
+              </div>
+            </div>
+          </div>
+          </div>
+		<div class="row">
+          <div class="col-lg-6 col-md-6 mt-4 mt-lg-0">
+            <div class="box">
+              <h3>Developer</h3>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 mt-4 mt-lg-0">
+            <div class="box">
+              <h3>Ultimate</h3>
+            </div>
+          </div>
+		</div>
+      </div>
+    </section><!-- End Pricing Section -->
   		</main>
   	<!-- End #main END index -->
+    	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
     
     <script th:inline="javascript">
     // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하기 위해 선언해줘야함 
     /*<![CDATA[*/
+			// nav tab 이벤트
+			var tabAll = document.getElementById("tabAll");
+			var tabChart1 = document.getElementById("tabChart1");
+			var tabChart2 = document.getElementById("tabChart2");
+			var tabChart3 = document.getElementById("tabChart3");
+    
+			tabAll.addEventListener('click', function() {
+				tabAll.className = 'nav-link active';
+   		    	tabChart1.className = 'nav-link';
+   		    	tabChart2.className = 'nav-link';
+   		    	tabChart3.className = 'nav-link';
+   		    	$('.testimonial-item1').show();
+   		    	$('.testimonial-item2').show();
+   		    	$('.testimonial-item3').show();
+	   		});
+    
+			tabChart1.addEventListener('click', function() {
+				tabChart1.className = 'nav-link active';
+   		    	tabAll.className = 'nav-link ';
+   		    	tabChart2.className = 'nav-link ';
+   		    	tabChart3.className = 'nav-link ';
+   		    	$('.testimonial-item1').show();
+   		    	$('.testimonial-item2').hide();
+   		    	$('.testimonial-item3').hide();
+   			});
+   			
+			tabChart2.addEventListener('click', function() {
+				tabChart2.className = 'nav-link active';
+   		    	tabChart1.className = 'nav-link ';
+   		    	tabAll.className = 'nav-link ';
+   		    	tabChart3.className = 'nav-link ';
+   		    	$('.testimonial-item1').hide();
+   		    	$('.testimonial-item2').show();
+   		    	$('.testimonial-item3').hide();
+   			});
+   			
+			tabChart3.addEventListener('click', function() {
+				tabChart3.className = 'nav-link active';
+   		    	tabChart1.className = 'nav-link ';
+   		    	tabChart2.className = 'nav-link ';
+   		    	tabAll.className = 'nav-link ';
+   		    	$('.testimonial-item1').hide();
+   		    	$('.testimonial-item2').hide();
+   		    	$('.testimonial-item3').show();
+   			});
+	   			
+	   			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	   		    mapOption = { 
+	   		        center: new kakao.maps.LatLng(37.27538, 127.05488), // 지도의 중심좌표
+	   		        level: 13 // 지도의 확대 레벨
+	   		    };
+
+	   		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+	   		var map = new kakao.maps.Map(mapContainer, mapOption); 
+	   			
 	    	const ctx1 = document.getElementById("chart1").getContext('2d');
 	        const ctx2 = document.getElementById("chart2").getContext('2d');
 	        const ctx3 = document.getElementById("chart3").getContext('2d');
@@ -112,6 +212,7 @@
 			},
 			plugins: [ChartDataLabels],
 			options: {
+				responsive: false,
 			    plugins: {
 			        legend: {display: false},
 			        title: {
@@ -154,7 +255,7 @@
 	                    label: "1. 자연경관",
 	                    backgroundColor: "teal",
 	                    data: natCounts
-	
+		
 	                	},
 	                {
 	                    label: "2. 문화재",
@@ -173,6 +274,7 @@
 	                }],
 	            },
 	            options: {
+	            	responsive: false,
 	                plugins: {
 	                    title: {
 	                        display: true,
@@ -189,6 +291,25 @@
 	                    }
 	                }
 	            }
+	        });
+	        var chart2 = document.getElementById("chart2");
+	        chart2.addEventListener('click', function() {
+		        console.log("chart2 클릭");
+		        var variable = "차트2";
+	        	var request = $.ajax({
+			           url: "/chart2",
+			           type: "GET",
+			           data: { "variable" : variable }
+				});
+				//성공
+				request.done(function(){
+					console.log("success");
+					
+				});
+				//실패
+				request.fail(function(jqXHR, textStatus, viewList){
+					console.log('Request failed: ' + textStatus);
+				});
 	        });
 	        /* ---- 2번째 차트 END ----*/
 			
@@ -211,7 +332,19 @@
 			        data: yval_3,
 			        datalabels: {
 	                    color: 'black',
-	                    font: {size: 16}
+	                    font: {size: 16},
+	                    listeners: {
+	                        click: function(context, event) {
+	                          // Receives `click` events only for labels of the first dataset.
+	                          // The clicked label index is available in `context.dataIndex`.
+	                          console.log('label ' + context.dataIndex + ' has been clicked!');
+	                          console.log('mouse is at position x:', event.x, 'and y:', event.y);
+
+	                          if (event.native.ctrlKey) {
+	                            console.log('control key is pressed!');
+	                          }
+	                        }
+	                      }
 	            	}}]
 			    },
 			    plugins: [ChartDataLabels],
@@ -223,7 +356,7 @@
 			                display: true,
 			                text: "관광지 카테고리별 개수",
 			                font: {size: 20}
-			                }
+			                },
 			            }
 			        }
 			  });

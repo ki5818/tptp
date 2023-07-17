@@ -61,7 +61,7 @@
 		SELECT t.region, COUNT(t.id) AS `COUNT`
 		FROM tptp AS t
 		GROUP BY t.region
-		ORDER BY t.region ASC;
+		ORDER BY `count` desc;
 	</select>
 
 	<select id="getRegionCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
