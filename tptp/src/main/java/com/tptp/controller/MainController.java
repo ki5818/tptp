@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.tptp.dto.Review;
 import com.tptp.dto.Tptp;
+import com.tptp.mapper.ReviewMapper;
 import com.tptp.service.MainService;
 
 
@@ -16,10 +18,12 @@ import com.tptp.service.MainService;
 public class MainController {
 	
 	private MainService mainService;
+	private ReviewMapper reviewMapper;
 	
 	@Autowired
-	public MainController(MainService mainService) {
+	public MainController(MainService mainService, ReviewMapper reviewMapper) {
 		this.mainService = mainService;
+		this.reviewMapper = reviewMapper;
 	}
 	
 	/**
@@ -32,6 +36,11 @@ public class MainController {
 	@GetMapping("/")
 	public String main(Model model) throws Exception {
 		System.out.println("MainContoller");
+		
+		List<Review> reviewList = reviewMapper.getReviewList();
+		
+		System.out.println(reviewList);
+		model.addAttribute("reviewList", reviewList);
 
 		// 1. 지역별 관광지 개수
 		List<Tptp> regionCount = mainService.getRegionCount();

@@ -1,5 +1,7 @@
 package com.tptp.dto;
 
+import java.util.Date;
+
 public class Review {
 	private String reviewId;
 	private String placeId;
@@ -8,6 +10,14 @@ public class Review {
 	private String password;
 	private String writeDate;
 	
+	Tptp tptp;
+	
+	public Tptp getTptp() {
+		return tptp;
+	}
+	public void setTptp(Tptp tptp) {
+		this.tptp = tptp;
+	}
 	public String getReviewId() {
 		return reviewId;
 	}

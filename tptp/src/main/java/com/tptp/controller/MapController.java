@@ -2,14 +2,13 @@ package com.tptp.controller;
 
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +25,9 @@ import com.tptp.util.Paginator;
 public class MapController {
 	private final MapService mapService;
 	
-	private static final Integer POSTS_PER_PAGE = 10;
-	private static final Integer PAGES_PER_BLOCK = 50;
+	private static final Integer POSTS_PER_PAGE = 10; // 한 페이지당 보여줄 리스트의 수
+	private static final Integer PAGES_PER_BLOCK = 10;// 하단에 보여줄 페이징의 개수 ex) 10 이면 아래에 1~ 10까지 보이고 다음페이지는 다음을 눌러야 넘어감
+	
 	
 	@Autowired
 	public MapController(MapService mapService) {
@@ -41,8 +41,10 @@ public class MapController {
 	 * @throws Exception 
 	 */
 	@GetMapping("/map")
-	public String map() throws Exception{
+	public String map(Model model) throws Exception{
 		System.out.println("MapContoller map()");
+		model.addAttribute("POSTS_PER_PAGE", POSTS_PER_PAGE);
+		model.addAttribute("PAGE_PER_BLOCK", PAGES_PER_BLOCK);
 		
 		return "/app/map";
 	}
@@ -78,32 +80,17 @@ public class MapController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/mapcheck", method = RequestMethod.GET )
+	@RequestMapping(value = "/mapCheck", method = RequestMethod.GET )
 	public List<Tptp> checkCategory(Model model,
 								@RequestParam(value="checkedList[]") ArrayList<String> checkedList,
-								@RequestParam(value = "page",  defaultValue = "1") Integer page) throws Exception {
+								@RequestParam(value="currentNum", defaultValue = "1") Integer currentNum) throws Exception {
 
-		List<Tptp> viewList = mapService.getViewList(checkedList);
-		System.out.println("MapContoller checkCategory()");		
-        // 페이지네이션
-        try {
-            Paginator paginator = new Paginator(PAGES_PER_BLOCK, POSTS_PER_PAGE, viewList.size());
-            Map<String, Object> pageInfo = paginator.getFixedBlock(page);
-            model.addAttribute("pageInfo", pageInfo);
-            System.out.println(pageInfo);
-            viewList.get(0).setPageInfo(pageInfo);
-        }
-        catch(IllegalStateException e) {
-            model.addAttribute("pageInfo", null);
-            System.err.println(e);
-        }
-        
-        System.out.println(viewList.get(0).toString());
+		List<Tptp> viewList = mapService.getViewList(checkedList, currentNum);
 		
+		System.out.println("MapContoller checkCategory()");
+        
+
 		return viewList;
 	}
-	
-	
-	
 	
 }

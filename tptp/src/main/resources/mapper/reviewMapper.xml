@@ -3,27 +3,39 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mapping mybatis -->
-<mapper namespace="com.tptp.mapper.TptpMapper">
+<mapper namespace="com.tptp.mapper.ReviewMapper">
 	<!-- reviewResultMap -->
-	<resultMap type="Review" id="reviewResultMap">
+	<resultMap type="Review" id="reviewResultMap"> <!-- ResultMap이 뭔지 잘 모르겠다. -->
 		<id property="reviewId" column="review_id" />
 		<result property="placeId" column="place_id" />
 		<result property="contents" column="contents" />
 		<result property="photo" column="photo" />
 		<result property="password" column="password" />
 		<result property="writeDate" column="write_date" />
+		<collection property="tptp" javaType="Tptp">
+			<id property="id" column="id"></id>
+			<result property="place" column="place"/>
+		</collection>
+		<!-- collection이 join인가요? tptpMapper.xml에 있는 collection을 복붙하면 되는지 -->
+		
 	</resultMap>
 	<!-- END reviewResultMap -->
 	
 	<select id="getReviewList" resultMap="reviewResultMap" resultType="Review">
-		/* 0. review 테이블 전체 조회 */
 		SELECT
 			r.review_id,
 			r.place_id,
+			t.place,
 			r.contents,
 			r.photo,
 			r.PASSWORD,
-			r.write_date
-		FROM review AS r;
+			r.write_date,
+			SUBSTRING(r.write_date, 1, 16) AS `write_date`
+		FROM tptp t
+		INNER JOIN review r
+		ON t.`id` = r.place_id;
+		
 	</select>
+	
+		
 </mapper>
