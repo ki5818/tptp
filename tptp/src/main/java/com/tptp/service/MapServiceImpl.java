@@ -51,4 +51,9 @@ public class MapServiceImpl implements MapService {
 
 		return viewList;
 	}
+	
+	@Override
+	public List<Tptp> getRegionList(String region) throws Exception {
+		return tptpMapper.getRegionList(region);
+	}
 }

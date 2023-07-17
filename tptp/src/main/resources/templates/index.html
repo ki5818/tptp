@@ -4,11 +4,19 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout/defaultLayout}">
 <th:block layout:fragment="customContents">
-	<style>
-		.row {
-			margin: 50px;
+    <style>
+    	.row {
+    		margin:20px;
+    	}
+        .chart-box {
+            height: 500px;
+            margin: auto;
+            margin-bottom: 50px;
+        }
+        .d-flex {
+			background-color: moccasin ;
 		}
-	</style>
+    </style>
 	<!-- ======= Hero Section ======= -->
 	<section id="hero">
 	  <div class="hero-container">
@@ -32,12 +40,13 @@
 	      </div>
 	    </section>
 	    <!-- End Breadcrumbs -->
-		<!-- ======= Testimonials Section ======= -->
+		<!-- ======= Chart Section ======= -->
 		 <section id="testimonials" class="testimonials">
 		   <div class="container position-relative">
 			<div class="section-title"  style="margin-bottom: 10px; margin-top: 0px; padding:0px;">
 		       	<span>CHART</span>
 		       	<h2>CHART</h2>
+		       	<p><strong>차트를 클릭해보세요!</strong>.</p>
 		     </div>
 		    <!-- FOUR TAB -->
 			<ul class="nav nav-tabs nav-pills nav-justified" role="tablist">
@@ -54,71 +63,23 @@
 					<a class="nav-link" id="tabChart3" data-toggle="tab" role="tab">Chart3</a>
 				</li>
 			</ul><br/><br/>
-		     <div class="container">
-		            <div class="row" style="margin: 50px;">
-
-		            </div>
-		            <div class="row">
-		            	<div class="item testimonial-item2 col-md-6">
-							<div class="chart-box-2 chart-box">
-								<canvas id="chart2" style="width:100%; height:500PX;"></canvas>
-							</div>
-						</div>
-						<div class="item testimonial-item2 col-md-6">
-							<div id="map" style="width:100%; height:100%;" ></div>
-			           </div>
-		            </div>
-		            <div class="row">
-			            <div class="item testimonial-item3 col-md-6">
-							<div class="chart-box-3 chart-box icon-box d-flex justify-content-center align-items-center">
-								<canvas id="chart3"></canvas>
-							</div>
-		     			</div>
-		          </div>
-		       </div>
+   			<div class="container">
+		       	<div class="col-md-12 chart1">
+					<div class="chart-box-1 chart-box"><canvas id="chart1" style="width:100%; height:100%"></canvas></div>
+				</div>
+       			<div class="col-md-12 chart2">
+					<div class="chart-box-2 chart-box"><canvas id="chart2" style="width:100%; height:100%;"></canvas></div>
+				</div>
+	            <div class="col-md-12 chart3">
+					<div class="chart-box-3"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
+     			</div>
+		      </div>
 		   </div>
 		 </section>
-		 <!-- End Testimonials Section -->
-		     <!-- ======= Pricing Section ======= -->
-    <section id="pricing" class="pricing">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="box" style="height:40rem;">
-            	<h3>Business</h3>
-				<div class="chart-box-1 chart-box" style="width:100%; height:100%">
-					<canvas id="chart1" style="width:100%; height:35rem;"></canvas>
-				</div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="box" style="height:40rem;">
-              <h3>Map</h3>
-              <div id="koreaMap">
-              	
-              </div>
-            </div>
-          </div>
-          </div>
-		<div class="row">
-          <div class="col-lg-6 col-md-6 mt-4 mt-lg-0">
-            <div class="box">
-              <h3>Developer</h3>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-md-6 mt-4 mt-lg-0">
-            <div class="box">
-              <h3>Ultimate</h3>
-            </div>
-          </div>
-		</div>
-      </div>
-    </section><!-- End Pricing Section -->
-  		</main>
+		 <!-- End Chart Section -->
+  	</main>
   	<!-- End #main END index -->
-    	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
     
     <script th:inline="javascript">
     // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하기 위해 선언해줘야함 
@@ -128,15 +89,19 @@
 			var tabChart1 = document.getElementById("tabChart1");
 			var tabChart2 = document.getElementById("tabChart2");
 			var tabChart3 = document.getElementById("tabChart3");
+			
+	    	const ctx1 = document.getElementById("chart1").getContext('2d');
+	        const ctx2 = document.getElementById("chart2").getContext('2d');
+	        const ctx3 = document.getElementById("chart3").getContext('2d');
     
 			tabAll.addEventListener('click', function() {
 				tabAll.className = 'nav-link active';
    		    	tabChart1.className = 'nav-link';
    		    	tabChart2.className = 'nav-link';
    		    	tabChart3.className = 'nav-link';
-   		    	$('.testimonial-item1').show();
-   		    	$('.testimonial-item2').show();
-   		    	$('.testimonial-item3').show();
+   		    	$('.chart1').show();
+   		    	$('.chart2').show();
+   		    	$('.chart3').show();
 	   		});
     
 			tabChart1.addEventListener('click', function() {
@@ -144,9 +109,9 @@
    		    	tabAll.className = 'nav-link ';
    		    	tabChart2.className = 'nav-link ';
    		    	tabChart3.className = 'nav-link ';
-   		    	$('.testimonial-item1').show();
-   		    	$('.testimonial-item2').hide();
-   		    	$('.testimonial-item3').hide();
+   		    	$('.chart1').show();
+   		    	$('.chart2').hide();
+   		    	$('.chart3').hide();
    			});
    			
 			tabChart2.addEventListener('click', function() {
@@ -154,9 +119,9 @@
    		    	tabChart1.className = 'nav-link ';
    		    	tabAll.className = 'nav-link ';
    		    	tabChart3.className = 'nav-link ';
-   		    	$('.testimonial-item1').hide();
-   		    	$('.testimonial-item2').show();
-   		    	$('.testimonial-item3').hide();
+   		    	$('.chart1').hide();
+   		    	$('.chart2').show();
+   		    	$('.chart3').hide();
    			});
    			
 			tabChart3.addEventListener('click', function() {
@@ -164,23 +129,10 @@
    		    	tabChart1.className = 'nav-link ';
    		    	tabChart2.className = 'nav-link ';
    		    	tabAll.className = 'nav-link ';
-   		    	$('.testimonial-item1').hide();
-   		    	$('.testimonial-item2').hide();
-   		    	$('.testimonial-item3').show();
-   			});
-	   			
-	   			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	   		    mapOption = { 
-	   		        center: new kakao.maps.LatLng(37.27538, 127.05488), // 지도의 중심좌표
-	   		        level: 13 // 지도의 확대 레벨
-	   		    };
-
-	   		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-	   		var map = new kakao.maps.Map(mapContainer, mapOption); 
-	   			
-	    	const ctx1 = document.getElementById("chart1").getContext('2d');
-	        const ctx2 = document.getElementById("chart2").getContext('2d');
-	        const ctx3 = document.getElementById("chart3").getContext('2d');
+   		    	$('.chart1').hide();
+   		    	$('.chart2').hide();
+   		    	$('.chart3').show();
+   			});	   		
 	        
 	        /* ---- 1번째 차트 : 국내 관광지 분포 현황 ----*/
 	        // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
@@ -198,31 +150,43 @@
 			const barCol = ["darkred", "brown", "sienna","saddlebrown","indianred", "rosybrown", "lightcoral", "salmon", "darksalmon", "coral", "tomato", 
 			            "sandybrown", "lightsalmon", "peru", "chocolate", "red", "crimson"];
 			const mychart1 = new Chart(ctx1, {
-			type: "bar",
-			data: {
-			    labels: xval_1,
-			    datasets: [{
-			    backgroundColor: barCol,
-			    data: yval_1,
-			    datalabels: {
-	                color: 'white',
-	                font: {size: 10}
-			    	}
-			    }]
-			},
-			plugins: [ChartDataLabels],
-			options: {
-				responsive: false,
-			    plugins: {
-			        legend: {display: false},
-			        title: {
-			            display: true,
-			            text: "국내 관광지 분포 현황",
-			            font: {size: 20}
-				        }
-				    }
+				type: "bar",
+				data: {
+				    labels: xval_1,
+				    datasets: [{
+					    backgroundColor: barCol,
+					    data: yval_1,
+					    datalabels: {
+			                color: 'white',
+			                font: {size: 10}
+					    	}
+				    	}]
+					 },
+				plugins: [ChartDataLabels],
+				options: {
+					responsive: false,
+				    plugins: {
+				        legend: {display: false},
+				        title: {
+				            display: true,
+				            text: "국내 관광지 분포 현황",
+				            font: {size: 20}
+					        }
+					    },
+					    onClick: function(e) {
+					    	var activePoints = mychart1.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+					        if (activePoints.length > 0) {
+					          var selectedIndex = activePoints[0].index;
+					          var region = mychart1.data.labels[selectedIndex];
+					          console.log('Selected X Value:', region);
+					          window.open('/mapPopup?region=' + region, "popup", "width=1000, height=500");
+					    	}
+					   }
 				}
 			});
+			
+			
+			
 			/* ---- 1번째 차트 END ----*/
 			
 			/* ---- 2번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
@@ -291,25 +255,6 @@
 	                    }
 	                }
 	            }
-	        });
-	        var chart2 = document.getElementById("chart2");
-	        chart2.addEventListener('click', function() {
-		        console.log("chart2 클릭");
-		        var variable = "차트2";
-	        	var request = $.ajax({
-			           url: "/chart2",
-			           type: "GET",
-			           data: { "variable" : variable }
-				});
-				//성공
-				request.done(function(){
-					console.log("success");
-					
-				});
-				//실패
-				request.fail(function(jqXHR, textStatus, viewList){
-					console.log('Request failed: ' + textStatus);
-				});
 	        });
 	        /* ---- 2번째 차트 END ----*/
 			

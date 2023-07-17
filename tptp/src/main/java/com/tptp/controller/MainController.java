@@ -84,33 +84,4 @@ public class MainController {
 		return "index";
 	}
 	
-	/**
-	 * @brief 사용자가에게 보여줄 리스트
-	 * @param model
-	 * @param checkId
-	 * @param cheked
-	 * @return map.html
-	 * @throws Exception
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/chart2", method = RequestMethod.GET )
-	public List<Tptp> chart(Model model,
-								@RequestParam("variable") String variable) throws Exception {
-		
-		System.out.println("MainContoller chart()");
-		
-		System.out.println(variable);
-        
-
-		return null;
-	}
-	
-	/*
-	 * @GetMapping("D3/main.html") public String d3(Model model) {
-	 * 
-	 * System.out.println("MainContoller chart()");
-	 * 
-	 * return "D3/main"; }
-	 */
-	
 }   

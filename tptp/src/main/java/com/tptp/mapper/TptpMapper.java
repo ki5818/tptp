@@ -32,7 +32,10 @@ public interface TptpMapper {
 	// 3. 카테고리별 관광지 개수
 	public List<Tptp> getCategoryCount() throws Exception;
 	
-	//paging 처리를 위한 mapper
+	// paging 처리를 위한 mapper
 	public List<Tptp> getListOffset(Map<String, String> category , Map<String, Integer> currentNumber) throws Exception;
+	
+	// 4. 지역명 기준으로 관광지 리스트
+	public List<Tptp> getRegionList(String region) throws Exception;
 	
 }

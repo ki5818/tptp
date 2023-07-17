@@ -150,4 +150,11 @@
 		OFFSET #{currentNumber.num};
 	</select>
 	
+	<select id="getRegionList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		/* 4. 지역별 관광지 리스트 */
+		SELECT *
+		FROM tptp AS t
+		WHERE t.region= #{region};
+	</select>
+	
 </mapper>

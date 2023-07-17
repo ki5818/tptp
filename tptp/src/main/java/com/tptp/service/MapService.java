@@ -16,4 +16,7 @@ public interface MapService {
 	// map 화면에서 사용자에게 보여줄 리스트
 	public List<Tptp> getViewList(ArrayList<String> chekedList, Integer currentNum) throws Exception;
 	
+	// 지역명 기준으로 관광지 리스트
+	public List<Tptp> getRegionList(String region) throws Exception;
+	
 }
