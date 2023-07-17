@@ -1,7 +1,9 @@
 package com.tptp.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,18 +23,32 @@ public class MapServiceImpl implements MapService {
 		return tptpList;
 	}
 	
-	public List<Tptp> getViewList(ArrayList<String> checkedList) throws Exception {
-		List<Tptp> tptpList = tptpMapper.getTptpList();
-		List<Tptp> viewList = new ArrayList<Tptp>(tptpList.size());
-		System.out.println(checkedList);
-		for(Tptp element : tptpList) {
-			for(int i = 0; i < checkedList.size(); i++) {
-				if(element.getCategoryId().equals(checkedList.get(i))) {
-					viewList.add(element);
-				}
+	@Override
+	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum) throws Exception {
+		
+		Map<String, String> category = new HashMap<String, String>();
+		Map<String, Integer> currentNumber = new HashMap<String, Integer>();
+		
+		for(String element : checkedList) {			
+			if(element.equals("CT1")) {
+				category.put("ct1", element);
+			}
+			else if(element.equals("CT2")) {
+				category.put("ct2", element);
+			}
+			else if(element.equals("CT3")) {
+				category.put("ct3", element);
+			}
+			else if(element.equals("CT4")) {
+				category.put("ct4", element);
 			}
 		}
-		System.out.println(viewList.toString());
+		int num = (currentNum-1) * 10;
+		currentNumber.put("num", num);
+		
+		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber);
+		System.out.println(viewList);
+
 		return viewList;
 	}
 }

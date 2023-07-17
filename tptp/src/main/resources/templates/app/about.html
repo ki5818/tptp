@@ -5,75 +5,73 @@
 	  layout:decorate="~{layout/defaultLayout}">
 	  
 <th:block layout:fragment="customContents">
-<style>
- .character {
-	  width:100%;
-	  height: 100%;
-	}
-</style>
-	<main id="main">
-	    <!-- ======= Breadcrumbs ======= -->
-	    <section class="breadcrumbs">
+<main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>ABOUT US</h2>
+          <ol>
+            <li><a th:href="@{/}">HOME</a></li>
+            <li>ABOUT US</li>
+          </ol>
+        </div>
+      </div>
+    </section><!-- End Breadcrumbs -->
+        <!-- ======= ABOU US Section ======= -->
+	    <section id="services" class="services">
 	      <div class="container">
-	        <div class="d-flex justify-content-between align-items-center">
-	          <h2>ABOUT US</h2>
-	          <ol>
-	            <li><a th:href="@{/}">HOME</a></li>
-	            <li>ABOUT US</li>
-	          </ol>
+			<div class="section-title">
+	       	<span>ABOUT US</span>
+	       	<h2>ABOUT US</h2>
+	       	<p>🔎 <B><I>tptp</I></b>는 this place, that place의 약자로 국내 <I><b>35,402</I></b>개의 관광지를 소개하는 홈페이지입니다.</p>
 	        </div>
+	        <div class="row">
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon" ><img class="character" th:src="@{/assets/img/about/kms.png}" alt="김민선"></div>
+	              <h4 class="title"><a href="">김민선</a></h4>
+	              <p class="description">👤 게시판 구현, 노션정리</p>
+	              <p class="description">🗣️ Java, Javascript, SQL</p>
+	              <p class="description">📧 minseonnn@naver.com</p>
+	              <p class="description">🔗 ~/github.com/minseonn</p>
+	            </div>
+	          </div>
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon"><img class="character" th:src="@{/assets/img/about/kyj.png}" alt="김예진"></div>
+	              <h4 class="title"><a href="">김예진</a></h4>
+	              <p class="description">👤 맵 API, 스프링부트 세팅</p>
+	              <p class="description">🗣️ Java, Javascript, SQL</p>
+	              <p class="description">📧 ki5818@gmail.com</p>
+	              <p class="description">🔗 ~/github.com/ki5818</p>
+	            </div>
+	          </div>
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon"><img class="character" th:src="@{/assets/img/about/pmj.png}" alt="박민정"></div>
+	              <h4 class="title"><a href="">박민정</a></h4>
+	              <p class="description">👤 전처리, 알고리즘 작성, DB세팅</p> 
+	              <p class="description">🗣️ Java, Javascript, Python, SQL</p>
+	              <p class="description">📧 minwjd1028@g.skku.edu</p>
+	              <p class="description">🔗 ~/github.com/Park-Min-Jeong</p>
+	            </div>
+	          </div>
+	
+	          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+	            <div class="icon-box">
+	              <div class="icon"><img class="character" th:src="@{/assets/img/about/whr.png}" alt="우하림"></div>
+	              <h4 class="title"><a href="">우하림</a></h4>
+	              <p class="description">👤 시각화, 홈페이지 꾸미기</p>
+	              <p class="description">🗣️ Python, Javascript, SQL</p>
+	              <p class="description">📧 hannah.woo.2022@gmail.com</p>
+	              <p class="description">🔗 ~/github.com/Hannah-0111</p>
+	            </div>
+	          </div>
+	        </div>
+	        
 	      </div>
-	    </section><!-- End Breadcrumbs -->
-	        <!-- ======= ABOU US Section ======= -->
-		    <section id="services" class="services">
-		      <div class="container">
-				<div class="section-title">
-		       	<span>ABOUT US</span>
-		       	<h2>ABOUT US</h2>
-		       	<p>Sit sint consectetur velit quisquam cupiditate impedit suscipit alias</p>
-		        </div>
-		        <div class="row">
-		          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-		            <div class="icon-box">
-		              <div class="icon" ><img class="character" th:src="@{/assets/img/about/whr.png}" alt="우하림"></div>
-		              <h4 class="title"><a href="">우하림</a></h4>
-		              <p class="description">Voluptatum deleniti atque corrupti quos dolores </p>
-		              <p class="description">quas molestias excepturi sint occaecati cupiditate non provident</p>
-		              <p class="description">quas molestias excepturi sint occaecati cupiditate non provident</p>
-		              <p class="description">quas molestias excepturi sint occaecati cupiditate non provident</p>
-		              <p class="description">quas molestias excepturi sint occaecati cupiditate non provident</p>
-		              <p class="description">quas molestias excepturi sint occaecati cupiditate non provident</p>
-		              <p class="description">quas molestias excepturi sint occaecati cupiditate non provident</p>
-		            </div>
-		          </div>
-		          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-		            <div class="icon-box">
-		              <div class="icon"><i class="bx bx-file"></i></div>
-		              <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-		              <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
-		            </div>
-		          </div>
-		
-		          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-		            <div class="icon-box">
-		              <div class="icon"><i class="bx bx-tachometer"></i></div>
-		              <h4 class="title"><a href="">Magni Dolores</a></h4>
-		              <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-		            </div>
-		          </div>
-		
-		          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-		            <div class="icon-box">
-		              <div class="icon"><i class="bx bx-world"></i></div>
-		              <h4 class="title"><a href="">Nemo Enim</a></h4>
-		              <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
-		            </div>
-		          </div>
-		
-		        </div>
-		        
-		      </div>
-		    </section><!-- End My Services Section -->
-  		</main><!-- End #main -->
-	</th:block>
+	    </section><!-- End My Services Section -->
+	</main><!-- End #main -->
+</th:block>
 </html>
