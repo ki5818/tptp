@@ -20,12 +20,13 @@
 	    </section>
 	    <!-- End Breadcrumbs -->	
 		<!-- Map -->
-			<section  id="services" class="services">
+			<section id="services" class="services">
 			 <div class="container">
 				 <div class="section-title">
 		          <span>MAP</span>
 		          <h2>MAP</h2>
-		          <p><strong th:text="${region}"></strong>의 관광지 입니다.</p>
+		          <p><strong th:text="${region}"></strong>의 <strong th:if="${category}" th:text="${category}"></strong> 관광지 입니다.</p>
+		          <p>자세한 정보가 알고싶다면 메뉴에서 MAP을 클릭해주세요!</p>
 		        </div>
 	          </div>
 			<div class="container d-flex justify-content-between align-items-center" style="height: 500px;" >
@@ -57,7 +58,7 @@
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			    mapOption = {
 			        center: new kakao.maps.LatLng(regionList[0].lat, regionList[0].lng), // 지도의 중심좌표 -> 지역별 평균 관광지 위치 사용하는게 좋긴함
-			        level: 11 // 지도의 확대 레벨
+			        level: 12 // 지도의 확대 레벨
 			    };
 			
 			// 지도를 생성합니다    
