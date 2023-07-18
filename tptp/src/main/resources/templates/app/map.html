@@ -247,7 +247,7 @@
 								var thisPosition = new kakao.maps.LatLng(thisLat, thisLng);
 			                	map.setCenter(thisPosition);
 			                	map.setLevel(5);
-								window.open("/information", "popup", "width=300, height=300");
+								window.open("/reviewWrite", "popup", "width=500, height=700");
 							});
 			                
 			            })(marker, viewList[i].place);
@@ -485,7 +485,7 @@
 				// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
 				// 인포윈도우에 장소명을 표시합니다
 				function displayInfowindow(marker, title) {
-				    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+				    var content = '<div style="padding:5px;z-index:1;">';
 				    infowindow.setContent(content);
 				    infowindow.open(map, marker);
 				}
