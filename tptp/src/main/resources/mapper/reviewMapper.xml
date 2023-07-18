@@ -42,7 +42,7 @@
 	<!-- 07-17 날짜 기준으로 내림차순 수정 -->
 	
 	<!-- 07-17 게시판 글쓰기  -->
-	<insert id="addReviewList" parameterType="reviewBoard">
+	<insert id="addReviewList" parameterType="String">
 		INSERT INTO review
 				(
 					review_id,
@@ -54,8 +54,8 @@
 				)
 			values 
 				(
-					#{review_id},
-					#{place_id},
+					#{reviewId},
+					#{placeId},
 					#{contents},
 					#{photo},
 					#{password},

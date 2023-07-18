@@ -35,9 +35,9 @@ public class ReviewController {
 	
 	@GetMapping("/reviewWrite")
 	public String reviewWrite(Model model) throws Exception {
-		List<Review> reviewList = reviewMapper.addReviewList();
+		//List<Review> reviewList = reviewMapper.addReviewList(reviewId, placeId, );
 		
-		model.addAttribute("reviewList",reviewList);
+		//model.addAttribute("reviewList",reviewList);
 		return "app/reviewWrite";
 	}
 

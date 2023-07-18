@@ -13,7 +13,7 @@ public interface ReviewMapper { //인터페이스이다!!!
 	public List<Review> getReviewList() throws Exception;
 	
 	//1. 리뷰게시판 데이터 추가 (Create)
-	public List<Review> addReviewList() throws Exception;
+	public List<Review> addReviewList(String reviewId, String placeId, String contents, String photo, String password) throws Exception;
 	
 	//2. 리뷰게시판 데이터 수정 (Update)
 	public List<Review> modReviewList() throws Exception;
