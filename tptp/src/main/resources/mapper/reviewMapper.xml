@@ -54,8 +54,8 @@
 				)
 			values 
 				(
-					#{review_id},
-					#{place_id},
+					#{reviewId},
+					#{placeId},
 					#{contents},
 					#{photo},
 					#{password},
