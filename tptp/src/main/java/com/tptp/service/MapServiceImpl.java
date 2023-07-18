@@ -51,4 +51,32 @@ public class MapServiceImpl implements MapService {
 
 		return viewList;
 	}
+	
+	@Override
+	public List<Tptp> getRegionList(String region, String category) throws Exception {
+		String categoryId="";
+		List <Tptp> regionAndCategoryList;
+		
+		if(category.equals("")) {
+			regionAndCategoryList = tptpMapper.getRegionList(region);
+			return regionAndCategoryList;
+		}
+		
+		if(category.equals("자연경관")) {
+			categoryId = "CT1";
+		}
+		else if(category.equals("문화재")) {
+			categoryId = "CT2";
+		}
+		else if(category.equals("테마공원")) {
+			categoryId = "CT3";
+		}
+		else if(category.equals("관광지")) {
+			categoryId = "CT4";
+		}
+
+		regionAndCategoryList = tptpMapper.getRegionAndCategoryList(region, categoryId);
+		
+		return regionAndCategoryList;
+	}
 }

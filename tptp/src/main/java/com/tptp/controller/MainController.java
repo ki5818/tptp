@@ -1,12 +1,17 @@
 package com.tptp.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tptp.dto.Review;
 import com.tptp.dto.Tptp;
@@ -34,7 +39,7 @@ public class MainController {
 	 */
 	
 	@GetMapping("/")
-	public String main(Model model) throws Exception {
+	public String index(Model model) throws Exception {
 		System.out.println("MainContoller");
 		
 		List<Review> reviewList = reviewMapper.getReviewList();

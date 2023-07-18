@@ -61,7 +61,7 @@
 		SELECT t.region, COUNT(t.id) AS `COUNT`
 		FROM tptp AS t
 		GROUP BY t.region
-		ORDER BY t.region ASC;
+		ORDER BY `count` desc;
 	</select>
 
 	<select id="getRegionCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
@@ -148,6 +148,23 @@
 		ORDER BY t.id
 		LIMIT 10
 		OFFSET #{currentNumber.num};
+	</select>
+	
+	<select id="getRegionList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		/* 4. 지역별 관광지 리스트 */
+		SELECT *
+		FROM tptp AS t
+		WHERE t.region= #{region}
+	</select>
+	
+	<select id="getRegionAndCategoryList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		/* 4. 지역별 카테고리별 관광지 리스트 */
+		SELECT *
+		FROM tptp AS t
+		WHERE
+			t.region= #{region}
+			AND
+			t.category_id= #{categoryId};
 	</select>
 	
 </mapper>
