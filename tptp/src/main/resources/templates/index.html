@@ -46,7 +46,7 @@
 			<div class="section-title"  style="margin-bottom: 10px; margin-top: 0px; padding:0px;">
 		       	<span>CHART</span>
 		       	<h2>CHART</h2>
-		       	<p><strong>차트를 클릭해보세요!</strong>.</p>
+		       	<p><strong>차트를 클릭해보세요!</strong></p>
 		     </div>
 		    <!-- FOUR TAB -->
 			<ul class="nav nav-tabs nav-pills nav-justified" role="tablist">
@@ -70,8 +70,13 @@
        			<div class="col-md-12 chart2">
 					<div class="chart-box-2 chart-box"><canvas id="chart2" style="width:100%; height:100%;"></canvas></div>
 				</div>
-	            <div class="col-md-12 chart3">
-					<div class="chart-box-3"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
+				<div class="row">
+		            <div class="col-md-6 chart3">
+						<div class="chart-box-3"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
+	     			</div>
+	     			<div class="col-md-6 chart3">
+						<div class="chart-box-3"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
+	     			</div>
      			</div>
 		      </div>
 		   </div>
@@ -79,10 +84,7 @@
 		 <!-- End Chart Section -->
   	</main>
   	<!-- End #main END index -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
-    
     <script th:inline="javascript">
-    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하기 위해 선언해줘야함 
     /*<![CDATA[*/
 			// nav tab 이벤트
 			var tabAll = document.getElementById("tabAll");
@@ -93,6 +95,9 @@
 	    	const ctx1 = document.getElementById("chart1").getContext('2d');
 	        const ctx2 = document.getElementById("chart2").getContext('2d');
 	        const ctx3 = document.getElementById("chart3").getContext('2d');
+	        
+	        var category;
+	        var region;
     
 			tabAll.addEventListener('click', function() {
 				tabAll.className = 'nav-link active';
@@ -177,16 +182,13 @@
 					    	var activePoints = mychart1.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
 					        if (activePoints.length > 0) {
 					          var selectedIndex = activePoints[0].index;
-					          var region = mychart1.data.labels[selectedIndex];
+					          region = mychart1.data.labels[selectedIndex];
 					          console.log('Selected X Value:', region);
 					          window.open('/mapPopup?region=' + region, "popup", "width=1000, height=500");
 					    	}
 					   }
 				}
 			});
-			
-			
-			
 			/* ---- 1번째 차트 END ----*/
 			
 			/* ---- 2번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
@@ -215,24 +217,24 @@
 	            type: 'bar',
 	            data: {
 	                labels: xval_2,
-	                datasets: [{
-	                    label: "1. 자연경관",
+	                datasets: 
+	                [{
+	                    label: "자연경관",
 	                    backgroundColor: "teal",
 	                    data: natCounts
-		
 	                	},
 	                {
-	                    label: "2. 문화재",
+	                    label: "문화재",
 	                    backgroundColor: "yellow",
 	                    data: culCounts
 	                }, 
 	                {
-	                    label: "3. 테마공원",
+	                    label: "테마공원",
 	                    backgroundColor: "red",
 	                    data: themCounts
 	                },
 	                {
-	                    label: "4. 관광지",
+	                    label: "관광지",
 	                    backgroundColor: "skyblue",
 	                    data: tourCounts
 	                }],
@@ -248,12 +250,33 @@
 	                },
 	                scales: {
 	                    x: {
-	                        stacked: true,
+	                        stacked: true
 	                    },
 	                    y: {
 	                        stacked: true
+	                        
 	                    }
-	                }
+	                },
+	                onClick: function(e) {
+	                    var legendItems = myChart2.legend.legendItems;
+	                    var activePoints = myChart2.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+	                    if (activePoints.length > 0) {
+	                      var datasetIndex = activePoints[0].datasetIndex;
+	                      category = myChart2.data.datasets[datasetIndex].label;
+	                      console.log('Selected Dataset Label:', category);
+	                      
+	                      var selectedIndex = activePoints[0].index;
+	                      region = myChart2.data.labels[selectedIndex];
+	                      
+	                      var selectedYValue = myChart2.data.datasets[activePoints[0].datasetIndex].data[selectedIndex];
+	                      console.log(selectedYValue);
+	                      
+	                      console.log('Selected Label:', region);
+	                      var url = '/mapPopup?region=' + region + '&category=' + category;
+	                      
+	                      window.open(url, "popup", "width=1000, height=500");
+	                    }
+	                  }
 	            }
 	        });
 	        /* ---- 2번째 차트 END ----*/
@@ -278,18 +301,6 @@
 			        datalabels: {
 	                    color: 'black',
 	                    font: {size: 16},
-	                    listeners: {
-	                        click: function(context, event) {
-	                          // Receives `click` events only for labels of the first dataset.
-	                          // The clicked label index is available in `context.dataIndex`.
-	                          console.log('label ' + context.dataIndex + ' has been clicked!');
-	                          console.log('mouse is at position x:', event.x, 'and y:', event.y);
-
-	                          if (event.native.ctrlKey) {
-	                            console.log('control key is pressed!');
-	                          }
-	                        }
-	                      }
 	            	}}]
 			    },
 			    plugins: [ChartDataLabels],
