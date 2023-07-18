@@ -35,9 +35,32 @@
 			SUBSTRING(r.write_date, 1, 16) AS `write_date`
 		FROM tptp t
 		INNER JOIN review r
-		ON t.`id` = r.place_id;
+		ON t.`id` = r.place_id
+		ORDER BY r.write_date DESC;
 		
 	</select>
+	<!-- 07-17 날짜 기준으로 내림차순 수정 -->
 	
-		
+	<!-- 07-17 게시판 글쓰기  -->
+	<insert id="addReviewList" parameterType="reviewBoard">
+		INSERT INTO review
+				(
+					review_id,
+					place_id,
+					contents,
+					photo,
+					password,
+					write_date
+				)
+			values 
+				(
+					#{review_id},
+					#{place_id},
+					#{contents},
+					#{photo},
+					#{password},
+					NOW()
+				)
+	</insert>		
+	
 </mapper>
