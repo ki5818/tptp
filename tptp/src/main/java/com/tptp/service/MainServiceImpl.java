@@ -60,5 +60,4 @@ public class MainServiceImpl implements MainService {
 		return tptpMapper.getCategoryCount();
 	}
 
-
 }

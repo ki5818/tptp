@@ -26,7 +26,7 @@
 				 <div class="section-title">
 		          <span>MAP</span>
 		          <h2>MAP</h2>
-		          <p>가고 싶은 관광지를 클릭하면 반경 nkm 이내의 관광지가 모두 표시됩니다!</p>
+		          <p><strong>가고 싶은 관광지를 클릭하면 반경 nkm 이내의 관광지가 모두 표시됩니다!</strong></p>
 		        </div>
 		        <div class="container icon-box" style="display: inline-grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #ffb727; margin-bottom:20px;">
 		              <div class="item check"><label id="label"><input type="checkbox" id="CT1" name="checkbox">자연경관</label></div>
@@ -144,9 +144,8 @@
 				map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 				
 				checkbox();
-				
-			
 			}
+			
 				function checkbox() {
 					/** 체크박스 이벤트 처리 */
 				    var checkboxes = document.querySelectorAll('input[type=checkbox]');
@@ -222,7 +221,7 @@
 
 			            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 			            // LatLngBounds 객체에 좌표를 추가합니다
-			            //bounds.extend(placePosition);
+			            bounds.extend(placePosition);
 
 			            // 마커와 검색결과 항목에 mouseover 했을때
 			            // 해당 장소에 인포윈도우에 장소명을 표시합니다
@@ -236,14 +235,21 @@
 			                kakao.maps.event.addListener(marker, 'mouseout', function() {
 			                    infowindow.close();
 			                });
+			                
+			                // 리스트에서 클릭시 그 마커로 중심좌표가 이동합니다.
+			                // @todo 중심좌표로 이동 후 그 주위에 있는 관광지 표시
+			                // 리스트 클릭시 팝업창 생성
+			                // @todo 리뷰게시판으로 이동
+			                itemEl.addEventListener('click', function() {
+			                	var thisLat = $(this).find('.thisLat')[0].innerText;
+			                	var thisLng = $(this).find('.thisLng')[0].innerText;
 
-			                itemEl.onmouseover =  function () {
-			                    displayInfowindow(marker, title);
-			                };
-
-			                itemEl.onmouseout =  function () {
-			                    infowindow.close();
-			                };
+								var thisPosition = new kakao.maps.LatLng(thisLat, thisLng);
+			                	map.setCenter(thisPosition);
+			                	map.setLevel(5);
+								window.open("/information", "popup", "width=300, height=300");
+							});
+			                
 			            })(marker, viewList[i].place);
 
 			            fragment.appendChild(itemEl);
@@ -426,15 +432,18 @@
 		                '<div class="info">' +
 		                '   <h5>' + index + '. ' + viewList["place"] + '</h5>';
 					}
-				    
-	                itemStr += '    <p>' + viewList.address + '</p>';         
-	                itemStr += '  <span class="tel">' + viewList.category['categoryName'] + '</span>' + '</div>';           
+				   
+	                itemStr += '    <p>' + viewList.address + '</p>';
+	                itemStr += '    <p class="thisLat" style="display:none;">' + viewList.lat + '</p>';
+	                itemStr += '    <p class="thisLng" style="display:none;">' + viewList.lng +'</p>';
+	                itemStr += '<span class="tel">' +  '리뷰보기' + '</span>'  + '</div>';           
 			
 				    el.innerHTML = itemStr;
 				    el.className = 'item';
 			
 				    return el;
 				}
+
 			
 				// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 				function addMarker(position, idx, categoryId ,title) {
@@ -477,7 +486,6 @@
 				// 인포윈도우에 장소명을 표시합니다
 				function displayInfowindow(marker, title) {
 				    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-			
 				    infowindow.setContent(content);
 				    infowindow.open(map, marker);
 				}
@@ -492,7 +500,7 @@
 			    
 /* 		     //ajax를 이용하여 사용자가 클릭한 위도 경도 정보를 controller로 보냅니다.
 		    request = $.ajax({
-		           url: "/mapLatLng",
+		           url: "/maplocation",
 		           type: "GET",
 		           dataType: "text",
 		           data: {"lat" : lat, "lng" : lng}

@@ -93,4 +93,20 @@ public class MapController {
 		return viewList;
 	}
 	
+	@RequestMapping(value = "/mapPopup", method = RequestMethod.GET )
+	public String chart(Model model,
+								@RequestParam("region") String region) throws Exception {
+		
+		System.out.println("MainContoller chart()");
+		
+		List<Tptp> regionList = mapService.getRegionList(region);
+		
+		System.out.println(region);
+		model.addAttribute("region", region);
+		model.addAttribute("regionList", regionList);
+		
+		return "/app/mapPopup.html";
+	}
+	
+	
 }
