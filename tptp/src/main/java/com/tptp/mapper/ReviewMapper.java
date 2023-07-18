@@ -7,7 +7,7 @@ import org.junit.validator.PublicClassValidator;
 import com.tptp.dto.Review;
 
 @Mapper
-public interface ReviewMapper {
+public interface ReviewMapper { //인터페이스이다!!! 
 	// 0. 리뷰게시판 데이터 전체 리스트 조회 (Read)
 	//ReviewMapper.java에서 만들 함수를 선언만 하고 직접 쿼리문은 xml에 입력 맞는지
 	public List<Review> getReviewList() throws Exception;

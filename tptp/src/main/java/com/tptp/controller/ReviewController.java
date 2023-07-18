@@ -30,5 +30,15 @@ public class ReviewController {
 		return "/app/review";
 
 	}
+	
+	/*07-17 게시글 작성창 만들기*/
+	
+	@GetMapping("/reviewWrite")
+	public String reviewWrite(Model model) throws Exception {
+		List<Review> reviewList = reviewMapper.addReviewList();
+		
+		model.addAttribute("reviewList",reviewList);
+		return "app/reviewWrite";
+	}
 
 }
