@@ -13,8 +13,14 @@ public class Tptp {
 	private String clusterSId;
 	private int count;
 	private int count_by_region;
-	
+	private int total;	
 
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
 	public int getCount_by_region() {
 		return count_by_region;
 	}
@@ -112,13 +118,13 @@ public class Tptp {
 	public void setCluster(Cluster cluster) {
 		this.cluster = cluster;
 	}
-	
 	@Override
 	public String toString() {
 		return "Tptp [id=" + id + ", categoryId=" + categoryId + ", detail=" + detail + ", lat=" + lat + ", lng=" + lng
 				+ ", place=" + place + ", region=" + region + ", address=" + address + ", clusterSId=" + clusterSId
-				+ ", count=" + count + ", pageInfo=" + pageInfo + ", category=" + category + ", review=" + review
-				+ ", cluster=" + cluster + "]";
+				+ ", count=" + count + ", count_by_region=" + count_by_region + ", total=" + total + ", pageInfo="
+				+ pageInfo + ", category=" + category + ", review=" + review + ", cluster=" + cluster + "]";
 	}
-
+	
+	
 }

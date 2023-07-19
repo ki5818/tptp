@@ -17,6 +17,7 @@
 		<result property="clusterId" column="cluster_id" />
 		<result property="count" column="count" />
 		<result property="count_by_region" column="count_by_region" />
+		<result property="total" column="total" />
 		<collection property="category" javaType="Category">
 			<id property="categoryId" column="category_id"></id>
 			<result property="categoryName" column="category_name"/>
@@ -148,15 +149,27 @@
 			t.lng,
 			t.place,
 			t.region,
-			t.address
+			t.address,
+			t.cluster_s_id,
+			COUNT(r.review_id) AS `count`,
+			COUNT(t.id) AS total
 		FROM tptp AS t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		WHERE t.category_id = #{category.ct1}
+		LEFT JOIN review r
+		ON t.`id` = r.place_id
+		WHERE
+			(cluster_s_id IN
+			<foreach collection="clusterArray" item="item" index="index" separator="," open="(" close=")">
+        		#{item}
+     		</foreach>
+     		)AND(t.category_id = #{category.ct1}
 			  OR t.category_id = #{category.ct2}
 			  OR t.category_id = #{category.ct3}
 			  OR t.category_id = #{category.ct4}
-		ORDER BY t.id
+			)
+		GROUP BY t.`id`
+		ORDER BY `count` DESC, t.`id` ASC
 		LIMIT 10
 		OFFSET #{currentNumber.num};
 	</select>
@@ -176,6 +189,28 @@
 			t.region= #{region}
 			AND
 			t.category_id= #{categoryId};
+	</select>
+	
+	<select id="getTotal" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
+		/* 리스트의 총 길이 구하기 */
+		SELECT
+		row_number() over(order BY t.id DESC) AS total
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE 
+			(cluster_s_id IN
+			<foreach collection="clusterArray" item="item" index="index" separator="," open="(" close=")">
+	        	#{item}
+	     	</foreach>
+	     		)
+	     		 AND(t.category_id = #{category.ct1}
+				  OR t.category_id = #{category.ct2}
+				  OR t.category_id = #{category.ct3}
+				  OR t.category_id = #{category.ct4}
+				)
+		GROUP BY t.`id`
+		ORDER BY total DESC;
 	</select>
 	
 </mapper>

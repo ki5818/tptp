@@ -332,7 +332,7 @@
 		                	console.log(myChart2);
 		                    var legendItems = myChart2.legend;
 					        	console.log(legendItems);
-					        	console.log('Legend item clicked:', myChart2.legend.legendItems[datasetIndex]);
+					        	console.log('Legend item clicked:', myChart2.legend.legendItems[0].hidden);
 		                    
 		                    
 		                    var activePoints = myChart2.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
@@ -501,7 +501,6 @@
                 ]
             }]};
             
-
             window.myBar = new Chart(ctx5, {
                 type: "boxplot",
                 data: boxplotData,

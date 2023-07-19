@@ -5,7 +5,7 @@ public class ClusterS {
 	private double latCenter;
 	private double lngCenter;
 	private double dist;
-	private double clusterMId;
+	private String clusterMId;
 	private double avg;
 	
 	public double getAvg() {
@@ -38,10 +38,10 @@ public class ClusterS {
 	public void setDist(double dist) {
 		this.dist = dist;
 	}
-	public double getClusterMId() {
+	public String getClusterMId() {
 		return clusterMId;
 	}
-	public void setClusterMId(double clusterMId) {
+	public void setClusterMId(String clusterMId) {
 		this.clusterMId = clusterMId;
 	}
 	
