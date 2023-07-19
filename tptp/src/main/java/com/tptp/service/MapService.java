@@ -19,4 +19,7 @@ public interface MapService {
 	// 지역명 기준으로 관광지 리스트
 	public List<Tptp> getRegionList(String region, String category) throws Exception;
 	
+	public void getClusterList() throws Exception;
+	
+	
 }

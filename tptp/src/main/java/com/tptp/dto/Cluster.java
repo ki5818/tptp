@@ -4,6 +4,15 @@ public class Cluster {
 	private String clusterId;
 	private double centerLat;
 	private double centerLng;
+	private double avg;
+	
+	
+	public double getAvg() {
+		return avg;
+	}
+	public void setAvg(double avg) {
+		this.avg = avg;
+	}
 	
 	public String getClusterId() {
 		return clusterId;
@@ -23,10 +32,11 @@ public class Cluster {
 	public void setCenterLng(double centerLng) {
 		this.centerLng = centerLng;
 	}
-	
 	@Override
 	public String toString() {
-		return "Cluster [clusterId=" + clusterId + ", centerLat=" + centerLat + ", centerLng=" + centerLng + "]";
+		return "Cluster [clusterId=" + clusterId + ", centerLat=" + centerLat + ", centerLng=" + centerLng + ", avg="
+				+ avg + "]";
 	}
+	
 	
 }

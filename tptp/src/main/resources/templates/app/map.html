@@ -243,11 +243,14 @@
 			                itemEl.addEventListener('click', function() {
 			                	var thisLat = $(this).find('.thisLat')[0].innerText;
 			                	var thisLng = $(this).find('.thisLng')[0].innerText;
+			                	var placeId = $(this).find('.placeId')[0].innerText;
 
 								var thisPosition = new kakao.maps.LatLng(thisLat, thisLng);
 			                	map.setCenter(thisPosition);
 			                	map.setLevel(5);
-								window.open("/reviewWrite", "popup", "width=500, height=700");
+			                	console.log(placeId);
+			                	var url = '/reviewPopup?placeId=' + placeId;
+								window.open(url, "popup", "width=500, height=700");
 							});
 			                
 			            })(marker, viewList[i].place);
@@ -436,6 +439,7 @@
 	                itemStr += '    <p>' + viewList.address + '</p>';
 	                itemStr += '    <p class="thisLat" style="display:none;">' + viewList.lat + '</p>';
 	                itemStr += '    <p class="thisLng" style="display:none;">' + viewList.lng +'</p>';
+	                itemStr += '    <p class="placeId" style="display:none;">' + viewList.id +'</p>';
 	                itemStr += '<span class="tel">' +  '리뷰보기' + '</span>'  + '</div>';           
 			
 				    el.innerHTML = itemStr;

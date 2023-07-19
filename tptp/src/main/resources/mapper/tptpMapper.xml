@@ -16,6 +16,7 @@
 		<result property="address" column="address" />
 		<result property="clusterId" column="cluster_id" />
 		<result property="count" column="count" />
+		<result property="count_by_region" column="count_by_region" />
 		<collection property="category" javaType="Category">
 			<id property="categoryId" column="category_id"></id>
 			<result property="categoryName" column="category_name"/>
@@ -33,7 +34,6 @@
 			<result property="centerLat" column="center_lat"/>
 			<result property="centerLng" column="center_lng"/>
 		</collection>
-		
 	</resultMap>
 	
 	<select id="getTptpList" resultMap="tptpResultMap" resultType="Tptp">
@@ -47,8 +47,7 @@
 			t.lng,
 			t.place,
 			t.region,
-			t.address,
-			t.cluster_id
+			t.address
 		FROM tptp AS t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
@@ -63,14 +62,27 @@
 		GROUP BY t.region
 		ORDER BY `count` desc;
 	</select>
+	
+	<sql id="withCountByRegion">
+		WITH temp AS (
+			SELECT region, COUNT(`id`) AS `count_by_region`
+			FROM tptp
+			GROUP BY region
+		)
+    </sql>
 
 	<select id="getRegionCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
+		<include refid="withCountByRegion"></include>
 		/* 2. 지역별 카테고리별 관광지 개수 */
-		SELECT t.region, c.category_name, COUNT(t.id) as `count`
+		SELECT t.region, c.category_name, COUNT(t.id) AS `count`, temp.`count_by_region`
 		FROM tptp t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
-		GROUP BY t.region, c.category_id;
+		INNER JOIN temp 
+		ON t.region = temp.region
+		GROUP BY t.region, c.category_id
+		order BY temp.`count_by_region` DESC;
+		
 	</select>
 	
 	<select id="getRegionCategoryCountNat" resultMap="tptpResultMap" resultType="Tptp">
@@ -84,7 +96,7 @@
 		ORDER BY t.region ASC;
 	</select>
 	
-		<select id="getRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
+	<select id="getRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
 		/* 2-2. 지역별 카테고리별 관광지 개수 -> 문화재 */
 		SELECT t.region, c.category_name, COUNT(t.id) as `count`
 		FROM tptp t
@@ -136,8 +148,7 @@
 			t.lng,
 			t.place,
 			t.region,
-			t.address,
-			t.cluster_id
+			t.address
 		FROM tptp AS t
 		INNER JOIN category c
 		ON t.category_id = c.category_id
