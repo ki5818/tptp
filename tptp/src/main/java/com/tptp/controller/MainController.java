@@ -1,11 +1,16 @@
 package com.tptp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tptp.dto.Review;
 import com.tptp.dto.Tptp;
@@ -49,26 +54,8 @@ public class MainController {
 		// 2. 지역별 카테고리별 관광지 개수
 		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount();
 		model.addAttribute("regionCategoryCount", regionCategoryCount);
-		System.out.println(regionCategoryCount);		
+		System.out.println(regionCategoryCount);
 		
-		// 2-1.  tptpRegionCategoryCountNat
-		List<Tptp> regionCategoryCountNat = mainService.getRegionCategoryCountNat();
-		model.addAttribute("regionCategoryCountNat", regionCategoryCountNat);
-		
-		
-		// 2-2. tptpRegionCategoryCountCul
-		List<Tptp> regionCategoryCountCul = mainService.getRegionCategoryCountCul();
-		model.addAttribute("regionCategoryCountCul", regionCategoryCountCul);
-		
-		
-		// 2-3. tptpRegionCategoryCountThem
-		List<Tptp> regionCategoryCountThem = mainService.getRegionCategoryCountThem();
-		model.addAttribute("regionCategoryCountThem", regionCategoryCountThem);
-		
-		
-		// 2-4. tptpRegionCategoryCountTour
-		List<Tptp> regionCategoryCountTour = mainService.getRegionCategoryCountTour();
-		model.addAttribute("regionCategoryCountTour", regionCategoryCountTour);
 		
 		// 3. 카테고리별 관광지 개수
 		List<Tptp> categoryCount = mainService.getCategoryCount();
@@ -77,5 +64,19 @@ public class MainController {
 		
 		return "index";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/changeLegend", method = RequestMethod.GET )
+	public List<Tptp> clickLegend(Model model,
+								@RequestParam(value="removedCategory[]") ArrayList<String> removedCategory) throws Exception {
+		
+		System.out.println("MapContoller changeLegend()");
+        
+		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount();
+
+		return regionCategoryCount;
+	}
+	
+	
 	
 }   

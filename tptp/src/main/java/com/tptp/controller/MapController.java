@@ -45,7 +45,7 @@ public class MapController {
 		System.out.println("MapContoller map()");
 		model.addAttribute("POSTS_PER_PAGE", POSTS_PER_PAGE);
 		model.addAttribute("PAGE_PER_BLOCK", PAGES_PER_BLOCK);
-		
+		mapService.getClusterList();
 		return "/app/map";
 	}
 	
