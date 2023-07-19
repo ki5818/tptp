@@ -62,7 +62,7 @@
      	</foreach>
 	</select>
 	
-	<select id="getClusterSmall" resultMap="clusterSResultMap"  parameterType="String">
+	<select id="getClusterSmall" resultMap="clusterSResultMap" resultType="ClusterS">
 		SELECT cluster_s_id, lat_center, lng_center, dist
 		FROM cluster_s
 		WHERE cluster_m_id IN
