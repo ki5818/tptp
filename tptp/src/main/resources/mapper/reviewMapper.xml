@@ -23,6 +23,7 @@
 	</resultMap>
 	<!-- END reviewResultMap -->
 	
+	<!-- 전체 리뷰글 조회 -->
 	<select id="getReviewList" resultMap="reviewResultMap" resultType="Review">
 		SELECT
 			r.review_id,
@@ -39,10 +40,39 @@
 		ORDER BY r.write_date DESC;
 		
 	</select>
-	<!-- 07-17 날짜 기준으로 내림차순 수정 -->
 	
-	<!-- 07-17 게시판 글쓰기  -->
-	<insert id="addReviewList" parameterType="String">
+	<!-- map 목록에서 클릭한 장소의 리뷰글 조회 -->
+	<!-- 07-17 날짜 기준으로 내림차순 수정 -->
+	<select id="getPlaceIDReviewList" resultMap="reviewResultMap" resultType="Review" parameterType="String">
+		SELECT
+			r.review_id,
+			r.place_id,
+			t.place,
+			r.contents,
+			r.photo,
+			r.PASSWORD,
+			r.write_date,
+			SUBSTRING(r.write_date, 1, 16) AS writeDate
+		FROM tptp t
+		INNER JOIN review r
+		ON t.`id` = r.place_id
+		WHERE r.place_id =#{placeId}
+		ORDER BY r.write_date DESC;
+	</select>
+	
+	<!-- 07-18 리뷰를 작성하는 장소 구하는 쿼리문 -->
+	<select id="getPlaceList" resultMap="reviewResultMap" resultType="review" parameterType="String">
+		SELECT 
+			t.place
+		FROM tptp t
+		INNER JOIN review r
+		ON t.`id` = r.place_id
+		WHERE r.place_id = #{placeId};
+	</select>
+	
+	
+	<!-- 07-17 리뷰 게시판 글 추가  -->
+	<insert id="addReviewList" parameterType="Review">
 		INSERT INTO review
 				(
 					review_id,
@@ -62,5 +92,15 @@
 					NOW()
 				)
 	</insert>		
+	
+	<!-- 07-18 리뷰 게시판 글 삭제 -> 리뷰 팝업창에서만 우선 가능하게 -->
+	<delete id="delReviewList" parameterType="String">
+		DELETE FROM
+			review
+		WHERE 
+			review_id = #{reviewId};
+	</delete>
+	<!-- password는 언제 사용해야 하는가.. -->
+	
 	
 </mapper>

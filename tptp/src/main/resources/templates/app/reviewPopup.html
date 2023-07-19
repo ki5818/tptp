@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html xmlkns:th = "http://www.thymeLeaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/defaultLayout}">
+<th:block layout:fragment="customContents" >
 
+	<style>
+		ul, li {
+			list-style: none;
+		}		
+
+		.review_area{
+			border-top: 1px solid #ccc;
+		}
+		
         #write_content{
 			width: 100%;
 			height: 80px;
@@ -22,141 +31,136 @@
             padding: 20px 5px;
             margin-top: 15px;
         }
-    </style>
-</head>
-
-<body>
-	<div id = "wrap">
-        <h2>리뷰</h2>
-        <div class="write_wrap">
-            <div class="textLengthWrap">
-                <p class="textCount">0자</p>
-                <p class="textTotal">/100자</p>
-              </div>
-            <form action="" method="get" enctype="multipart/form-data">
-                <ul class="write_info_wrap">
-                    <li class="write_content_wrap">
-                        <textarea name="content" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100"></textarea>
-                    </li>
-                    <li class="write_btn_wrap">
-                        <input type="submit" class="write_submit" value="입력하기">
-                        <!-- <input type="button" value="취소하기"> -->
-                    </li>
-
-                <hr>
-                    <li class="area_card_item">
-                        <!-- 리뷰 내용 들어감
-                        content, write_date, review_id -->
-                        <ul class="view_detail">
-                            <li class="view_content">
-                                <p class="">
-                                    여기에 데이터베이스 content를 넣어야 합니다.. 나오면 좋을텐데ㅔ... 타입리프는 어떻게 해야하나요 jsp는 대충 기억은 안나는데 param 설정하고 ${board.content}이렇게 했던 거 같아요.... 와 진짜 큰일났네요 
-                                </p>
-                            </li>
-                            <li class="view_place">
-                                <span class="">장소</span>
-                                명동..? ${board.place}
-                            </li>
-                            
-                            <li class="view_date">
-                                <span class="">작성일</span>
-                                    ${board.write_date}? 2023-07-13 
-                                
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="area_card_item">
-                        <!-- 리뷰 내용 들어감
-                        content, write_date, review_id -->
-                        <ul class="view_detail">
-                            <li class="view_content">
-                                <p class="">
-                                    여기에 데이터베이스 content를 넣어야 합니다.. 나오면 좋을텐데ㅔ... 타입리프는 어떻게 해야하나요 jsp는 대충 기억은 안나는데 param 설정하고 ${board.content}이렇게 했던 거 같아요.... 와 진짜 큰일났네요 반복문 돌리면 될거같은데...
-                                </p>
-                            </li>
-                            <li class="view_place">
-                                <span class="">장소</span>
-                                명동..? ${board.place}
-                            </li>
-                            
-                            <li class="view_date">
-                                <span class="">작성일</span>
-                                    ${board.write_date}? 2023-07-13 
-                                
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="area_card_item">
-                        <!-- 리뷰 내용 들어감
-                        content, write_date, review_id -->
-                        <ul class="view_detail">
-                            <li class="view_content">
-                                <p class="">
-                                    명동 좋아요 먹을 거 많고 구경할 거 많고 쇼핑하기 좋고 야시장 최고 와아
-                                </p>
-                            </li>
-                            <li class="view_place">
-                                <span class="">장소</span>
-                                명동 ${board.place}
-                            </li>
-                            
-                            <li class="view_date">
-                                <span class="">작성일</span>
-                                    ${board.write_date}? 2023-07-13 
-                                
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="area_card_item">
-                        <!-- 리뷰 내용 들어감
-                        content, write_date, review_id -->
-                        <ul class="view_detail">
-                            <li class="view_content">
-                                <p class="">
-                                    명동 외국인만 너무 많았어요 사람들 엄청 많아요 야시장 사람 미어터져요 먹을거 별로 없고 비싸서 별로.. 
-                                </p>
-                            </li>
-                            <li class="view_place">
-                                <span class="">장소</span>
-                                명동 ${board.place}
-                            </li>
-                            
-                            <li class="view_date">
-                                <span class="">작성일</span>
-                                    ${board.write_date}? 2023-07-10 
-                                
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="board_btn_wrap">
-                        <input type="button" value="창닫기">
-                        <input type="button" value="게시판 가기" onclick="go_board()">
-                    </li>
-                </ul>
         
-            </form>
+
+        .view_place_date {
+			overflow: hidden;
+		}
+        
+        
+        .view_place_date li {
+			float: left;
+		}
+		.badge bg-light text-dark p-2 p {
+			display: inline-block;		
+		}
+		
+		.review_write {
+			padding-top: 15px;
+		}
+		
+		.review_write p {
+          cursor: pointer;  
+          text-align: center;
+        }
+    </style>
+	<main id="main">
+	    <!-- ======= Breadcrumbs ======= -->
+	    <section class="breadcrumbs">
+	      <div class="container">
+	        <div class="d-flex justify-content-between align-items-center">
+	          <h2>BOARD</h2>
+	          <ol>
+	            <li><a th:href="@{/}">HOME</a></li>
+	            <li>BOARD</li>
+	          </ol>
+	        </div>
+	      </div>
+	    </section>
+	    <!-- End Breadcrumbs -->
+	    
+	    <!-- Review  -->
+	    <section id="services" class="services">
+         <div class="container">
+            <div class="section-title">
+		    	<span>BOARD</span>
+		        <h2>BOARD</h2>
+		        <!--0718 해야한다.  -->
+		        <!-- 장소 넣어야 함  -->
+        		<strong th:value="${place}"></strong><p>의 리뷰입니다.</p>
+		   	</div>
+		   	
+			<div class="review_area">
+				
+			<!--리뷰 작성 폼(addReview) -->
+            <form th:action="@{/reviewWrite}" method="post">
+				<div class="review_write">
+					<textarea name="contents" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100"></textarea>
+					<input type="text" name="placeId" th:value="${placeId}">
+					<input type="password" name="password">
+					<input type="submit" class="write_submit" value="입력하기">
+					
+				</div>
+			</form>
+			<hr>
+                <ul class="area_card_item" th:if="${not #lists.isEmpty(reviewList)}" th:each="r : ${reviewList}">
+                    <li class="" th:text = "${r.contents}"></li>  
+					<div class="place_date">
+						<li class="view_place">
+							<span>장소 : </span>
+								<th:block th:object="${r.tptp}">
+                        		<span th:text="*{place}"></span>
+					      	</th:block>
+                    	</li> 
+                    	<li class="view_reviewId">
+							<span>아이디 : </span>
+                        		<span th:text="${r.reviewId}"></span>
+                    	</li> 
+						<li class="view_date">
+                        	<span class=""> 작성일 :</span>
+                        	<span th:text="${r.writeDate}"></span>    
+                    	</li>
+               
+                    	<li class="delete_review">
+							<button class="btnDelete" style="margin-right:0"; >삭제</button>
+						</li>
+					</div>
+				</ul>
+				    <span th:unless="${not #lists.isEmpty(reviewList)}">해당 장소는 작성된 리뷰가 없습니다.</span>
+            </div>
+            
         </div>
-
     </div>
-</body>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script>
-    $('#write_content').keyup(function (e) {
-        let content = $(this).val();  
-        // 글자수 세기
-        if (content.length == 0 || content == '') {
-            $('.textCount').text('0자');
-        } else {
-            $('.textCount').text(content.length + '자');
-        }
-        //글자수 제한
-        if(content.length >= 100) {
-            $(this).val($(this).val().substring(0,100));
-            alert("글자수는 100자까지 입력 가능합니다.")
-        }
-    })
+    </section>
+	</main>
 
+<script th:inline="javascript">
+	const reviewList = [[${reviewList}]];
+	
+	console.log(reviewList);
+
+	$(document).ready(function(){
+		$('.btnDelete').click(function () {
+			console.log(this);
+			var reviewId = reviewList.reviewId;
+			console.log(reviewId);
+	
+			var result = confirm('이 리뷰글을 정말로 삭제하시겠습니까?');
+			
+			if(result) {
+	        	var insertPw = prompt('글을 작성하실 때 입력하신 비밀번로를 입력해주세요');
+	        	var request = $.ajax({
+                          url: "/reviewDelete",
+                          type: "GET",
+                          data: {"reviewId" : reviewId, "insertPw" : insertPw}
+                  });
+                  //성공
+                  request.done(function(){
+                     console.log("success");
+                     
+                  });
+                  //실패
+                  request.fail(function(jqXHR, textStatus, viewList){
+                     console.log('Request failed: ' + textStatus);
+                  });
+	        		
+	        } else {
+	            return false;
+	        }
+			
+			});
+	});
+	
 </script>
+</th:block>
 </html>
