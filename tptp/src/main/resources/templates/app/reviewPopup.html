@@ -144,7 +144,7 @@
 			console.log($(this).next()[0].innerText);
 			var reviewId = $(this).next()[0].innerText;
 			var result = confirm('이 리뷰글을 정말로 삭제하시겠습니까?');
-			
+			 
 			if(result) {
 	        	var insertPw = prompt('글을 작성하실 때 입력하신 비밀번호를 입력해주세요');
 	        	var request = $.ajax({
