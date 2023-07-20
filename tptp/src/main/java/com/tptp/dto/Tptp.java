@@ -13,8 +13,15 @@ public class Tptp {
 	private String clusterSId;
 	private int count;
 	private int count_by_region;
-	private int total;	
+	private int total;
+	private int distance;
 
+	public int getDistance() {
+		return distance;
+	}
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
 	public int getTotal() {
 		return total;
 	}

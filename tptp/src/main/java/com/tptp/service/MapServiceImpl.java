@@ -38,7 +38,7 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, ArrayList<String> clusterArray) throws Exception {
+	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, ArrayList<String> clusterArray, Map<String, Double> location) throws Exception {
 
 		Map<String, String> category = new HashMap<String, String>();
 		Map<String, Integer> currentNumber = new HashMap<String, Integer>();
@@ -57,10 +57,14 @@ public class MapServiceImpl implements MapService {
 		int num = (currentNum - 1) * 10;
 		currentNumber.put("num", num);
 		
+		// 리스트 총 길이 계산
 		List<Tptp> totalList = tptpMapper.getTotal(category, clusterArray);
-		System.out.println(totalList.get(0).getTotal());		
-		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray);
+		System.out.println(totalList.get(0).getTotal());
+		
+		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray, location);
+		
 		viewList.get(0).setTotal(totalList.get(0).getTotal());
+		
 		System.out.println(viewList);
 
 		return viewList;
