@@ -100,7 +100,7 @@ public class ReviewController {
 							    @RequestParam("insertPw") String insertPw,
 							    @RequestParam("placeId") String placeId) throws Exception {
 		System.out.println("reviewDelete()");
-		System.out.println(reviewId);
+		System.out.println(reviewId); 
 		System.out.println(insertPw);
 		
 		SHA256 sha256 = new SHA256();
