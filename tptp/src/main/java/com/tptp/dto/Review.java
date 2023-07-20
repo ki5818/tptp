@@ -1,7 +1,5 @@
 package com.tptp.dto;
 
-import java.util.Date;
-
 public class Review {
 	private String reviewId;
 	private String placeId;

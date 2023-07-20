@@ -54,7 +54,8 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-			let geoLat, geoLng; // 위치를 저장하는 객체 선언
+			var geoLat;
+			var geoLng; // 위치를 저장하는 객체 선언
 			var map;
 			
 			var infowindow; // 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
@@ -74,8 +75,8 @@
 			
 			getGeoApi();
 			
-			// geolocation api 속도 때문에 0.1초 기다리고 map 생성
-			setTimeout(() =>  displayMap(), 100);
+			// geolocation api 속도 때문에 0.3초 기다리고 map 생성
+			setTimeout(() =>  displayMap(), 300);
 			
 			function getGeoApi() {
 				// HTML5의 GeoLocation으로 사용할 수 있는지 확인합니다 https 필요
@@ -91,6 +92,7 @@
 					geoLat = 37.566826; // 현재 위치 비허용시 초기 위도 경도
 					geoLng = 126.9786567;
 				}
+				
 			}
 			
 			function getAjax() { // ajax 함수 선언
@@ -103,6 +105,7 @@
 			}
 			
 			function displayMap() {
+				console.log(geoLat, geoLng);
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				    mapOption = {
 				        center: new kakao.maps.LatLng(geoLat, geoLng), // 지도의 중심좌표(초기값: 사용자 위치)
@@ -186,8 +189,8 @@
 				checkbox();
 			}
 				function displayMarker(geoLat, geoLng) {
-					//geoMarker.setMap(null); // 현재 위치 마커를 지웁니다.
-					//infowindow.close();
+					geoMarker.setMap(null); // 현재 위치 마커를 지웁니다.
+					infowindow.close();
 					
 					removeMarker();
 					
@@ -230,7 +233,7 @@
 							currentNum = 1;
 							pageCount = 1;
 							console.log("체크박스 이벤트 발생");
-				        	
+							console.log(geoLat, geoLng);
 							checkbox.forEach((element) => {
 			        		  if (element.checked == true) {
 			        			  checkedList.push(element.id);
@@ -421,7 +424,7 @@
 							el.removeAttribute('href');
 						}
 
-			            // 클릭 이벤트 리스너 등록
+			            // 페이지 클릭 이벤트 리스너 등록
 			            el.addEventListener('click', function() {
 			                currentNum = this.innerText;
 			                
@@ -462,6 +465,7 @@
 			        fragment.appendChild(next);
 			        paginationEl.appendChild(fragment);			
 			        
+			        // 다음 버튼 클릭 이벤트 리스너
 			        next.addEventListener('click', function() {
 				        currentNum = pageCount + PAGE_PER_BLOCK;
 				        pageCount = currentNum;
@@ -512,7 +516,7 @@
 	                itemStr += '    <p>' + viewList.address + '</p>';
 	                itemStr += '    <p class="thisLat" style="display:none;">' + viewList.lat + '</p>';
 	                itemStr += '    <p class="thisLng" style="display:none;">' + viewList.lng +'</p>';
-	                itemStr += '<span class="tel"' + 'onclick=' + 'window.open("/reviewPopup?placeId=' + viewList.id + '",' + '"popup",' +  '"width=500,' + 'height=700")' + '>'  + '리뷰보기' + '</span>'  + '</div>';           
+	                itemStr += '<span class="tel"' + 'onclick=' + 'window.open("/reviewPopup?placeId=' + viewList.id + '",' + '"popup",' +  '"width=700,' + 'height=1100")' + '>'  + '리뷰보기' + '</span>'  + '</div>';           
 					
 				    el.innerHTML = itemStr;
 				    el.className = 'item';

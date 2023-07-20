@@ -8,8 +8,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.tptp.dto.Cluster;
 import com.tptp.dto.ClusterL;
 import com.tptp.dto.ClusterM;
 import com.tptp.dto.ClusterS;
@@ -39,7 +37,7 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, ArrayList<String> clusterArray) throws Exception {
+	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, ArrayList<String> clusterArray, Map<String, Double> location) throws Exception {
 
 		Map<String, String> category = new HashMap<String, String>();
 		Map<String, Integer> currentNumber = new HashMap<String, Integer>();
@@ -61,11 +59,12 @@ public class MapServiceImpl implements MapService {
 		int total = tptpMapper.getTotal(category, clusterArray).get(0).getTotal();
 		System.out.println(total);
 		
-		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray);
+		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray, location);
 		
 		for(int i=0; i<viewList.size(); i++) {
 			viewList.get(i).setTotal(total);
 		}
+		
 		System.out.println(viewList);
 
 
@@ -183,22 +182,5 @@ public class MapServiceImpl implements MapService {
 		  
 		return cluster_s_list;
 		
-	}
-	
-	@Override
-	public List<Tptp> CalDistAndSort(List<Tptp> viewList, double geoLat, double geoLng) throws Exception {
-		System.out.println(viewList.toString());
-		
-		// distance 계산
-		for(int i = 0; i < viewList.size(); i++) {
-			viewList.get(i).setDistance(Distance.distanceInKilometerByHaversine(geoLat, geoLng, viewList.get(i).getLat(), viewList.get(i).getLng()));
-		}
-		
-		System.out.println(viewList.toString());
-		
-		// 오름차순 정렬
-		viewList.sort(Comparator.naturalOrder());
-		
-		return viewList;
 	}
 }

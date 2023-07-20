@@ -88,9 +88,11 @@ public class MapController {
 		}
 		if(clusterArray == null) return viewList;
 		
-		viewList = mapService.getViewList(checkedList, currentNum, clusterArray);
-		viewList = mapService.CalDistAndSort(viewList, selectLat, selectLng);
+		Map<String, Double> location = new HashMap<String, Double>();
+		location.put("lat", selectLat);
+		location.put("lng", selectLng);
 		
+		viewList = mapService.getViewList(checkedList, currentNum, clusterArray, location);
 		
 		return viewList;
 	}
