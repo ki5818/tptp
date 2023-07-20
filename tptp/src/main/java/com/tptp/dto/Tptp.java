@@ -10,9 +10,31 @@ public class Tptp {
 	private String place;
 	private String region;
 	private String address;
-	private String clusterId;
+	private String clusterSId;
 	private int count;
-	
+	private int count_by_region;
+	private int total;
+	private int distance;
+
+	public int getDistance() {
+		return distance;
+	}
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public int getCount_by_region() {
+		return count_by_region;
+	}
+	public void setCount_by_region(int count_by_region) {
+		this.count_by_region = count_by_region;
+	}
+
 	private Map<String, Object> pageInfo;
 	
 	Category category;
@@ -67,11 +89,11 @@ public class Tptp {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getClusterId() {
-		return clusterId;
+	public String getClusterSId() {
+		return clusterSId;
 	}
-	public void setClusterId(String clusterId) {
-		this.clusterId = clusterId;
+	public void setClusterSId(String clusterSId) {
+		this.clusterSId = clusterSId;
 	}
 	public int getCount() {
 		return count;
@@ -103,13 +125,13 @@ public class Tptp {
 	public void setCluster(Cluster cluster) {
 		this.cluster = cluster;
 	}
-	
 	@Override
 	public String toString() {
 		return "Tptp [id=" + id + ", categoryId=" + categoryId + ", detail=" + detail + ", lat=" + lat + ", lng=" + lng
-				+ ", place=" + place + ", region=" + region + ", address=" + address + ", clusterId=" + clusterId
-				+ ", count=" + count + ", pageInfo=" + pageInfo + ", category=" + category + ", review=" + review
-				+ ", cluster=" + cluster + "]";
+				+ ", place=" + place + ", region=" + region + ", address=" + address + ", clusterSId=" + clusterSId
+				+ ", count=" + count + ", count_by_region=" + count_by_region + ", total=" + total + ", pageInfo="
+				+ pageInfo + ", category=" + category + ", review=" + review + ", cluster=" + cluster + "]";
 	}
-
+	
+	
 }

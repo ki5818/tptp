@@ -12,15 +12,18 @@
 		<result property="photo" column="photo" />
 		<result property="password" column="password" />
 		<result property="writeDate" column="write_date" />
+		
+		<!-- 조인할 테이블은 컬렉션 태그에 필요한 컬럼들만 가져오기 -->
 		<collection property="tptp" javaType="Tptp">
-			<id property="id" column="id"></id>
-			<result property="place" column="place"/>
+			<id property="id" column="id"></id> <!-- tptp 테이블에 있는 id와 review에 있는 id -->
+			<result property="place" column="place"/> <!-- tptp테이블에만 있는 place 컬럼 -->
 		</collection>
-		<!-- collection이 join인가요? tptpMapper.xml에 있는 collection을 복붙하면 되는지 -->
+		
 		
 	</resultMap>
 	<!-- END reviewResultMap -->
 	
+	<!-- 전체 리뷰글 조회 -->
 	<select id="getReviewList" resultMap="reviewResultMap" resultType="Review">
 		SELECT
 			r.review_id,
@@ -33,9 +36,80 @@
 			SUBSTRING(r.write_date, 1, 16) AS `write_date`
 		FROM tptp t
 		INNER JOIN review r
-		ON t.`id` = r.place_id;
+		ON t.`id` = r.place_id
+		ORDER BY r.write_date DESC;
 		
 	</select>
 	
-		
+	<!-- map 목록에서 클릭한 장소의 리뷰글 조회 -->
+	<!-- 07-17 날짜 기준으로 내림차순 수정 -->
+	<select id="getPlaceIDReviewList" resultMap="reviewResultMap" resultType="Review" parameterType="String">
+		SELECT
+			r.review_id,
+			r.place_id,
+			t.place,
+			r.contents,
+			r.photo,
+			r.PASSWORD,
+			r.write_date,
+			SUBSTRING(r.write_date, 1, 16) AS writeDate
+		FROM tptp t
+		INNER JOIN review r
+		ON t.`id` = r.place_id
+		WHERE r.place_id =#{placeId}
+		ORDER BY r.write_date DESC;
+	</select>
+	
+	<!-- 07-18 리뷰를 작성하는 장소 구하는 쿼리문 -->
+	<select id="getPlaceList" resultMap="reviewResultMap" resultType="review" parameterType="String">
+		SELECT 
+			t.place
+		FROM tptp t
+		INNER JOIN review r
+		ON t.`id` = r.place_id
+		WHERE r.place_id = #{placeId};
+	</select>
+	
+	
+	<!-- 07-17 리뷰 게시판 글 추가  -->
+	<insert id="addReviewList" parameterType="Review">
+		INSERT INTO review
+				(
+					review_id,
+					place_id,
+					contents,
+					photo,
+					password,
+					write_date
+				)
+			values 
+				(
+					#{reviewId},
+					#{placeId},
+					#{contents},
+					#{photo},
+					#{password},
+					NOW()
+				)
+	</insert>		
+	
+	<!-- 07-18 리뷰 게시판 글 삭제 -->
+	<delete id="delReviewList" parameterType="String">
+		DELETE FROM
+			review
+		WHERE 
+			review_id = #{reviewId};
+	</delete>
+	
+	<!--  07-19 리뷰 게시판 글 수정 -->
+	<update id="modReviewList" parameterType="Review">
+		UPDATE review
+		SET
+			contents = #{contents},
+			password = #{password},
+			write_date = NOW()
+		WHERE 
+			review_id = #{reviewId};
+	</update>
+	
 </mapper>

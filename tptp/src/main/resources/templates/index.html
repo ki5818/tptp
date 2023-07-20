@@ -5,8 +5,10 @@
 	  layout:decorate="~{layout/defaultLayout}">
 <th:block layout:fragment="customContents">
     <style>
+    	.row {
+    		margin:20px;
+    	}
         .chart-box {
-            width: 800px;
             height: 500px;
             margin: auto;
             margin-bottom: 50px;
@@ -19,7 +21,7 @@
 	<section id="hero">
 	  <div class="hero-container">
 	    <h1>이 곳, 저 곳</h1>
-	    <h2>"대한민국 전국의 관광지를 소개해드립니다. 아래 버튼을 클릭해 관광지 데이터차트를 볼 수 있습니다."</h2>
+	    <h2>"대한민국 전국의 관광지를 소개해드립니다. 아래 버튼을 클릭해 관광지 데이터 차트를 볼 수 있습니다."</h2>
 	    <a href="#testimonials" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
 	  </div>
 	</section>
@@ -38,199 +40,484 @@
 	      </div>
 	    </section>
 	    <!-- End Breadcrumbs -->
-		<!-- ======= Testimonials Section ======= -->
+		<!-- ======= Chart Section ======= -->
 		 <section id="testimonials" class="testimonials">
 		   <div class="container position-relative">
 			<div class="section-title"  style="margin-bottom: 10px; margin-top: 0px; padding:0px;">
 		       	<span>CHART</span>
 		       	<h2>CHART</h2>
+		       	<p><strong>차트를 클릭해보세요!</strong></p>
 		     </div>
-		     <div class="testimonials-slider swiper services" data-aos="fade-up" data-aos-delay="100">
-		       <div class="swiper-wrapper">
-		         <div class="swiper-slide">
-		           <div class="testimonial-item">
-		           	<div class="chart-box-1 chart-box icon-box d-flex justify-content-center align-items-center">
-		           		<canvas id="chart1"></canvas>
-		           	</div>
-		           </div>
-		         </div>
-		         <div class="swiper-slide">
-		           <div class="testimonial-item">
-					<div class="chart-box-2 chart-box icon-box d-flex justify-content-center align-items-center">
-						<canvas id="chart2"></canvas>
+		    <!-- FOUR TAB -->
+			<ul class="nav nav-tabs nav-pills nav-justified" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="tabAll" data-toggle="tab" role="tab" aria-selected="true">ALL</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tabChart1" data-toggle="tab" role="tab">Chart1</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tabChart2" data-toggle="tab" role="tab">Chart2</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="tabChart3" data-toggle="tab" role="tab">Chart3</a>
+				</li>
+			</ul><br/><br/>
+   			<div class="container">
+		       	<div class="col-md-12 chart1">
+					<div class="chart-box-1 chart-box"><canvas id="chart1" style="width:100%; height:100%"></canvas></div>
+				</div>
+				<div class="row">
+	       			<div class="col-md-6 chart2">
+						<div class="chart-box-2 chart-box"><canvas id="chart2" style="width:100%; height:100%;"></canvas></div>
 					</div>
-		           </div>
-		         </div>
-		         <div class="swiper-slide">
-		           <div class="testimonial-item">
-						<div class="chart-box-3 chart-box icon-box d-flex justify-content-center align-items-center">
-							<canvas id="chart3"></canvas>
+					<div class="col-md-5 chart3">
+						<div class="chart-box-3 chart-box"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
+					</div>
+					<div class="col-md-1" style="width:10px; margin-top:50px;">
+						<div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
+						  <input type="radio" class="btn-check" name="vbtn-radio" id="btn1" autocomplete="off">
+						  <label class="btn btn-outline-danger" for="btn1">자연경관</label>
+						  <input type="radio" class="btn-check" name="vbtn-radio" id="btn2" autocomplete="off">
+						  <label class="btn btn-outline-danger" for="btn2">문화재</label>
+						  <input type="radio" class="btn-check" name="vbtn-radio" id="btn3" autocomplete="off">
+						  <label class="btn btn-outline-danger" for="btn3">테마공원</label>
+						  <input type="radio" class="btn-check" name="vbtn-radio" id="btn4" autocomplete="off">
+						  <label class="btn btn-outline-danger" for="btn4">지역관광지</label>
 						</div>
-		           </div>
-		         </div>
-				<!-- End testimonial item -->
-		       </div>
-		       <div class="swiper-pagination"></div>
-		     </div>
-		   </div>
-		 </section><!-- End Testimonials Section -->
-  		</main>
-  	<!-- End #main END index -->
-    
-    <script th:inline="javascript">
-    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하기 위해 선언해줘야함 
-    /*<![CDATA[*/
-	    	const ctx1 = document.getElementById("chart1").getContext('2d');
-	        const ctx2 = document.getElementById("chart2").getContext('2d');
-	        const ctx3 = document.getElementById("chart3").getContext('2d');
-	        
-	        /* ---- 1번째 차트 : 국내 관광지 분포 현황 ----*/
-	        // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
-	        const regionCount = [[${regionCount}]];
-	        console.log(regionCount);
-	        console.log(regionCount[0]['region']);
-	        
-	        let xval_1 = [];
-	        let yval_1 = [];
-	        for(let i = 0; i < regionCount.length; i++) {
-	        	xval_1.push(regionCount[i]['region']);
-	        	yval_1.push(regionCount[i]['count']);
-	        }
-			
-			const barCol = ["darkred", "brown", "sienna","saddlebrown","indianred", "rosybrown", "lightcoral", "salmon", "darksalmon", "coral", "tomato", 
-			            "sandybrown", "lightsalmon", "peru", "chocolate", "red", "crimson"];
-			const mychart1 = new Chart(ctx1, {
-			type: "bar",
-			data: {
-			    labels: xval_1,
-			    datasets: [{
-			    backgroundColor: barCol,
-			    data: yval_1,
-			    datalabels: {
-	                color: 'white',
-	                font: {size: 10}
-			    	}
-			    }]
-			},
-			plugins: [ChartDataLabels],
-			options: {
-			    plugins: {
-			        legend: {display: false},
-			        title: {
-			            display: true,
-			            text: "국내 관광지 분포 현황",
-			            font: {size: 20}
-				        }
-				    }
-				}
-			});
-			/* ---- 1번째 차트 END ----*/
-			
-			/* ---- 2번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
-		    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
-		  	const regionCategoryCountNat = [[${regionCategoryCountNat}]];
-		  	const regionCategoryCountCul = [[${regionCategoryCountCul}]];
-		  	const regionCategoryCountThem = [[${regionCategoryCountThem}]];
-		  	const regionCategoryCountTour = [[${regionCategoryCountTour}]];
-		  	
-		  	let xval_2 = [];
-		  	let natCounts = [];
-		  	let culCounts = [];
-		  	let themCounts = [];
-		  	let tourCounts = [];
-		
-		  	for(let i = 0; i < regionCategoryCountNat.length; i ++) {
-		  		xval_2.push(regionCategoryCountNat[i].region);
-		  		natCounts.push(regionCategoryCountNat[i].count);
-		  		culCounts.push(regionCategoryCountCul[i].count);
-		  		themCounts.push(regionCategoryCountThem[i].count);
-		  		tourCounts.push(regionCategoryCountTour[i].count);
-		  	}
-		  	
-		  	console.log(natCounts);
-	        const myChart2 = new Chart(ctx2, {
-	            type: 'bar',
-	            data: {
-	                labels: xval_2,
-	                datasets: [{
-	                    label: "1. 자연경관",
-	                    backgroundColor: "teal",
-	                    data: natCounts
+	                </div>
+				</div>
 	
-	                	},
-	                {
-	                    label: "2. 문화재",
-	                    backgroundColor: "yellow",
-	                    data: culCounts
-	                }, 
-	                {
-	                    label: "3. 테마공원",
-	                    backgroundColor: "red",
-	                    data: themCounts
-	                },
-	                {
-	                    label: "4. 관광지",
-	                    backgroundColor: "skyblue",
-	                    data: tourCounts
-	                }],
-	            },
-	            options: {
-	                plugins: {
-	                    title: {
-	                        display: true,
-	                        text: "국내 관광요소 유형별 지역 분포도",
-	                        font: {size: 20}
-	                    },
-	                },
-	                scales: {
-	                    x: {
-	                        stacked: true,
-	                    },
-	                    y: {
-	                        stacked: true
-	                    }
-	                }
-	            }
-	        });
-	        /* ---- 2번째 차트 END ----*/
-			
-			/* ---- 3번째 차트 : 관광지 카테고리별 개수 ----*/
-			const categoryCount = [[${categoryCount}]];
-			console.log(categoryCount);
-			let xval_3 = [];
-			let yval_3 = [];
-			
-			for(let i = 0; i < categoryCount.length; i++) {
-				xval_3.push(categoryCount[i].category['categoryName']);
-				yval_3.push(categoryCount[i]['count']);
-			}
-			
-			const mychart3 = new Chart(ctx3, {
-			    type: "doughnut",
-			    data: {
-			        labels: xval_3,
-			        datasets: [{
-			        data: yval_3,
-			        datalabels: {
-	                    color: 'black',
-	                    font: {size: 16}
-	            	}}]
-			    },
-			    plugins: [ChartDataLabels],
-			    options: {
-			        responsive: true,
-			        plugins: {
-			            legend: {position: 'top'},
-			            title: {
-			                display: true,
-			                text: "관광지 카테고리별 개수",
-			                font: {size: 20}
-			                }
-			            }
-			        }
-			  });
-	    /* ---- 3번째 차트 END ----*/
+				<div class="row">
+		            <div class="col-md-5 chart4">
+						<div class="chart-box-4 chart-box"><canvas id="chart4" style="width:100%; height:100%;"></canvas></div>
+	     			</div>
+	     			<div class="col-md-7 chart5">
+						<div class="chart-box-5 chart-box"><canvas id="chart5" style="width:100%; height:100%;"></canvas></div>
+	     			</div>
+     			</div>
+     			
+		      </div>
+		   </div>
+		 </section>
+		 <!-- End Chart Section -->
+  	</main>
+  	<!-- End #main END index -->
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+			// nav tab 이벤트
+				var tabAll = document.getElementById("tabAll");
+				var tabChart1 = document.getElementById("tabChart1");
+				var tabChart2 = document.getElementById("tabChart2");
+				var tabChart3 = document.getElementById("tabChart3");
+				
+		    	const ctx1 = document.getElementById("chart1").getContext('2d');
+		        const ctx2 = document.getElementById("chart2").getContext('2d');
+		        const ctx3 = document.getElementById("chart3").getContext('2d');
+		        const ctx4 = document.getElementById("chart4").getContext('2d');
+		        const ctx5 = document.getElementById("chart5").getContext("2d");
+		        
+		        var category;
+		        var region;
+	    
+				tabAll.addEventListener('click', function() {
+					tabAll.className = 'nav-link active';
+	   		    	tabChart1.className = 'nav-link';
+	   		    	tabChart2.className = 'nav-link';
+	   		    	tabChart3.className = 'nav-link';
+	   		    	$('.chart1').show();
+	   		    	$('.chart2').show();
+	   		    	$('.chart4').show();
+		   		});
+	    
+				tabChart1.addEventListener('click', function() {
+					tabChart1.className = 'nav-link active';
+	   		    	tabAll.className = 'nav-link ';
+	   		    	tabChart2.className = 'nav-link ';
+	   		    	tabChart3.className = 'nav-link ';
+	   		    	$('.chart1').show();
+	   		    	$('.chart2').hide();
+	   		    	$('.chart4').hide();
+	   			});
+	   			
+				tabChart2.addEventListener('click', function() {
+					tabChart2.className = 'nav-link active';
+	   		    	tabChart1.className = 'nav-link ';
+	   		    	tabAll.className = 'nav-link ';
+	   		    	tabChart3.className = 'nav-link ';
+	   		    	$('.chart1').hide();
+	   		    	$('.chart2').show();
+	   		    	$('.chart4').hide();
+	   			});
+	   			
+				tabChart3.addEventListener('click', function() {
+					tabChart3.className = 'nav-link active';
+	   		    	tabChart1.className = 'nav-link ';
+	   		    	tabChart2.className = 'nav-link ';
+	   		    	tabAll.className = 'nav-link ';
+	   		    	$('.chart1').hide();
+	   		    	$('.chart2').hide();
+	   		    	$('.chart4').show();
+	   			});	   		
+		        
+		        /* ---- 1번째 차트 : 국내 관광지 분포 현황 ----*/
+		        // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
+		        const regionCount = [[${regionCount}]];
+		        console.log(regionCount);
+		        console.log(regionCount[0]['region']);
+		        
+		        let xval_1 = [];
+		        let yval_1 = [];
+		        for(let i = 0; i < regionCount.length; i++) {
+		        	xval_1.push(regionCount[i]['region']);
+		        	yval_1.push(regionCount[i]['count']);
+		        }
+				
+				const barCol = ["darkred", "brown", "sienna","saddlebrown","indianred", "rosybrown", "lightcoral", "salmon", "darksalmon", "coral", "tomato", 
+				            "sandybrown", "lightsalmon", "peru", "chocolate", "red", "crimson"];
+				const mychart1 = new Chart(ctx1, {
+					type: "bar",
+					data: {
+					    labels: xval_1,
+					    datasets: [{
+						    backgroundColor: barCol,
+						    data: yval_1,
+						    datalabels: {
+				                color: 'white',
+				                font: {size: 10}
+						    	}
+					    	}]
+						 },
+					plugins: [ChartDataLabels],
+					options: {
+						responsive: false,
+					    plugins: {
+					        legend: {display: false},
+					        title: {
+					            display: true,
+					            text: "국내 관광지 분포 현황",
+					            font: {size: 20}
+						        }
+						    },
+						    onClick: function(e) {
+						    	var activePoints = mychart1.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+						        if (activePoints.length > 0) {
+						          var selectedIndex = activePoints[0].index;
+						          region = mychart1.data.labels[selectedIndex];
+						          console.log('Selected X Value:', region);
+						          window.open('/mapPopup?region=' + region, "popup", "width=1000, height=500");
+						    	}
+						   }
+					}
+				});
+				/* ---- 1번째 차트 END ----*/
+				
+				/* ---- 2번째 차트 : 국내 관광요소 유형별 지역 분포도 ----*/
+			    // thymeleaf 문법: Contoller에서 model로 보낸 변수를 Js에서 사용하는 방법
+			  	const regionCategoryCount =[[${regionCategoryCount}]];		  	
+			  	console.log(regionCategoryCount);
+			  	
+			  	let xval_2 = [];
+			  	let natCounts = [];
+			  	let culCounts = [];
+			  	let themCounts = [];
+			  	let tourCounts = [];
+			  	
+			  	// 4가지 카테고리 모두 클릭
+			  	for(let i = 0; i < regionCategoryCount.length; i=i+4) {
+			  		xval_2.push(regionCategoryCount[i].region);
+			  	}
+			  	console.log(xval_2);
+			  	
+			  	for(let i = 0; i < regionCategoryCount.length; i++) {
+			  		if(regionCategoryCount[i].category['categoryName']=="자연경관") {
+				  		natCounts.push(regionCategoryCount[i].count);
+			  		}
+			  		else if(regionCategoryCount[i].category['categoryName']=="문화재") {
+			  			culCounts.push(regionCategoryCount[i].count);
+			  		}
+			  		else if(regionCategoryCount[i].category['categoryName']=="테마공원") {
+			  			themCounts.push(regionCategoryCount[i].count);
+			  		}
+			  		else if(regionCategoryCount[i].category['categoryName']=="관광지") {
+			  			tourCounts.push(regionCategoryCount[i].count);
+			  		}
+			  	}
 
+			  		removedCategory = [];
+			  		
+					// ajax를 이용하여 legend click event를 처리합니다.
+				    var request = $.ajax({
+				           url: "/changeLegend",
+				           type: "GET",
+				           dataType: 'json',
+				           data: {removedCategory}
+					});
+					//성공
+					request.done(function(regionCategoryCount){
+						console.log("success");
+					  	//3가지 일때
+					  	xval_2 = [];
+					  	natCounts = [];
+					  	culCounts = [];
+					  	themCounts = [];
+					  	tourCounts = [];
+					  	
+					  	// 각각 카테고리 리스트를 넘겨서 차트를 그립니다.
+					  	drawChart2(xval_2, natCounts, culCounts, themCounts, tourCounts);
+					  	
+						
+					});
+					//실패
+					request.fail(function(jqXHR, textStatus, viewList){
+							console.log('Request failed: ' + textStatus);
+					});
+	
+			  	function drawChart2(xval_2, natCounts, culCounts, themCounts, tourCounts) {
+			  		
+			  	} 
+		        const myChart2 = new Chart(ctx2, {
+		            type: 'bar',
+		            data: {
+		                labels: xval_2,
+		                datasets: 
+		                [{
+		                    label: "자연경관",
+		                    backgroundColor: "yellowgreen",
+		                    data: natCounts
+		                	},
+		                {
+		                    label: "문화재",
+		                    backgroundColor: "darkorange",
+		                    data: culCounts
+		                }, 
+		                {
+		                    label: "테마공원",
+		                    backgroundColor: "yellow",
+		                    data: themCounts
+		                },
+		                {
+		                    label: "관광지",
+		                    backgroundColor: "lightgreen",
+		                    data: tourCounts
+		                }],
+		            },
+		            options: {
+		            	responsive: false,
+		                plugins: {
+		                    title: {
+		                        display: true,
+		                        text: "국내 관광요소 유형별 지역 분포도",
+		                        font: {size: 20}
+		                    },
+		                    beforeDraw: function(chart) {
+		                        console.log('Chart is being drawn.');
+		                        // 여기에 원하는 동작을 추가합니다.
+		                      }
+		                },
+		                scales: {
+		                    x: {
+		                        stacked: true
+		                    },
+		                    y: {
+		                        stacked: true
+		                        
+		                    }
+		                },
+		                onResize: function(chart, size) {
+		                    console.log('Chart is resized.');
+		                    // 여기에 원하는 동작을 추가합니다.
+		                  },
+		                onClick: function(e) {
+		                	console.log(myChart2);
+		                    var legendItems = myChart2.legend;
+					        	console.log(legendItems);
+					        	console.log('Legend item clicked:', myChart2.legend.legendItems[0].hidden);
+		                    
+		                    
+		                    var activePoints = myChart2.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+		                    if (activePoints.length > 0) {
+		                      var datasetIndex = activePoints[0].datasetIndex;
+		                      category = myChart2.data.datasets[datasetIndex].label;
+		                      
+		                      console.log('Selected Dataset Label:', category);
+		                      
+		                      var selectedIndex = activePoints[0].index;
+		                      region = myChart2.data.labels[selectedIndex];
+		                      
+		                      var selectedYValue = myChart2.data.datasets[activePoints[0].datasetIndex].data[selectedIndex];
+		                      console.log(selectedYValue);                     
+		                      
+		                      console.log('Selected Label:', region);
+		                      var url = '/mapPopup?region=' + region + '&category=' + category;
+		                      
+		                      window.open(url, "popup", "width=1000, height=500");
+		                    }
+		                  }
+		            }
+		        });
+		        window.onload(function(){
+		        	// 범례의 히든(hidden) 상태 변경 감지를 위한 사용자 정의 이벤트 리스너
+		        	var originalLegendClickHandler = myChart2.legend.legendHitBoxes[0].click;
+		        	myChart2.legend.legendHitBoxes[0].click = function(e) {
+		        	  var datasetIndex = this._datasetIndex;
+		        	  var meta = myChart2.getDatasetMeta(datasetIndex);
+		        	  //meta.hidden = !meta.hidden; // 히든(hidden) 상태를 반전
+		        	  //myChart.update(); // 차트 업데이트
+
+		        	  console.log('Legend item clicked:', myChart2.legend.legendItems[datasetIndex].text);
+		        	  console.log('Legend item hidden:', meta.hidden);
+		        	};
+		        });
+
+
+		        
+		        /* ---- 2번째 차트 END ----*/
+		        
+		                // chart #3
+        const myChart3 = new Chart(ctx3, {
+            type: "bar",
+            data: {
+                labels: ["자연경관", "문화재", "테마공원", "지역관광지"],
+                datasets: [{
+                    backgroundColor: "white",
+                    label: "카테고리별 버튼을 눌러주세요",
+                    data: [0, 0, 0, 0],
+                    datalabels: {
+                        color: "balck",
+                        font: {size: 15}
+                    }
+                }]
+            },
+            plugins: [ChartDataLabels],
+            options: {
+                plugins: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: "관광지 카테고리별 세부 분포 현황",
+                        font: {size: 20}
+                    },
+                },
+                scales: {
+                    x: {
+                        stacked: false,
+                    },
+                    y: {
+                        stacked: false
+                    }
+                }
+            }
+        });
+        
+        const click_btn1 = document.querySelector("#btn1");
+            click_btn1.addEventListener("click", function() {
+                myChart3.data.labels = ["호수/저수지", "휴양림/수목원", "관광농원/허브마을", "해수욕장", "폭포/계곡"];
+                myChart3.data.datasets[0].label = "1. 자연경관 총 15736개";
+                myChart3.data.datasets[0].data = [12705, 596, 931, 549, 955];
+                myChart3.data.datasets[0].backgroundColor = "yellowgreen";
+                myChart3.update();
+            });
+
+        const click_btn2 = document.querySelector("#btn2");
+        click_btn2.addEventListener("click", function() {
+            myChart3.data.labels = ["사찰", "서원/향교/서당"];
+            myChart3.data.datasets[0].label = "2. 문화재 총 12462개";
+            myChart3.data.datasets[0].data = [11604, 858];
+            myChart3.data.datasets[0].backgroundColor = "darkorange";
+            myChart3.update();
+        });
+
+        const click_btn3 = document.querySelector("#btn3");
+        click_btn3.addEventListener("click", function() {
+            myChart3.data.labels = ["놀이공원", "식물원", "동물원", "수족관"];
+            myChart3.data.datasets[0].label = "3. 테마공원 총 932개";
+            myChart3.data.datasets[0].data = [713, 146, 44, 29];
+            myChart3.data.datasets[0].backgroundColor = "yellow";
+            myChart3.update();
+        });
+
+        const click_btn4 = document.querySelector("#btn4");
+        click_btn4.addEventListener("click", function() {
+            myChart3.data.labels = ["지역상권", "지역관광지"];
+            myChart3.data.datasets[0].label = "4. 지역관광지 6272개";
+            myChart3.data.datasets[0].data = [3389, 2883];
+            myChart3.data.datasets[0].backgroundColor = "lightgreen";
+            myChart3.update();
+        });
+				
+				/* ---- 4번째 차트 : 관광지 카테고리별 개수 ----*/
+				const categoryCount = [[${categoryCount}]];
+				console.log(categoryCount);
+				let xval_4 = [];				
+				let yval_4 = [];
+				
+				for(let i = 0; i < categoryCount.length; i++) {
+					xval_4.push(categoryCount[i].category['categoryName']);
+					yval_4.push(categoryCount[i]['count']);
+				}
+				
+				const mychart4 = new Chart(ctx4, {
+				    type: "doughnut",
+				    data: {
+				        labels: xval_4,
+				        datasets: [{
+				        data: yval_4,
+				        datalabels: {
+		                    color: 'black',
+		                    font: {size: 16},
+		            	}}]
+				    },
+				    plugins: [ChartDataLabels],
+				    options: {
+				        responsive: true,
+				        plugins: {
+				            legend: {position: 'top'},
+				            title: {
+				                display: true,
+				                text: "관광지 카테고리별 개수",
+				                font: {size: 20}
+				               },
+				            }
+				        }
+				  });
+	    	/* ---- 4번째 차트 END ----*/
+	    	
+	    	const boxplotData = {
+            labels: ["자연경관", "문화재", "지역관광지", "테마공원"],
+            datasets: [{
+                label: "지역별 관광지 분포 정도",
+                backgroundColor: "rgba(255,0,0,0.5)",
+                borderColor: "red",
+                borderWidth: 1,
+                outlierColor: "#999999",
+                padding: 10,
+                itemRadius: 0,
+                data: [
+                Array(2487,3247,3188,852,835,395,884,937,1949,215,231,132,127,59,127,34,37),
+                Array(698,1664,1671,547,905,825,1907,485,224,786,864,860,234,226,192,286,88),
+                Array(14,53,51,228,51,7,31,60,10,134,86,74,58,15,27,24,9),
+                Array(805,111,793,345,514,406,484,353,490,256,575,175,571,105,193,13,83),
+                ]
+            }]};
+            
+            window.myBar = new Chart(ctx5, {
+                type: "boxplot",
+                data: boxplotData,
+                plugins: [ChartDataLabels],
+                options: {
+                    responsive: true,
+                    layout: {
+                        padding: {
+                            bottom: 25
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {display: false},
+                    tooltip: {position: "left"},
+                    }
+                });
         /*]]>*/
     </script>
 </th:block>
