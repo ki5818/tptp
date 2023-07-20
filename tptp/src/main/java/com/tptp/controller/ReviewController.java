@@ -86,7 +86,7 @@ public class ReviewController {
 	}
 		
 	
-	/* 리뷰 삭제 하기  
+	/* 리뷰 삭제 하기 */ 
 	@RequestMapping(value = "/reviewDelete", method = RequestMethod.GET )
 	public String reviewDelete( @RequestParam("reviewId") String reviewId,
 								@RequestParam("insertPw") String insertPw) throws Exception {
@@ -97,7 +97,7 @@ public class ReviewController {
 		//String url = "redirect:/reviewpopup?placeId=" + delReview.getPlaceId();
 		return null;
 	}
-	*/
+
 	
 	/*
 	@GetMapping("/reviewDelete/getPassword")

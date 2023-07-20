@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="en"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -107,7 +107,7 @@
                     	</li> 
                     	<li class="view_reviewId" hidden>
 							<span>아이디 : </span>
-                        		<span th:text="${r.reviewId}"></span>
+                        		<span class="reviewId" th:text="${r.reviewId}"></span>
                     	</li> 
 						<li class="view_date">
                         	<span class=""> 작성일 :</span>
@@ -116,8 +116,9 @@
                			
                			<li>
 							<div class="mod_del_button">
-								<a role="button"  href="" class="btnModify" style="margin-right: 0;"  >수정</a>
-								<a role="button" href="" class="btnDelete" style="margin-right: 0;"  >삭제</a>
+								<a role="button"  href="#" class="btnModify" style="margin-right: 0;"  >수정</a>
+								<a role="button" href="#" class="btnDelete" style="margin-right: 0;"  >삭제</a>
+								<span class="reviewId" th:text="${r.reviewId}"></span>
 							</div>	   
 						</li>
 					</div>
@@ -137,14 +138,14 @@
 
 	$(document).ready(function(){
 		$('.btnDelete').click(function () {
-			console.log(this);
-			var reviewId = reviewList.reviewId;
-			console.log(reviewId);
-	
+			//$(this).parents('tr').children().eq(3);
+			console.log($(this).next()[0].innerText);
+			var reviewId = $(this).next()[0].innerText;
 			var result = confirm('이 리뷰글을 정말로 삭제하시겠습니까?');
 			
+
 			if(result) {
-	        	var insertPw = prompt('글을 작성하실 때 입력하신 비밀번로를 입력해주세요');
+	        	var insertPw = prompt('글을 작성하실 때 입력하신 비밀번호를 입력해주세요');
 	        	var request = $.ajax({
                           url: "/reviewDelete",
                           type: "GET",

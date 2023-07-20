@@ -26,23 +26,26 @@
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
 input[type="checkbox"] {
-	transform : scale(1.3);
-	margin-right: 10px;
-	}
+   transform : scale(1.3);
+   margin-right: 10px;
+   }
 input[type="checkbox"]:hover + label::after {
-	border: 1px solid #000;
-	transform : scale(1.1);
-	}
+   border: 1px solid #000;
+   transform : scale(1.1);
+   }
 #label {
-	font-weight:bold;
+   font-weight:bold;
 }
 #label:hover {
-	transform : scale(1.1);
+   transform : scale(1.1);
 }
 
 input[type="checkbox"]:checked {
-	content:'✔';
-	accent-color: #ffb727;
-	border: 1px solid #fff;
-	color : #fff;
-	}
+   content:'✔';
+   accent-color: #ffb727;
+   border: 1px solid #fff;
+   color : #fff;
+   }
+.tel:hover {
+   font-weight:bold;
+}
