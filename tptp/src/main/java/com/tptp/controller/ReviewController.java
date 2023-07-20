@@ -1,5 +1,7 @@
 package com.tptp.controller;
 
+import java.io.Console;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.tptp.dto.Review;
 import com.tptp.dto.Tptp;
 import com.tptp.mapper.NewCodeMapper;
 import com.tptp.mapper.ReviewMapper;
 import com.tptp.util.*;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ReviewController {
@@ -85,33 +90,45 @@ public class ReviewController {
 		
 		return "redirect:/app/reviewPopup";
 	}
-		
+	
 	
 	/* 리뷰 삭제 하기 */ 
+	@ResponseBody
 	@RequestMapping(value = "/reviewDelete", method = RequestMethod.GET )
-	public String reviewDelete( @RequestParam("reviewId") String reviewId,
-								@RequestParam("insertPw") String insertPw) throws Exception {
+	public String reviewDelete( 
+								@RequestParam("reviewId") String reviewId,
+							    @RequestParam("insertPw") String insertPw,
+							    @RequestParam("placeId") String placeId) throws Exception {
 		System.out.println("reviewDelete()");
-		System.out.println(reviewId);
+		System.out.println(reviewId); 
 		System.out.println(insertPw);
 		
 		SHA256 sha256 = new SHA256();
         
         //비밀번호
         String password = insertPw;
-        
         //SHA256으로 암호화된 비밀번호
         String cryptogram = sha256.encrypt(password);
         
         System.out.println(cryptogram);
-        String message="";
-        
+        String reviewPassword = reviewMapper.getPassword(reviewId).getPassword();
+        System.out.println(reviewPassword);
         //비밀번호 일치 여부
-        //System.out.println(cryptogram.equals(sha256.encrypt(password)));
-		//reviewMapper.delReviewList(reviewId);
-		//String url = "redirect:/reviewpopup?placeId=" + delReview.getPlaceId();
-		return message;
+        System.out.println(cryptogram.equals(sha256.encrypt(reviewPassword)));
+        
+        String message;
+        
+        if(cryptogram.equals(sha256.encrypt(reviewPassword))) {
+        	reviewMapper.delReviewList(reviewId);
+        	message = "true";
+        }
+        else {
+        	message = "false";
+
+        }
+    	return message;
 	}
+	
 
 	
 	/*

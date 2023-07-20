@@ -18,12 +18,14 @@ public interface ReviewMapper { //인터페이스이다!!!
 	public void modReviewList(String reviewId) throws Exception;
 	
 	//3. 리뷰게시판 데이터 삭제 (Delete)
-	public void delReviewList(Review delReview) throws Exception; 
-	//review dto를 가져오는 게 맞는지 아니면 reviewId를 가져오는 게 맞는지 
+	public void delReviewList(String reviewId) throws Exception; 
 	
 	//4. 리뷰게시판 중 특정 place_id로 리뷰 목록 조회 (Read)
 	public List<Review> getPlaceIDReviewList(String placeId) throws Exception; 
 
 	//5. 리뷰게시판에서 장소를 삽입해 {place}의 리뷰입니다. 라고 select문으로 장소를 구하는 쿼리문
 	public List<Review> getPlaceList() throws Exception;
+	
+	//6. reviewId를 가져오는 쿼리문
+	public Review getPassword(String reviewId) throws Exception; 
 }
