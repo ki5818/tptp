@@ -133,7 +133,9 @@
 
 <script th:inline="javascript">
 	const reviewList = [[${reviewList}]];
-		
+	console.log(reviewList);
+	const placeId = reviewList[0].placeId;
+		console.log(placeId);
 	console.log(reviewList);
 
 	$(document).ready(function(){
@@ -143,19 +145,25 @@
 			var reviewId = $(this).next()[0].innerText;
 			var result = confirm('이 리뷰글을 정말로 삭제하시겠습니까?');
 			
-
 			if(result) {
 	        	var insertPw = prompt('글을 작성하실 때 입력하신 비밀번호를 입력해주세요');
 	        	var request = $.ajax({
                           url: "/reviewDelete",
                           type: "GET",
-                          data: {"reviewId" : reviewId, "insertPw" : insertPw}
+                          data: {"reviewId" : reviewId, "insertPw" : insertPw, "placeId" : placeId}
                   });
                   //성공
                   request.done(function(data){
-                     data.redi
-					
-                     
+					  if(data === "true") {
+						 //삭제 성공시
+						 var url = '/reviewPopup?placeId=' + placeId;
+						//document.location.href = document.location.href;
+                    	 window.open(url, "popup");
+					  } else {
+						  //삭제 실패시
+						  alert('비밀번호가 다릅니다. 다시 입력해주세요');
+					  }
+
                   });
                   //실패
                   request.fail(function(jqXHR, textStatus, viewList){
