@@ -14,10 +14,10 @@
 		<result property="place" column="place" />
 		<result property="region" column="region" />
 		<result property="address" column="address" />
-		<result property="clusterId" column="cluster_id" />
 		<result property="count" column="count" />
 		<result property="count_by_region" column="count_by_region" />
 		<result property="total" column="total" />
+		<result property="distance" column="distance" />
 		<collection property="category" javaType="Category">
 			<id property="categoryId" column="category_id"></id>
 			<result property="categoryName" column="category_name"/>
@@ -29,11 +29,6 @@
 			<result property="photo" column="photo"/>
 			<result property="password" column="password"/>
 			<result property="writeDate" column="write_date"/>
-		</collection>
-		<collection property="cluster" javaType="Cluster">
-			<id property="clusterId" column="cluster_id"></id>
-			<result property="centerLat" column="center_lat"/>
-			<result property="centerLng" column="center_lng"/>
 		</collection>
 	</resultMap>
 	
@@ -85,50 +80,6 @@
 		order BY temp.`count_by_region` DESC;
 		
 	</select>
-	
-	<select id="getRegionCategoryCountNat" resultMap="tptpResultMap" resultType="Tptp">
-		/* 2-1. 지역별 카테고리별 관광지 개수 -> 자연경관 */
-		SELECT t.region, c.category_name, COUNT(t.id) as `count`
-		FROM tptp t
-		INNER JOIN category c
-		ON t.category_id = c.category_id
-		WHERE c.category_id = 'CT1'
-		GROUP BY t.region, c.category_id
-		ORDER BY t.region ASC;
-	</select>
-	
-	<select id="getRegionCategoryCountCul" resultMap="tptpResultMap" resultType="Tptp">
-		/* 2-2. 지역별 카테고리별 관광지 개수 -> 문화재 */
-		SELECT t.region, c.category_name, COUNT(t.id) as `count`
-		FROM tptp t
-		INNER JOIN category c
-		ON t.category_id = c.category_id
-		WHERE c.category_id = 'CT2'
-		GROUP BY t.region, c.category_id
-		ORDER BY t.region ASC;
-	</select>
-	
-	<select id="getRegionCategoryCountThem" resultMap="tptpResultMap" resultType="Tptp">
-		/* 2-3. 지역별 카테고리별 관광지 개수 -> 테마공원 */
-		SELECT t.region, c.category_name, COUNT(t.id) as `count`
-		FROM tptp t
-		INNER JOIN category c
-		ON t.category_id = c.category_id
-		WHERE c.category_id = 'CT3'
-		GROUP BY t.region, c.category_id
-		ORDER BY t.region ASC;
-	</select>
-	
-	<select id="getRegionCategoryCountTour" resultMap="tptpResultMap" resultType="Tptp">
-		/* 2-4. 지역별 카테고리별 관광지 개수 -> 관광지 */
-		SELECT t.region, c.category_name, COUNT(t.id) as `count`
-		FROM tptp t
-		INNER JOIN category c
-		ON t.category_id = c.category_id
-		WHERE c.category_id = 'CT4'
-		GROUP BY t.region, c.category_id
-		ORDER BY t.region ASC;
-	</select>
 		
 	<select id="getCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
 		/* 3. 카테고리별 관광지 개수 */
@@ -137,41 +88,6 @@
 		INNER JOIN category c
 		ON t.category_id = c.category_id
 		GROUP BY c.category_id;
-	</select>
-	
-	<select id="getListOffset" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
-		SELECT
-			t.id,
-			t.category_id,
-			c.category_name,
-			t.detail,
-			t.lat,
-			t.lng,
-			t.place,
-			t.region,
-			t.address,
-			t.cluster_s_id,
-			COUNT(r.review_id) AS `count`,
-			COUNT(t.id) AS total
-		FROM tptp AS t
-		INNER JOIN category c
-		ON t.category_id = c.category_id
-		LEFT JOIN review r
-		ON t.`id` = r.place_id
-		WHERE
-			(cluster_s_id IN
-			<foreach collection="clusterArray" item="item" index="index" separator="," open="(" close=")">
-        		#{item}
-     		</foreach>
-     		)AND(t.category_id = #{category.ct1}
-			  OR t.category_id = #{category.ct2}
-			  OR t.category_id = #{category.ct3}
-			  OR t.category_id = #{category.ct4}
-			)
-		GROUP BY t.`id`
-		ORDER BY `count` DESC, t.`id` ASC
-		LIMIT 10
-		OFFSET #{currentNumber.num};
 	</select>
 	
 	<select id="getRegionList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
@@ -212,5 +128,44 @@
 		GROUP BY t.`id`
 		ORDER BY total DESC;
 	</select>
+	
+		
+	<select id="getListOffset" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
+	/* offset 적용해서 map 리스트 가져오기 */
+		SELECT
+			t.id,
+			t.category_id,
+			c.category_name,
+			t.detail,
+			t.lat,
+			t.lng,
+			t.place,
+			t.region,
+			t.address,
+			t.cluster_s_id,
+			COUNT(r.review_id) AS `count`,
+			COUNT(t.id) AS total,
+			GET_DISTANCE(t.lat, t.lng, #{location.lat}, #{location.lng}) AS distance
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		LEFT JOIN review r
+		ON t.`id` = r.place_id
+		WHERE
+			(cluster_s_id IN
+			<foreach collection="clusterArray" item="item" index="index" separator="," open="(" close=")">
+        		#{item}
+     		</foreach>
+     		)AND(t.category_id = #{category.ct1}
+			  OR t.category_id = #{category.ct2}
+			  OR t.category_id = #{category.ct3}
+			  OR t.category_id = #{category.ct4}
+			)
+		GROUP BY t.`id`
+		ORDER BY distance ASC
+		LIMIT 100
+		OFFSET #{currentNumber.num};
+	</select>
+	
 	
 </mapper>
