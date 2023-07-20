@@ -46,3 +46,6 @@ input[type="checkbox"]:checked {
 	border: 1px solid #fff;
 	color : #fff;
 	}
+.tel:hover {
+	font-weight:bold;
+}

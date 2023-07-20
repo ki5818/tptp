@@ -19,7 +19,9 @@ public interface MapService {
 	// 지역명 기준으로 관광지 리스트
 	public List<Tptp> getRegionList(String region, String category) throws Exception;
 	
+	// 클러스터링
 	public ArrayList<String> getClusterList(double geoLat, double geoLng) throws Exception;
 	
-	
+	// 거리 계산 및 sort
+	public List<Tptp> CalDistAndSort(List<Tptp> viewList, double geoLat, double geoLng) throws Exception;
 }

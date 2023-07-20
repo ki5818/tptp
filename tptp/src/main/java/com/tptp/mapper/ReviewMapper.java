@@ -2,7 +2,6 @@ package com.tptp.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import org.junit.validator.PublicClassValidator;
 
 import com.tptp.dto.Review;
 

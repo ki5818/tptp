@@ -1,6 +1,7 @@
 package com.tptp.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,11 +58,16 @@ public class MapServiceImpl implements MapService {
 		int num = (currentNum - 1) * 10;
 		currentNumber.put("num", num);
 		
-		List<Tptp> totalList = tptpMapper.getTotal(category, clusterArray);
-		System.out.println(totalList.get(0).getTotal());		
+		int total = tptpMapper.getTotal(category, clusterArray).get(0).getTotal();
+		System.out.println(total);
+		
 		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray);
-		viewList.get(0).setTotal(totalList.get(0).getTotal());
+		
+		for(int i=0; i<viewList.size(); i++) {
+			viewList.get(i).setTotal(total);
+		}
 		System.out.println(viewList);
+
 
 		return viewList;
 	}
@@ -177,5 +183,22 @@ public class MapServiceImpl implements MapService {
 		  
 		return cluster_s_list;
 		
+	}
+	
+	@Override
+	public List<Tptp> CalDistAndSort(List<Tptp> viewList, double geoLat, double geoLng) throws Exception {
+		System.out.println(viewList.toString());
+		
+		// distance 계산
+		for(int i = 0; i < viewList.size(); i++) {
+			viewList.get(i).setDistance(Distance.distanceInKilometerByHaversine(geoLat, geoLng, viewList.get(i).getLat(), viewList.get(i).getLng()));
+		}
+		
+		System.out.println(viewList.toString());
+		
+		// 오름차순 정렬
+		viewList.sort(Comparator.naturalOrder());
+		
+		return viewList;
 	}
 }

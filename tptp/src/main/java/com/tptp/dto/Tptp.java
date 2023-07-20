@@ -1,7 +1,10 @@
 package com.tptp.dto;
 import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-public class Tptp {
+public class Tptp implements Comparable<Tptp> {
 	private String id;
 	private String categoryId;
 	private String detail;
@@ -13,8 +16,15 @@ public class Tptp {
 	private String clusterSId;
 	private int count;
 	private int count_by_region;
-	private int total;	
+	private int total;
+	private double distance;
 
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
 	public int getTotal() {
 		return total;
 	}
@@ -118,13 +128,25 @@ public class Tptp {
 	public void setCluster(Cluster cluster) {
 		this.cluster = cluster;
 	}
-	@Override
+	
+	 @Override
 	public String toString() {
 		return "Tptp [id=" + id + ", categoryId=" + categoryId + ", detail=" + detail + ", lat=" + lat + ", lng=" + lng
 				+ ", place=" + place + ", region=" + region + ", address=" + address + ", clusterSId=" + clusterSId
-				+ ", count=" + count + ", count_by_region=" + count_by_region + ", total=" + total + ", pageInfo="
-				+ pageInfo + ", category=" + category + ", review=" + review + ", cluster=" + cluster + "]";
+				+ ", count=" + count + ", count_by_region=" + count_by_region + ", total=" + total + ", distance="
+				+ distance + ", pageInfo=" + pageInfo + ", category=" + category + ", review=" + review + ", cluster="
+				+ cluster + "]";
 	}
+	@Override
+	 public int compareTo(Tptp tptp) {
+        if (tptp.distance < distance) {
+            return 1;
+        }
+        else if (tptp.distance > distance) {
+            return -1;
+        }
+        return 0;
+    }
 	
 	
 }

@@ -2,6 +2,7 @@ package com.tptp.controller;
 
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MapController {
 	private final MapService mapService;
 	private final TptpMapper tptpMapper;
 	
-	private static final Integer POSTS_PER_PAGE = 10; // 한 페이지당 보여줄 리스트의 수
+	private static final Integer POSTS_PER_PAGE = 100; // 한 페이지당 보여줄 리스트의 수
 	private static final Integer PAGES_PER_BLOCK = 10;// 하단에 보여줄 페이징의 개수 ex) 10 이면 아래에 1~ 10까지 보이고 다음페이지는 다음을 눌러야 넘어감
 	
 	
@@ -88,6 +89,9 @@ public class MapController {
 		if(clusterArray == null) return viewList;
 		
 		viewList = mapService.getViewList(checkedList, currentNum, clusterArray);
+		viewList = mapService.CalDistAndSort(viewList, selectLat, selectLng);
+		
+		
 		return viewList;
 	}
 	
