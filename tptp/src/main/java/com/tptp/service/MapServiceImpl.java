@@ -1,14 +1,13 @@
 package com.tptp.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.tptp.dto.Cluster;
 import com.tptp.dto.ClusterL;
 import com.tptp.dto.ClusterM;
 import com.tptp.dto.ClusterS;
@@ -57,15 +56,17 @@ public class MapServiceImpl implements MapService {
 		int num = (currentNum - 1) * 10;
 		currentNumber.put("num", num);
 		
-		// 리스트 총 길이 계산
-		List<Tptp> totalList = tptpMapper.getTotal(category, clusterArray);
-		System.out.println(totalList.get(0).getTotal());
+		int total = tptpMapper.getTotal(category, clusterArray).get(0).getTotal();
+		System.out.println(total);
 		
 		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray, location);
 		
-		viewList.get(0).setTotal(totalList.get(0).getTotal());
+		for(int i=0; i<viewList.size(); i++) {
+			viewList.get(i).setTotal(total);
+		}
 		
 		System.out.println(viewList);
+
 
 		return viewList;
 	}

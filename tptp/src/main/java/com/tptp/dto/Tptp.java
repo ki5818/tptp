@@ -1,46 +1,6 @@
 package com.tptp.dto;
-import java.util.Map;
 
 public class Tptp {
-	private String id;
-	private String categoryId;
-	private String detail;
-	private double lat;
-	private double lng;
-	private String place;
-	private String region;
-	private String address;
-	private String clusterSId;
-	private int count;
-	private int count_by_region;
-	private int total;
-	private int distance;
-
-	public int getDistance() {
-		return distance;
-	}
-	public void setDistance(int distance) {
-		this.distance = distance;
-	}
-	public int getTotal() {
-		return total;
-	}
-	public void setTotal(int total) {
-		this.total = total;
-	}
-	public int getCount_by_region() {
-		return count_by_region;
-	}
-	public void setCount_by_region(int count_by_region) {
-		this.count_by_region = count_by_region;
-	}
-
-	private Map<String, Object> pageInfo;
-	
-	Category category;
-	Review review;
-	Cluster cluster;
-	
 	public String getId() {
 		return id;
 	}
@@ -101,12 +61,40 @@ public class Tptp {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public Map<String, Object> getPageInfo() {
-		return pageInfo;
+	public int getCount_by_region() {
+		return count_by_region;
 	}
-	public void setPageInfo(Map<String, Object> pageInfo) {
-		this.pageInfo = pageInfo;
+	public void setCount_by_region(int count_by_region) {
+		this.count_by_region = count_by_region;
 	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+	private String id;
+	private String categoryId;
+	private String detail;
+	private double lat;
+	private double lng;
+	private String place;
+	private String region;
+	private String address;
+	private String clusterSId;
+	private int count;
+	private int count_by_region;
+	private int total;
+	private double distance;
+	
+	Category category;
+	Review review;
 	public Category getCategory() {
 		return category;
 	}
@@ -119,19 +107,8 @@ public class Tptp {
 	public void setReview(Review review) {
 		this.review = review;
 	}
-	public Cluster getCluster() {
-		return cluster;
-	}
-	public void setCluster(Cluster cluster) {
-		this.cluster = cluster;
-	}
-	@Override
-	public String toString() {
-		return "Tptp [id=" + id + ", categoryId=" + categoryId + ", detail=" + detail + ", lat=" + lat + ", lng=" + lng
-				+ ", place=" + place + ", region=" + region + ", address=" + address + ", clusterSId=" + clusterSId
-				+ ", count=" + count + ", count_by_region=" + count_by_region + ", total=" + total + ", pageInfo="
-				+ pageInfo + ", category=" + category + ", review=" + review + ", cluster=" + cluster + "]";
-	}
+	
+
 	
 	
 }
