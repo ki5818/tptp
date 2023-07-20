@@ -3,15 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tptp.mapper.NewCodeMapper">
-	<select id="getCommonNewCode" parameterType="String" resultType="String">
+	<!-- review_id를 만들기 위한 쿼리문 -->
+	<select id="getCommonNewCode" resultType="String">
 		SELECT
 			CASE
-				WHEN COUNT(1) = 0 THEN CONCAT(SUBSTRING(#{tableName}, 4), '1')
+				WHEN COUNT(1) = 0 THEN CONCAT(SUBSTRING('review', 10), '1')
 			ELSE
-				CONCAT(
-					SUBSTRING(#{tableName}, 4), MAX(CAST(SUBSTRING(${columName},LENGTH(SUBSTRING(#{tableName}, 4)) + 1) AS UNSIGNED)) + 1)
+				CONCAT('review_id', MAX(CAST(SUBSTRING(review_id, 10) AS UNSIGNED)) + 1)
 			END AS newCode
 		FROM
-			${tableName};
+			review;
 	</select>
 </mapper>
