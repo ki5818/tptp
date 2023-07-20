@@ -64,8 +64,32 @@
 				</li>
 			</ul><br/><br/>
    			<div class="container">
+  				<div class="col-md-12 chart1 btn-group" role="group" aria-label="Basic radio toggle button group">
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio" autocomplete="off" checked>
+				  <label class="btn btn-outline-primary" for="btnradio">오름차순</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio0">내림차순</label>
+				</div>
 		       	<div class="col-md-12 chart1">
 					<div class="chart-box-1 chart-box"><canvas id="chart1" style="width:100%; height:100%"></canvas></div>
+				</div>
+				<div class="col-md-12 chart2 btn-group" role="group" aria-label="Basic radio toggle button group">
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+				  <label class="btn btn-outline-primary" for="btnradio1">오름차순</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio2">내림차순</label>
+				</div>
+				<div class="col-md-12 chart2 btn-group" role="group" aria-label="Basic radio toggle button group">
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked>
+				  <label class="btn btn-outline-primary" for="btnradio3">자연경관</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio4">문화재</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+  				  <label class="btn btn-outline-primary" for="btnradio5">테마파크</label>
+  				  <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+  				  <label class="btn btn-outline-primary" for="btnradio6">관광지</label>
+  				  <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+  				  <label class="btn btn-outline-primary" for="btnradio7">관광지</label>
 				</div>
 				<div class="row">
 	       			<div class="col-md-6 chart2">
@@ -243,10 +267,14 @@
 			  			tourCounts.push(regionCategoryCount[i].count);
 			  		}
 			  	}
-
-			  		removedCategory = [];
-			  		
-					// ajax를 이용하여 legend click event를 처리합니다.
+			  	let ct1=false, ct2=false, ct3=false, ct4=false;
+			  	let removedCategory = {
+			  		"ct1" : ct1,
+			  		"ct2" : ct2,
+			  		"ct3" : ct3,
+			  		"ct4" : ct4
+			  	}
+			  	function doAjax() {
 				    var request = $.ajax({
 				           url: "/changeLegend",
 				           type: "GET",
@@ -263,19 +291,24 @@
 					  	themCounts = [];
 					  	tourCounts = [];
 					  	
-					  	// 각각 카테고리 리스트를 넘겨서 차트를 그립니다.
-					  	drawChart2(xval_2, natCounts, culCounts, themCounts, tourCounts);
-					  	
-						
+					  	// 각각 카테고리 리스트를 넘겨서 차트를 그립니다. 차트 옵션을 변경
+					  	//
+					  	//myChart2 = drawChart2(xval_2, natCounts, culCounts, themCounts, tourCounts)
+					  	//myChart2.update();
+
 					});
 					//실패
 					request.fail(function(jqXHR, textStatus, viewList){
 							console.log('Request failed: ' + textStatus);
 					});
+					
+			  	}
+
 	
 			  	function drawChart2(xval_2, natCounts, culCounts, themCounts, tourCounts) {
 			  		
-			  	} 
+			  	}
+			  	
 		        const myChart2 = new Chart(ctx2, {
 		            type: 'bar',
 		            data: {
@@ -310,45 +343,52 @@
 		                        text: "국내 관광요소 유형별 지역 분포도",
 		                        font: {size: 20}
 		                    },
-		                    beforeDraw: function(chart) {
-		                        console.log('Chart is being drawn.');
-		                        // 여기에 원하는 동작을 추가합니다.
-		                      }
 		                },
 		                scales: {
-		                    x: {
-		                        stacked: true
-		                    },
-		                    y: {
-		                        stacked: true
-		                        
-		                    }
+		                    x: { stacked: true },
+		                    y: { stacked: true }
 		                },
-		                onResize: function(chart, size) {
-		                    console.log('Chart is resized.');
-		                    // 여기에 원하는 동작을 추가합니다.
-		                  },
-		                onClick: function(e) {
-		                	console.log(myChart2);
-		                    var legendItems = myChart2.legend;
-					        	console.log(legendItems);
-					        	console.log('Legend item clicked:', myChart2.legend.legendItems[0].hidden);
-		                    
-		                    
+	                    onHover: function (e) {
+	                    	var find = myChart2.legend;
+	                    	console.log("호버발생");
+	                        // Check if legend items are hidden
+                            if (find.legendItems[0].hidden != ct1) {
+                            	ct1 = !ct1;
+                                console.log('Legend item change:', find.legendItems[0].text, ct1);
+                                removedCategory["ct1"] = ct1;
+                                doAjax();
+                            }
+                            else if(find.legendItems[1].hidden != ct2) {
+                            	ct2 = !ct2;
+                                console.log('Legend item change:', find.legendItems[1].text, ct2);
+                                removedCategory["ct2"] = ct2;
+                            }
+                            else if(find.legendItems[2].hidden != ct3) {
+                            	ct3 = !ct3;
+                                console.log('Legend item change:', find.legendItems[2].text, ct3);
+                                removedCategory["ct3"] = ct3;
+                            }
+                            else if(find.legendItems[3].hidden != ct4) {
+                            	ct4 = !ct4;
+                                console.log('Legend item change:', find.legendItems[3].text, ct4);
+                                removedCategory["ct4"] = ct4;
+                            }
+                            else {
+                            	console.log("변화없음");
+                            }
+	                    },
+		                
+		                onClick: function(e) {                   
 		                    var activePoints = myChart2.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
 		                    if (activePoints.length > 0) {
 		                      var datasetIndex = activePoints[0].datasetIndex;
 		                      category = myChart2.data.datasets[datasetIndex].label;
-		                      
 		                      console.log('Selected Dataset Label:', category);
 		                      
 		                      var selectedIndex = activePoints[0].index;
 		                      region = myChart2.data.labels[selectedIndex];
-		                      
-		                      var selectedYValue = myChart2.data.datasets[activePoints[0].datasetIndex].data[selectedIndex];
-		                      console.log(selectedYValue);                     
-		                      
 		                      console.log('Selected Label:', region);
+		                      
 		                      var url = '/mapPopup?region=' + region + '&category=' + category;
 		                      
 		                      window.open(url, "popup", "width=1000, height=500");
@@ -369,12 +409,11 @@
 		        	  console.log('Legend item hidden:', meta.hidden);
 		        	};
 		        });
+		        myChart2.update();
 
-
-		        
 		        /* ---- 2번째 차트 END ----*/
 		        
-		                // chart #3
+		// chart #3
         const myChart3 = new Chart(ctx3, {
             type: "bar",
             data: {
