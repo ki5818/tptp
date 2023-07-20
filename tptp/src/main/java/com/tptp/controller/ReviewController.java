@@ -104,12 +104,13 @@ public class ReviewController {
         String cryptogram = sha256.encrypt(password);
         
         System.out.println(cryptogram);
+        String message="";
         
         //비밀번호 일치 여부
         //System.out.println(cryptogram.equals(sha256.encrypt(password)));
 		//reviewMapper.delReviewList(reviewId);
 		//String url = "redirect:/reviewpopup?placeId=" + delReview.getPlaceId();
-		return null;
+		return message;
 	}
 
 	

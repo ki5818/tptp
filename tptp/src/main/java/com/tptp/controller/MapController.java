@@ -2,6 +2,7 @@ package com.tptp.controller;
 
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -87,7 +88,12 @@ public class MapController {
 		}
 		if(clusterArray == null) return viewList;
 		
-		viewList = mapService.getViewList(checkedList, currentNum, clusterArray);
+		Map<String, Double> location = new HashMap<String, Double>();
+		location.put("lat", selectLat);
+		location.put("lng", selectLng);
+		
+		viewList = mapService.getViewList(checkedList, currentNum, clusterArray, location);
+		
 		return viewList;
 	}
 	
