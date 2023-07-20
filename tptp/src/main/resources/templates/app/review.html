@@ -91,10 +91,6 @@
 		   	</div>
 		   	
 			<div class="review_area">
-            <form action="" method="get" enctype="multipart/form-data">
-				<div class="review_write">
-					<p onclick="openPopup()">리뷰작성하기</p>
-				</div>
                 <ul class="area_card_item" th:each="r : ${reviewList}">
                     <li class="" th:text = "${r.contents}"></li>  
 					<div class="place_date">
@@ -110,8 +106,6 @@
                     	</li>
 					</div>   	
 				</ul>
-
-            </form>
             </div>
         </div>
     </div>

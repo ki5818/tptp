@@ -232,18 +232,18 @@
                              displayInfowindow(marker, title);
                          });
 
-                         kakao.maps.event.addListener(marker, 'mouseout', function() {
-                             infowindow.close();
-                         });
-                         
-                         // 리스트에서 클릭시 그 마커로 중심좌표가 이동합니다.
-                         // @todo 중심좌표로 이동 후 그 주위에 있는 관광지 표시
-                         // 리스트 클릭시 팝업창 생성
-                         // @todo 리뷰게시판으로 이동
-                         itemEl.addEventListener('click', function() {
-                            var thisLat = $(this).find('.thisLat')[0].innerText;
-                            var thisLng = $(this).find('.thisLng')[0].innerText;
-                            var placeId = $(this).find('.placeId')[0].innerText;
+			                kakao.maps.event.addListener(marker, 'mouseout', function() {
+			                    infowindow.close();
+			                });
+			                
+			                // 리스트에서 클릭시 그 마커로 중심좌표가 이동합니다.
+			                // @todo 중심좌표로 이동 후 그 주위에 있는 관광지 표시
+			                // 리스트 클릭시 팝업창 생성
+			                // @todo 리뷰게시판으로 이동
+			                itemEl.addEventListener('click', function() {
+			                	var thisLat = $(this).find('.thisLat')[0].innerText;
+			                	var thisLng = $(this).find('.thisLng')[0].innerText;
+			                	var placeId = $(this).find('.placeId')[0].innerText;
 
                         var thisPosition = new kakao.maps.LatLng(thisLat, thisLng);
                             map.setCenter(thisPosition);
@@ -254,6 +254,7 @@
                      });
                          
                      })(marker, viewList[i].place);
+
 
                      fragment.appendChild(itemEl);
                  }

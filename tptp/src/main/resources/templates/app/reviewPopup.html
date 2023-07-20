@@ -85,16 +85,19 @@
 			<!--리뷰 작성 폼(addReview) -->
             <form th:action="@{/reviewWrite}" method="post">
 				<div class="review_write">
-					<textarea name="contents" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100"></textarea>
-					<input type="text" name="placeId" th:value="${placeId}">
-					<input type="password" name="password">
+					<textarea name="contents" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100" style="width: 100%; height: 80px; box-sizing: border-box; overflow: hidden;"></textarea>
+					<input type="text" name="placeId" th:value="${placeId}" hidden>
+					<input type="password" name="password" placeholder="비밀번호">
 					<input type="submit" class="write_submit" value="입력하기">
 					
 				</div>
 			</form>
 			<hr>
                 <ul class="area_card_item" th:if="${not #lists.isEmpty(reviewList)}" th:each="r : ${reviewList}">
-                    <li class="" th:text = "${r.contents}"></li>  
+                    <li>
+						<textarea class="contents_mod" th:text = "${r.contents}" maxlength="100" style="width: 100%; height: 80px; box-sizing: border-box; overflow: hidden;" disabled></textarea>
+							
+					</li>  
 					<div class="place_date">
 						<li class="view_place">
 							<span>장소 : </span>
@@ -102,7 +105,7 @@
                         		<span th:text="*{place}"></span>
 					      	</th:block>
                     	</li> 
-                    	<li class="view_reviewId">
+                    	<li class="view_reviewId" hidden>
 							<span>아이디 : </span>
                         		<span th:text="${r.reviewId}"></span>
                     	</li> 
@@ -110,9 +113,12 @@
                         	<span class=""> 작성일 :</span>
                         	<span th:text="${r.writeDate}"></span>    
                     	</li>
-               
-                    	<li class="delete_review">
-							<button class="btnDelete" style="margin-right:0"; >삭제</button>
+               			
+               			<li>
+							<div class="mod_del_button">
+								<a role="button"  href="" class="btnModify" style="margin-right: 0;"  >수정</a>
+								<a role="button" href="" class="btnDelete" style="margin-right: 0;"  >삭제</a>
+							</div>	   
 						</li>
 					</div>
 				</ul>
@@ -126,7 +132,7 @@
 
 <script th:inline="javascript">
 	const reviewList = [[${reviewList}]];
-	
+		
 	console.log(reviewList);
 
 	$(document).ready(function(){
@@ -147,6 +153,7 @@
                   //성공
                   request.done(function(){
                      console.log("success");
+					
                      
                   });
                   //실패

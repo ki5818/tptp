@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tptp.dto.Review;
 import com.tptp.dto.Tptp;
@@ -53,7 +54,8 @@ public class ReviewController {
 		return url;
 	}
 	
-	/*getPlaceID 받아오기*/
+
+	/*getPlaceID 받아와서 팝업창에 그 place의 리뷰만 뜨게 하기*/
 	
 	@RequestMapping(value = "/reviewPopup", method = RequestMethod.GET )
 	public String reviewPopup(Model model,
@@ -67,19 +69,47 @@ public class ReviewController {
 
 	}
 	
-	/* 리뷰 삭제 하기  */
+	/* 게시글 수정하기 */
+	
+	@RequestMapping(value = "/reviewModify" , method = RequestMethod.GET)
+	public String reviewModify(@RequestParam("reviewId") String reviewId,
+								@RequestParam("insertPw") String insertPw ,
+								@RequestParam("placeId") String placeId , Model model) throws Exception {
+		reviewMapper.modReviewList(reviewId);
+		
+		List<Review> reviewList = reviewMapper.getPlaceIDReviewList(placeId);
+		
+		model.addAttribute("reviewId", reviewId);
+		model.addAttribute(insertPw, insertPw);
+		
+		return "redirect:/app/reviewPopup";
+	}
+		
+	
+	/* 리뷰 삭제 하기  
 	@RequestMapping(value = "/reviewDelete", method = RequestMethod.GET )
 	public String reviewDelete( @RequestParam("reviewId") String reviewId,
 								@RequestParam("insertPw") String insertPw) throws Exception {
 		System.out.println("reviewDelete()");
 		System.out.println(reviewId);
+		System.out.println(insertPw);
 		//reviewMapper.delReviewList(reviewId);
 		//String url = "redirect:/reviewpopup?placeId=" + delReview.getPlaceId();
 		return null;
-		
-		/*삭제를 할 때 삭제가 되고 다시 팝업창이 떠야?하는데 이렇게 하는게
-		 맞는 지... placeId를 받아오지 못하는 것 같다. */
 	}
+	*/
+	
+	/*
+	@GetMapping("/reviewDelete/getPassword")
+	@ResponseBody
+	private Review getPassword(@RequestParam("reviewId") String reviewId, @RequestParam("password") String password, Model model) throws Exception{	
+		Review delReview = new Review();
+		delReview.setReviewId(reviewId);
+		Review 
+		BoardDto result = boardservice.getContentByidx(boardDto);
+		return result;	
+	}
+ 	*/
 	
 
 }

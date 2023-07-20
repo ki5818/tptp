@@ -40,4 +40,6 @@ public interface TptpMapper {
 	
 	public List<Tptp> getRegionList(String region) throws Exception;
 	
+	
+	
 }
