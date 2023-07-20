@@ -1,5 +1,6 @@
 package com.tptp.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +34,14 @@ public interface TptpMapper {
 	public List<Tptp> getCategoryCount() throws Exception;
 	
 	// paging 처리를 위한 mapper
-	public List<Tptp> getListOffset(Map<String, String> category , Map<String, Integer> currentNumber) throws Exception;
+	public List<Tptp> getListOffset(Map<String, String> category , Map<String, Integer> currentNumber, ArrayList<String> clusterArray) throws Exception;
 	
 	// 4. 지역명, 카테고리명 기준으로 관광지 리스트
 	public List<Tptp> getRegionAndCategoryList(String region, String categoryId) throws Exception;
 	
 	public List<Tptp> getRegionList(String region) throws Exception;
+	
+	public List<Tptp> getTotal(Map<String, String> category, ArrayList<String> clusterArray) throws Exception;
 	
 	
 	

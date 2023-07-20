@@ -5,7 +5,7 @@ public class ClusterM {
 	private double latCenter;
 	private double lngCenter;
 	private double dist;
-	private double clusterLId;
+	private String clusterLId;
 	private double avg;
 	
 	
@@ -39,10 +39,10 @@ public class ClusterM {
 	public void setDist(double dist) {
 		this.dist = dist;
 	}
-	public double getClusterLId() {
+	public String getClusterLId() {
 		return clusterLId;
 	}
-	public void setClusterLId(double clusterLId) {
+	public void setClusterLId(String clusterLId) {
 		this.clusterLId = clusterLId;
 	}
 	

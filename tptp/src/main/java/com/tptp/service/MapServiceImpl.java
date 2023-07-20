@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.tptp.dto.Cluster;
 import com.tptp.dto.ClusterL;
 import com.tptp.dto.ClusterM;
+import com.tptp.dto.ClusterS;
 import com.tptp.dto.Tptp;
 import com.tptp.mapper.ClusterMapper;
 import com.tptp.mapper.TptpMapper;
@@ -37,7 +38,7 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum) throws Exception {
+	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, ArrayList<String> clusterArray) throws Exception {
 
 		Map<String, String> category = new HashMap<String, String>();
 		Map<String, Integer> currentNumber = new HashMap<String, Integer>();
@@ -55,8 +56,11 @@ public class MapServiceImpl implements MapService {
 		}
 		int num = (currentNum - 1) * 10;
 		currentNumber.put("num", num);
-
-		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber);
+		
+		List<Tptp> totalList = tptpMapper.getTotal(category, clusterArray);
+		System.out.println(totalList.get(0).getTotal());		
+		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray);
+		viewList.get(0).setTotal(totalList.get(0).getTotal());
 		System.out.println(viewList);
 
 		return viewList;
@@ -88,74 +92,90 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public void getClusterList() throws Exception {
+	public ArrayList<String> getClusterList(double geoLat, double geoLng) throws Exception {
+		
 		double distL = clusterMapper.getAverageDistLarge().getAvg();
 		double distM = clusterMapper.getAverageDistMedium().getAvg();
 		double distS = clusterMapper.getAverageDistSmall().getAvg();
 		
-		  double ratio_l = distL / distS;
-		  double ratio_m = distM / distS;
+		double ratio_l = distL / distS;
+		double ratio_m = distM / distS;
+		ArrayList<String> cluster_l_list = new ArrayList<>();
+		ArrayList<String> cluster_m_list = new ArrayList<>();
+		ArrayList<String> cluster_s_list = new ArrayList<>();
 		  
-		  // 현재위치 혹은 클릭위치 받아옴
-		  double geoLat = 37.59698674; 
-		  double geoLng = 126.9539447;
-		  int criterion = 30; // 범위 km
-		  
-		  List<ClusterL> rowL = clusterMapper.getClusterLarge();
+		// 현재위치 혹은 클릭위치 받아옴
+		int criterion = 10; // 범위 km
+		double lat;
+		double lng;
+		double dist;
+		double distance;
+		List<ClusterL> rowL;
+		List<ClusterM> rowM;
+		List<ClusterS> rowS;
 		
-		  ArrayList<String> cluster_l_list = new ArrayList<>();
+		rowL = clusterMapper.getClusterLarge();
 		  
-		  double lat;
-		  double lng;
-		  double dist;
-		  double distance;
+		for(int i = 0; i < rowL.size(); i++) {
+			lat = rowL.get(i).getLatCenter();
+			lng = rowL.get(i).getLngCenter();
+			dist = rowL.get(i).getDist();
+			distance = Distance.distanceInKilometerByHaversine(lat, lng, geoLat, geoLng);
+			if(Math.abs(distance - dist) < criterion * ratio_l) {
+			 cluster_l_list.add((String)rowL.get(i).getClusterLId()); 
+			}
+		}
+		System.out.println("cluster_l_list");
+		System.out.println(cluster_l_list);
+		if(cluster_l_list.isEmpty()) {
+			return null;
+		}
+		
+		try {
+			rowM = clusterMapper.getClusterMedium(cluster_l_list);
+		} catch (Exception SQLSyntaxErrorException) {
+			System.out.println("반경 (criterion * ratio_l)km이내에 관광지가 없습니다.");
+			return cluster_s_list;
+		}
 		  
-		  for(int i = 0; i < rowL.size(); i++) {
-			  lat = rowL.get(i).getLatCenter();
-			  lng = rowL.get(i).getLngCenter();
-			  dist = rowL.get(i).getDist();
-			  distance = Distance.distanceInKilometerByHaversine(lat, lng, geoLat, geoLng);
-			  if(Math.abs(distance - dist) < criterion * ratio_l) {
-				  cluster_l_list.add((String)rowL.get(i).getClusterLId()); 
-			  }
-		  }
-		  System.out.println(cluster_l_list);
-		  System.out.println(cluster_l_list.size());
+		for(int i = 0; i < rowM.size(); i++) {
+			lat = rowM.get(i).getLatCenter();
+			lng = rowM.get(i).getLngCenter();
+			dist = rowM.get(i).getDist();
+			distance = Distance.distanceInKilometerByHaversine(lat, lng, geoLat, geoLng);
+			if(Math.abs(distance - dist) < criterion * ratio_m) {
+				cluster_m_list.add((String)rowM.get(i).getClusterMId());
+			}
+		}
+		
+		if(cluster_m_list.isEmpty()) {
+			return null;
+		}
+		
+		try {
+			rowS = clusterMapper.getClusterSmall(cluster_m_list);
+		} catch (Exception SQLSyntaxErrorException) {
+			System.out.println("반경 (criterion * ratio_m)km이내에 관광지가 없습니다.");
+			return cluster_s_list;
+		}
+		
 		  
+		for(int i = 0; i < rowS.size(); i++) {
+			lat = rowS.get(i).getLatCenter();
+			lng = rowS.get(i).getLngCenter();
+			dist = rowS.get(i).getDist();
+			distance = Distance.distanceInKilometerByHaversine(lat, lng, geoLat, geoLng);
+			if(Math.abs(distance - dist) < criterion) {
+				cluster_s_list.add((String)rowS.get(i).getClusterSId()); 
+			}
+		}
+				
+		if(cluster_s_list.isEmpty()) {
+			System.out.println("반경 10km이내에 관광지가 없습니다.");
+			return cluster_s_list;
+		}
 		  
-		  System.out.println(cluster_l_list);
-		  
-		  List<ClusterM> rowM = clusterMapper.getClusterMedium(cluster_l_list);
-		  
-		  ArrayList<String> cluster_m_list = new ArrayList<>();
-		  
-		  for(int i = 0; i < rowM.size(); i++) {
-			  lat = rowM.get(i).getLatCenter();
-			  lng = rowM.get(i).getLngCenter();
-			  dist = rowM.get(i).getDist();
-			  distance = Distance.distanceInKilometerByHaversine(lat, lng, geoLat, geoLng);
-			  if(Math.abs(distance - dist) < criterion * ratio_m) {
-				  cluster_m_list.add((String)rowM.get(i).getClusterMId());
-			  }
-		  }
-		  
-		  System.out.println(cluster_m_list);
-		  
-		  List<ClusterM> rowS = clusterMapper.getClusterMedium(cluster_m_list);
-		  
-		  System.out.println(rowS);
-		  
-		  ArrayList<String> cluster_s_list = new ArrayList<>();
-		  
-		  for(int i = 0; i < rowS.size(); i++) {
-			  lat = rowS.get(i).getLatCenter();
-			  lng = rowS.get(i).getLngCenter();
-			  dist = rowS.get(i).getDist();
-			  distance = Distance.distanceInKilometerByHaversine(lat, lng, geoLat, geoLng);
-			  if(Math.abs(distance - dist) < criterion) {
-				  cluster_s_list.add((String)rowS.get(i).getClusterMId()); 
-			  }
-		  }
-
+		return cluster_s_list;
+		
 	}
 }
