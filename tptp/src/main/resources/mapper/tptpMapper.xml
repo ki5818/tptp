@@ -18,6 +18,10 @@
 		<result property="count_by_region" column="count_by_region" />
 		<result property="total" column="total" />
 		<result property="distance" column="distance" />
+		<result property="CT1" column="CT1" />
+		<result property="CT2" column="CT2" />
+		<result property="CT3" column="CT3" />
+		<result property="CT4" column="CT4" />
 		<collection property="category" javaType="Category">
 			<id property="categoryId" column="category_id"></id>
 			<result property="categoryName" column="category_name"/>
@@ -165,6 +169,30 @@
 		ORDER BY distance ASC
 		LIMIT 100
 		OFFSET #{currentNumber.num};
+	</select>
+	<select id="makeBoxPlot" resultMap="tptpResultMap" resultType="Tptp">
+		SELECT
+		   t2.region AS `region`,
+		   MAX(if(t1.category_id = 'CT1', `cnt`, 0)) AS 'CT1',
+		   MAX(if(t1.category_id = 'CT2', `cnt`, 0)) AS 'CT2',
+		   MAX(if(t1.category_id = 'CT3', `cnt`, 0)) AS 'CT3',
+		   MAX(if(t1.category_id = 'CT4', `cnt`, 0)) AS 'CT4'
+		FROM
+		   (
+		      SELECT region, category_id, SUM(1) AS `cnt`
+		      FROM tptp t
+		      GROUP BY region, category_id
+		   ) t1
+		RIGHT OUTER JOIN tptp t2
+		ON t1.region = t2.region
+		GROUP BY t2.region;
+	</select>
+	
+	<select id="getDetailCount" resultMap="tptpResultMap" resultType="Tptp">
+		SELECT category_id, detail, COUNT(`id`) AS `count`
+		FROM tptp t
+		GROUP BY category_id, detail
+		ORDER BY `count` DESC;
 	</select>
 	
 	
