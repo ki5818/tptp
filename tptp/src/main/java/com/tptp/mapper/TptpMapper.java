@@ -43,6 +43,9 @@ public interface TptpMapper {
 	
 	public List<Tptp> getTotal(Map<String, String> category, ArrayList<String> clusterArray) throws Exception;
 	
+	public List<Tptp> makeBoxPlot() throws Exception;
+	
+	public List<Tptp> getDetailCount() throws Exception;
 	
 	
 }

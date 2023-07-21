@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tptp.dto.Review;
 import com.tptp.dto.Tptp;
 import com.tptp.mapper.ReviewMapper;
+import com.tptp.mapper.TptpMapper;
 import com.tptp.service.MainService;
 
 
@@ -23,11 +24,13 @@ public class MainController {
 	
 	private MainService mainService;
 	private ReviewMapper reviewMapper;
+	private TptpMapper tptpMapper;
 	
 	@Autowired
-	public MainController(MainService mainService, ReviewMapper reviewMapper) {
+	public MainController(MainService mainService, ReviewMapper reviewMapper, TptpMapper tptpMapper) {
 		this.mainService = mainService;
 		this.reviewMapper = reviewMapper;
+		this.tptpMapper = tptpMapper;
 	}
 	
 	/**
@@ -61,6 +64,68 @@ public class MainController {
 		List<Tptp> categoryCount = mainService.getCategoryCount();
 		model.addAttribute("categoryCount", categoryCount);
 		System.out.println(categoryCount);
+		
+		List<Tptp> makeBoxPlot = tptpMapper.makeBoxPlot();
+		
+		ArrayList<Integer> ct1 = new ArrayList<>();
+		ArrayList<Integer> ct2 = new ArrayList<>();
+		ArrayList<Integer> ct3 = new ArrayList<>();
+		ArrayList<Integer> ct4 = new ArrayList<>();
+		System.out.println(makeBoxPlot);
+		
+		model.addAttribute("makeBoxPlot", makeBoxPlot);
+		for(int i=0; i< makeBoxPlot.size(); i++) {
+			ct1.add(makeBoxPlot.get(i).getCT1());
+			ct2.add(makeBoxPlot.get(i).getCT2());
+			ct3.add(makeBoxPlot.get(i).getCT3());
+			ct4.add(makeBoxPlot.get(i).getCT4());
+		}
+		model.addAttribute("ct1", ct1);
+		model.addAttribute("ct2", ct2);
+		model.addAttribute("ct3", ct3);
+		model.addAttribute("ct4", ct4);
+		
+		List<Tptp> detailCount = tptpMapper.getDetailCount();
+		
+		ArrayList<String> ct1Detail = new ArrayList<>();
+		ArrayList<Integer> ct1DetailCount = new ArrayList<>();
+		ArrayList<String> ct2Detail = new ArrayList<>();
+		ArrayList<Integer> ct2DetailCount = new ArrayList<>();
+		ArrayList<String> ct3Detail = new ArrayList<>();
+		ArrayList<Integer> ct3DetailCount = new ArrayList<>();
+		ArrayList<String> ct4Detail = new ArrayList<>();
+		ArrayList<Integer> ct4DetailCount = new ArrayList<>();
+		
+		for(int i=0; i<detailCount.size(); i++) {
+			switch (detailCount.get(i).getCategoryId()) {
+				case "CT1": 
+					ct1Detail.add(detailCount.get(i).getDetail());
+					ct1DetailCount.add(detailCount.get(i).getCount());
+					break;
+				case "CT2": 
+					ct2Detail.add(detailCount.get(i).getDetail());
+					ct2DetailCount.add(detailCount.get(i).getCount());
+					break;
+				case "CT3": 
+					ct3Detail.add(detailCount.get(i).getDetail());
+					ct3DetailCount.add(detailCount.get(i).getCount());
+					break;
+				case "CT4": 
+					ct4Detail.add(detailCount.get(i).getDetail());
+					ct4DetailCount.add(detailCount.get(i).getCount());
+					break;
+			}
+		}
+		
+		model.addAttribute("ct1Detail", ct1Detail);
+		model.addAttribute("ct1DetailCount", ct1DetailCount);
+		model.addAttribute("ct2Detail", ct2Detail);
+		model.addAttribute("ct2DetailCount", ct2DetailCount);
+		model.addAttribute("ct3Detail", ct3Detail);
+		model.addAttribute("ct3DetailCount", ct3DetailCount);
+		model.addAttribute("ct4Detail", ct4Detail);
+		model.addAttribute("ct4DetailCount", ct4DetailCount);
+		System.out.println(ct1DetailCount);
 		
 		return "index";
 	}

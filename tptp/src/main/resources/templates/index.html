@@ -16,6 +16,17 @@
         .d-flex {
 			background-color: moccasin ;
 		}
+		.btn {
+			float:right;
+		}
+		.btn:hover {
+			border: 2px solid skyblue;
+		}
+		#btnCt1 {background: url(/assets/img/natureIcon.png) no-repeat center center; background-size: 35px; width:50px; height:50px;}
+		#btnCt2 {background: url(/assets/img/cultureIcon.png) no-repeat center center; background-size: 35px; width:50px; height:50px;}
+		#btnCt3 {background: url(/assets/img/themeparkIcon.png) no-repeat center center; background-size: 35px; width:50px; height:50px;}
+		#btnCt4 {background: url(/assets/img/tourIcon.png) no-repeat center center; background-size: 35px; width:50px; height:50px;}
+		#btnAll {background: url(/assets/img/back.svg) no-repeat center center; background-size: 35px; width:50px; height:50px;}
     </style>
 	<!-- ======= Hero Section ======= -->
 	<section id="hero">
@@ -64,32 +75,17 @@
 				</li>
 			</ul><br/><br/>
    			<div class="container">
-  				<div class="col-md-12 chart1 btn-group" role="group" aria-label="Basic radio toggle button group">
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio" autocomplete="off" checked>
-				  <label class="btn btn-outline-primary" for="btnradio">오름차순</label>
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off">
-				  <label class="btn btn-outline-primary" for="btnradio0">내림차순</label>
-				</div>
 		       	<div class="col-md-12 chart1">
 					<div class="chart-box-1 chart-box"><canvas id="chart1" style="width:100%; height:100%"></canvas></div>
 				</div>
-				<div class="col-md-12 chart2 btn-group" role="group" aria-label="Basic radio toggle button group">
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-				  <label class="btn btn-outline-primary" for="btnradio1">오름차순</label>
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-				  <label class="btn btn-outline-primary" for="btnradio2">내림차순</label>
-				</div>
-				<div class="col-md-12 chart2 btn-group" role="group" aria-label="Basic radio toggle button group">
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked>
-				  <label class="btn btn-outline-primary" for="btnradio3">자연경관</label>
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-				  <label class="btn btn-outline-primary" for="btnradio4">문화재</label>
-				  <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-  				  <label class="btn btn-outline-primary" for="btnradio5">테마파크</label>
-  				  <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
-  				  <label class="btn btn-outline-primary" for="btnradio6">관광지</label>
-  				  <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
-  				  <label class="btn btn-outline-primary" for="btnradio7">관광지</label>
+				<h3>아래 버튼을 클릭하시면 카테고리별로 차트의 정렬을 할 수 있습니다.</h3>
+				<
+				<div class="row btn-group col-md-6" role="group">
+					<button type="button" class="col btn chart2" id='btnCt1'></button>
+					<button type="button" class="col btn chart2" id='btnCt2'></button>
+					<button type="button" class="col btn chart2" id='btnCt3'></button>
+					<button type="button" class="col btn chart2" id='btnCt4'></button>
+					<button type="button" class="col btn chart2" id='btnAll'></button>
 				</div>
 				<div class="row">
 	       			<div class="col-md-6 chart2">
@@ -129,6 +125,16 @@
   	<!-- End #main END index -->
     <script th:inline="javascript">
     /*<![CDATA[*/
+    	var makeBoxPlot = [[${makeBoxPlot}]];
+    	console.log(makeBoxPlot);
+    	var ct1Box = [[${ct1}]];
+    	var ct2Box = [[${ct2}]];
+    	var ct3Box = [[${ct3}]];
+    	var ct4Box = [[${ct4}]];
+    	console.log(ct1Box);
+    	console.log(ct2Box);
+    	console.log(ct3Box);
+    	console.log(ct4Box);
 			// nav tab 이벤트
 				var tabAll = document.getElementById("tabAll");
 				var tabChart1 = document.getElementById("tabChart1");
@@ -533,10 +539,7 @@
                 padding: 10,
                 itemRadius: 0,
                 data: [
-                Array(2487,3247,3188,852,835,395,884,937,1949,215,231,132,127,59,127,34,37),
-                Array(698,1664,1671,547,905,825,1907,485,224,786,864,860,234,226,192,286,88),
-                Array(14,53,51,228,51,7,31,60,10,134,86,74,58,15,27,24,9),
-                Array(805,111,793,345,514,406,484,353,490,256,575,175,571,105,193,13,83),
+                	ct1Box, ct2Box, ct3Box, ct4Box
                 ]
             }]};
             
