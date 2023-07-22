@@ -5,9 +5,13 @@
 	  layout:decorate="~{layout/defaultLayout}">
 	  
 <th:block layout:fragment="customContents" >
+<style>
+#header {visibility:hidden; }
+#footer {visibility:hidden;}
+</style>
 	<main id="main">
-		    <!-- ======= Breadcrumbs ======= -->
-	    <section class="breadcrumbs">
+		<!-- ======= Breadcrumbs ======= -->
+	    <section class="breadcrumbs" style="margin-top:0;">
 	      <div class="container">
 	        <div class="d-flex justify-content-between align-items-center">
 	          <h2>MAP</h2>
@@ -18,14 +22,14 @@
 	        </div>
 	      </div>
 	    </section>
-	    <!-- End Breadcrumbs -->	
+	    <!-- End Breadcrumbs -->
 		<!-- Map -->
 			<section id="services" class="services">
 			 <div class="container">
 				 <div class="section-title">
 		          <span>MAP</span>
 		          <h2>MAP</h2>
-		          <p><strong th:text="${region}"></strong>의 <strong th:if="${category}" th:text="${category}"></strong> 관광지 입니다.</p>
+		          <strong th:text="${region}"></strong><strong th:if="${category}" th:text="${category}"></strong>
 		          <p>자세한 정보가 알고싶다면 메뉴에서 MAP을 클릭해주세요!</p>
 		        </div>
 	          </div>
@@ -41,29 +45,34 @@
 		/*<![CDATA[*/
 			var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 			var markers=[];
-			var regionList = [[${regionList}]];
+			var regionCategoryList = [[${regionCategoryList}]];
+			var region = [[${region}]];
+			var mapLevel = 13;
+			if(region !== "") {
+				mapLevel = 11;
+			}
 			
 			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			    mapOption = {
-			        center: new kakao.maps.LatLng(regionList[0].lat, regionList[0].lng), // 지도의 중심좌표 -> 지역별 평균 관광지 위치 사용하는게 좋긴함
-			        level: 11 // 지도의 확대 레벨
+			        center: new kakao.maps.LatLng(regionCategoryList[0].avgLat, regionCategoryList[0].avgLng), // 지도의 중심좌표 -> 지역별 평균 관광지 위치 사용하는게 좋긴함
+			        level: mapLevel // 지도의 확대 레벨
 			    };
 			
 			// 지도를 생성합니다    
 			var map = new kakao.maps.Map(mapContainer, mapOption);
 			
-			displayPlaces(regionList);
+			displayPlaces(regionCategoryList);
 			
 		    // 검색 결과 목록과 마커를 표출하는 함수입니다
-		    function displayPlaces(regionList) {
+		    function displayPlaces(regionCategoryList) {
 		        // 지도에 표시되고 있는 마커를 제거합니다
-		        for (var i = 0; i < regionList.length; i++ ) {
+		        for (var i = 0; i < regionCategoryList.length; i++ ) {
 		        	// 데이터가 비어있는 경우에는 처리하지 않고 넘어갑니다
-		            if (!regionList[i]) {
+		            if (!regionCategoryList[i]) {
 		              continue;
 		            }
-		            var placePosition = new kakao.maps.LatLng(regionList[i].lat, regionList[i].lng),
-		                marker = addMarker(placePosition, i, regionList[i].categoryId, regionList[i].place);
+		            var placePosition = new kakao.maps.LatLng(regionCategoryList[i].lat, regionCategoryList[i].lng),
+		                marker = addMarker(placePosition, i, regionCategoryList[i].categoryId, regionCategoryList[i].place);
 		            
 		            (function(marker, title) {
 		                kakao.maps.event.addListener(marker, 'mouseover', function() {
@@ -74,7 +83,7 @@
 		                    infowindow.close();
 		                });
 
-		            })(marker, regionList[i].place);
+		            })(marker, regionCategoryList[i].place);
 		        }
 		    }
 			

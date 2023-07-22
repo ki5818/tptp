@@ -99,16 +99,16 @@ public class MapController {
 	
 	@RequestMapping(value = "/mapPopup", method = RequestMethod.GET )
 	public String chart2(Model model,
-								@RequestParam("region") String region,
+								@RequestParam(value="region", defaultValue = "" ) String region,
 								@RequestParam(value="category", defaultValue = "" ) String category
 								) throws Exception {
 		
 		System.out.println("MainContoller chart()");
 		
-		List<Tptp> regionList = mapService.getRegionList(region, category);
+		List<Tptp> regionCategoryList = mapService.getRegionList(region, category);
 		model.addAttribute("region", region);
 		model.addAttribute("category", category);
-		model.addAttribute("regionList", regionList);
+		model.addAttribute("regionCategoryList", regionCategoryList);
 		
 		System.out.println(region);
 		System.out.println(category);

@@ -96,8 +96,22 @@ public class Tptp {
 	private int CT2;
 	private int CT3;
 	private int CT4;
+	private double avgLat;
+	private double avgLng;
 	
 	
+	public double getAvgLat() {
+		return avgLat;
+	}
+	public void setAvgLat(double avgLat) {
+		this.avgLat = avgLat;
+	}
+	public double getAvgLng() {
+		return avgLng;
+	}
+	public void setAvgLng(double avgLng) {
+		this.avgLng = avgLng;
+	}
 	public int getCT1() {
 		return CT1;
 	}
