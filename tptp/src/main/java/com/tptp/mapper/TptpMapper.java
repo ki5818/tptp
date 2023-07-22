@@ -47,5 +47,8 @@ public interface TptpMapper {
 	
 	public List<Tptp> getDetailCount() throws Exception;
 	
+	public List<Tptp> sortChart2(String cName) throws Exception;
+	
+	
 	
 }

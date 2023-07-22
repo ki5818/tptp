@@ -45,48 +45,22 @@ public class MainController {
 		System.out.println("MainContoller");
 		
 		List<Review> reviewList = reviewMapper.getReviewList();
-		
-		System.out.println(reviewList);
 		model.addAttribute("reviewList", reviewList);
 
 		// 1. 지역별 관광지 개수
 		List<Tptp> regionCount = mainService.getRegionCount();
 		model.addAttribute("regionCount", regionCount);
-		System.out.println(regionCount);
 		
 		// 2. 지역별 카테고리별 관광지 개수
 		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount();
 		model.addAttribute("regionCategoryCount", regionCategoryCount);
-		System.out.println(regionCategoryCount);
-		
 		
 		// 3. 카테고리별 관광지 개수
 		List<Tptp> categoryCount = mainService.getCategoryCount();
 		model.addAttribute("categoryCount", categoryCount);
-		System.out.println(categoryCount);
 		
-		List<Tptp> makeBoxPlot = tptpMapper.makeBoxPlot();
-		
-		ArrayList<Integer> ct1 = new ArrayList<>();
-		ArrayList<Integer> ct2 = new ArrayList<>();
-		ArrayList<Integer> ct3 = new ArrayList<>();
-		ArrayList<Integer> ct4 = new ArrayList<>();
-		System.out.println(makeBoxPlot);
-		
-		model.addAttribute("makeBoxPlot", makeBoxPlot);
-		for(int i=0; i< makeBoxPlot.size(); i++) {
-			ct1.add(makeBoxPlot.get(i).getCT1());
-			ct2.add(makeBoxPlot.get(i).getCT2());
-			ct3.add(makeBoxPlot.get(i).getCT3());
-			ct4.add(makeBoxPlot.get(i).getCT4());
-		}
-		model.addAttribute("ct1", ct1);
-		model.addAttribute("ct2", ct2);
-		model.addAttribute("ct3", ct3);
-		model.addAttribute("ct4", ct4);
-		
+		// 4번 차트
 		List<Tptp> detailCount = tptpMapper.getDetailCount();
-		
 		ArrayList<String> ct1Detail = new ArrayList<>();
 		ArrayList<Integer> ct1DetailCount = new ArrayList<>();
 		ArrayList<String> ct2Detail = new ArrayList<>();
@@ -127,19 +101,41 @@ public class MainController {
 		model.addAttribute("ct4DetailCount", ct4DetailCount);
 		System.out.println(ct1DetailCount);
 		
+		// 5번 차트
+		List<Tptp> makeBoxPlot = tptpMapper.makeBoxPlot();
+		
+		ArrayList<Integer> ct1 = new ArrayList<>();
+		ArrayList<Integer> ct2 = new ArrayList<>();
+		ArrayList<Integer> ct3 = new ArrayList<>();
+		ArrayList<Integer> ct4 = new ArrayList<>();
+		System.out.println(makeBoxPlot);
+		
+		model.addAttribute("makeBoxPlot", makeBoxPlot);
+		for(int i=0; i< makeBoxPlot.size(); i++) {
+			ct1.add(makeBoxPlot.get(i).getCT1());
+			ct2.add(makeBoxPlot.get(i).getCT2());
+			ct3.add(makeBoxPlot.get(i).getCT3());
+			ct4.add(makeBoxPlot.get(i).getCT4());
+		}
+		model.addAttribute("ct1", ct1);
+		model.addAttribute("ct2", ct2);
+		model.addAttribute("ct3", ct3);
+		model.addAttribute("ct4", ct4);
+		
 		return "index";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/changeLegend", method = RequestMethod.GET )
 	public List<Tptp> clickLegend(Model model,
-								@RequestParam(value="removedCategory[]") ArrayList<String> removedCategory) throws Exception {
+								@RequestParam("cName") String cName) throws Exception {
 		
 		System.out.println("MapContoller changeLegend()");
+		System.out.println(cName);
         
-		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount();
+		List<Tptp> sortChart2 = mainService.sortChart2(cName);
 
-		return regionCategoryCount;
+		return sortChart2;
 	}
 	
 	

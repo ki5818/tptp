@@ -22,6 +22,8 @@
 		<result property="CT2" column="CT2" />
 		<result property="CT3" column="CT3" />
 		<result property="CT4" column="CT4" />
+		<result property="avgLng" column="avgLng" />
+		<result property="avgLat" column="avgLat" />
 		<collection property="category" javaType="Category">
 			<id property="categoryId" column="category_id"></id>
 			<result property="categoryName" column="category_name"/>
@@ -81,7 +83,7 @@
 		INNER JOIN temp 
 		ON t.region = temp.region
 		GROUP BY t.region, c.category_id
-		order BY temp.`count_by_region` DESC;
+		order BY temp.`count_by_region` DESC, t.category_id ASC;
 		
 	</select>
 		
@@ -103,12 +105,38 @@
 	
 	<select id="getRegionAndCategoryList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
 		/* 4. 지역별 카테고리별 관광지 리스트 */
-		SELECT *
-		FROM tptp AS t
-		WHERE
-			t.region= #{region}
-			AND
-			t.category_id= #{categoryId};
+		<if test='region != "" and categoryId != ""'>
+			SELECT
+				*, lat, lng,
+				(SELECT AVG(lat) FROM tptp AS t GROUP BY category_id, region HAVING category_id=#{categoryId} AND region=#{region}) AS avgLat,
+				(SELECT AVG(lng) FROM tptp AS t GROUP BY category_id, region HAVING category_id=#{categoryId} AND region=#{region}) AS avgLng
+			FROM
+				tptp AS t
+			WHERE
+				category_id = #{categoryId}
+				AND
+				region= #{region};
+ 		</if>
+ 		<if test='region == ""'>
+			SELECT
+				*, lat, lng,
+				(SELECT AVG(lat) FROM tptp AS t GROUP BY category_id HAVING category_id=#{categoryId}) AS avgLat,
+				(SELECT AVG(lng) FROM tptp AS t GROUP BY category_id HAVING category_id=#{categoryId}) AS avgLng
+			FROM
+				tptp AS t
+			WHERE
+				category_id = #{categoryId};
+ 		</if>
+ 		<if test='categoryId == ""'>
+			SELECT
+				*, lat, lng,
+				(SELECT AVG(lat) FROM tptp AS t GROUP BY region HAVING  region=#{region}) AS avgLat,
+				(SELECT AVG(lng) FROM tptp AS t GROUP BY region HAVING  region=#{region}) AS avgLng
+			FROM
+				tptp AS t
+			WHERE
+				region= #{region};
+ 		</if>
 	</select>
 	
 	<select id="getTotal" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
@@ -167,7 +195,7 @@
 			)
 		GROUP BY t.`id`
 		ORDER BY distance ASC
-		LIMIT 100
+		LIMIT 10
 		OFFSET #{currentNumber.num};
 	</select>
 	<select id="makeBoxPlot" resultMap="tptpResultMap" resultType="Tptp">
@@ -193,6 +221,18 @@
 		FROM tptp t
 		GROUP BY category_id, detail
 		ORDER BY `count` DESC;
+	</select>
+	
+	<select id="sortChart2" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		<include refid="withCountByRegion"></include>
+		SELECT t.region, c.category_name, COUNT(t.id) AS `count`, temp.`count_by_region`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		INNER JOIN temp 
+		ON t.region = temp.region
+		GROUP BY t.region, c.category_id
+		order BY t.category_id=#{cName} DESC, t.category_id, `count` DESC
 	</select>
 	
 	
