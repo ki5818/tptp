@@ -27,8 +27,8 @@ public class MainServiceImpl implements MainService {
 
 	@Override
 	// 2. 지역별 카테고리별 관광지 개수
-	public List<Tptp> getRegionCategoryCount() throws Exception {
-		return tptpMapper.getRegionCategoryCount();
+	public List<Tptp> getRegionCategoryCount(ArrayList<String> categoryNameArray) throws Exception { 
+		return tptpMapper.getRegionCategoryCount(categoryNameArray);
 	}
 
 	@Override

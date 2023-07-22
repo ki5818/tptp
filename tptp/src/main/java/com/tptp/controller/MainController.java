@@ -51,8 +51,11 @@ public class MainController {
 		List<Tptp> regionCount = mainService.getRegionCount();
 		model.addAttribute("regionCount", regionCount);
 		
+		ArrayList<String> categoryNameArray = new ArrayList<>();
+		System.out.println(categoryNameArray);
+		
 		// 2. 지역별 카테고리별 관광지 개수
-		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount();
+		List<Tptp> regionCategoryCount = mainService.getRegionCategoryCount(categoryNameArray);
 		model.addAttribute("regionCategoryCount", regionCategoryCount);
 		
 		// 3. 카테고리별 관광지 개수
@@ -128,14 +131,14 @@ public class MainController {
 	@ResponseBody
 	@RequestMapping(value = "/changeLegend", method = RequestMethod.GET )
 	public List<Tptp> clickLegend(Model model,
-								@RequestParam("cName") String cName) throws Exception {
+								@RequestParam(value="legendItemHidden[]", defaultValue = "") ArrayList<String> legendItemHidden) throws Exception {
 		
 		System.out.println("MapContoller changeLegend()");
-		System.out.println(cName);
+		System.out.println(legendItemHidden);
         
-		List<Tptp> sortChart2 = mainService.sortChart2(cName);
-
-		return sortChart2;
+		List<Tptp> sortList = mainService.getRegionCategoryCount(legendItemHidden);
+		System.out.println(legendItemHidden);
+		return sortList;
 	}
 	
 	
