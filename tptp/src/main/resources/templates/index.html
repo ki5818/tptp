@@ -58,40 +58,39 @@
 			<div class="section-title"  style="margin-bottom: 10px; margin-top: 0px; padding:0px;">
 		       	<span>CHART</span>
 		       	<h2>CHART</h2>
-		       	<p><strong>차트를 클릭해보세요!</strong></p>
+		       	<p><strong>여행지 데이터시각화 : 차트의 범례나 데이터를 클릭해보세요</strong></p>
 		    </div>
    			<div class="container">
 		       	<div class="col-md-12 chart1">
-					<div class="chart-box-1 chart-box"><canvas id="chart1" style="width:100%; height:100%"></canvas></div>
+					<div class="chart-container chart-box-1 chart-box"><canvas id="chart1" style="width:100%; height:100%"></canvas></div>
 				</div>
-				<h3>아래 버튼을 클릭하시면 카테고리별로 차트의 정렬을 할 수 있습니다.</h3>
-				<div class="row">
-					<div class="btn-group col-md-12" role="group" id="btn-group">
+					<div class="btn-group col-md-5" role="group" id="btn-group"  style="float:right;">
 						<button type="button" class="col btn chart2" id='btnCt1' name='CT1'></button>
 						<button type="button" class="col btn chart2" id='btnCt2' name='CT2'></button>
 						<button type="button" class="col btn chart2" id='btnCt3' name='CT3'></button>
 						<button type="button" class="col btn chart2" id='btnCt4' name='CT4'></button>
 						<button type="button" class="col btn chart2" id='btnAll' name='All'></button>
 					</div>
-				</div>
-				<div class="row">
+				<div class="row col-md-12">
 	       			<div class="col-md-6 chart2">
-						<div class="chart-box-2 chart-box"><canvas id="chart2" style="width:100%; height:100%;"></canvas></div>
+						<div class="chart-container chart-box-2 chart-box"><canvas id="chart2" style="width:100%; height:100%;"></canvas></div>
 					</div>
 					<div class="col-md-6 chart3">
-						<div class="chart-box-3 chart-box"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
+						<div class="chart-container chart-box-3 chart-box"><canvas id="chart3" style="width:100%; height:100%;"></canvas></div>
 					</div>
 				</div>
 	
 				<div class="row">
 		            <div class="col-md-5 chart4">
-						<div class="chart-box-4 chart-box"><canvas id="chart4" style="width:100%; height:100%;"></canvas></div>
+						<div class="chart-container chart-box-4 chart-box"><canvas id="chart4" style="width:100%; height:100%;"></canvas></div>
 	     			</div>
 	     			<div class="col-md-7 chart5">
-						<div class="chart-box-5 chart-box"><canvas id="chart5" style="width:100%; height:100%;"></canvas></div>
+						<div class="chart-container chart-box-5 chart-box"><canvas id="chart5" style="width:100%; height:100%;"></canvas></div>
 	     			</div>
      			</div>
-     			
+     			<div class="col-md-12 chart6">
+						<div class="chart-container chart-box-5 chart-box"><canvas id="chart6" style="width:100%; height:100%;"></canvas></div>
+	     		</div>
 		      </div>
 		   </div>
 		 </section>
@@ -105,7 +104,6 @@
         const ctx3 = document.getElementById("chart3").getContext('2d');
         const ctx4 = document.getElementById("chart4").getContext('2d');
         const ctx5 = document.getElementById("chart5").getContext("2d");
-        
         var category;
         var region;
         
@@ -169,7 +167,9 @@
 		/* ----------------------------- 2번째 차트 START ----------------------------- */
 	  	const regionCategoryCount =[[${regionCategoryCount}]];
 	  	var xval_2 = [], natCounts = [], culCounts = [], themCounts = [], tourCounts = [], dataSetLabel =[];
-	  	
+	    var legendItemHidden = [];
+	    var legendItemText;
+	    var lg;
         const myChart2 = new Chart(ctx2, {
             type: 'bar',
             data: {
@@ -204,13 +204,91 @@
                         text: "유형별 여행지 지역 분포도",
                         font: {size: 20}
                     },
+                    legend : {
+                    	onClick: function(e, legendItem) {
+                    		legendItemHidden = [];
+                    		console.log('ssssss');
+                    		console.log(legendItem);
+                    		var index = legendItem.datasetIndex;
+                    		var ci = this.chart;
+                    	    var meta = ci.getDatasetMeta(index);
+                    	    meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;                    	    
+                    	    console.log(ci.legend.legendItems.length);
+                    	    ci.update();
+                    	    for(var i = 0; i < ci.legend.legendItems.length; i++) {
+                    	    	if(ci.legend.legendItems[i].hidden) {
+                    	    		legendItemHidden.push(ci.legend.legendItems[i].text);
+                    	    	}
+                    	    }
+                    	    console.log(legendItemHidden);
+                    	    var request = $.ajax({
+             		           url: "/changeLegend",
+             		           type: "GET",
+             		           data: {legendItemHidden}
+	             			});
+	             			//성공
+	             			request.done(function(sortChart) {
+	             				console.log("success");
+	             				xval_2 = [];
+	             			  	natCounts = [];
+	             			  	culCounts = [];
+	             			  	themCounts = [];
+	             			  	tourCounts = [];
+	             				dataSetLabel =[];
+	             			  	if(sortChart.length === 0) {
+	             			  		return;
+	             			  	}
+	             			  	for(let i = 0; i < sortChart.length; i = i + (4 - legendItemHidden.length)) {
+	             			  		xval_2.push(sortChart[i].region);
+	             			  	}
+	             			  	for(let i = 0; i < sortChart.length; i++) {
+	             			  		if(sortChart[i].category['categoryName']==categoryName[0]) {
+	             				  		natCounts.push(sortChart[i].count);
+	             			  		}
+	             			  		else if(sortChart[i].category['categoryName']==categoryName[1]) {
+	             			  			culCounts.push(sortChart[i].count);
+	             			  		}
+	             			  		else if(sortChart[i].category['categoryName']==categoryName[2]) {
+	             			  			themCounts.push(sortChart[i].count);
+	             			  		}
+	             			  		else if(sortChart[i].category['categoryName']==categoryName[3]) {
+	             			  			tourCounts.push(sortChart[i].count);
+	             			  		}
+	             			  	}
+	             				for(var i = 0; i < categoryName.length; i++) {
+	             					dataSetLabel.push(categoryName[i]);
+	             				}
+	             				
+	             				myChart2.data.labels = xval_2;
+	             	        	myChart2.data.datasets[0].data = natCounts;
+	             			  	myChart2.data.datasets[1].data = culCounts;
+	             			  	myChart2.data.datasets[2].data = themCounts;
+	             			  	myChart2.data.datasets[3].data = tourCounts;
+	             				myChart2.data.datasets[0].backgroundColor="yellowgreen";
+	             				myChart2.data.datasets[1].backgroundColor="darkorange";
+	             				myChart2.data.datasets[2].backgroundColor="yellow";
+	             				myChart2.data.datasets[3].backgroundColor="lightgreen";
+	             			  	
+	             				for(var i = 0; i < categoryName.length; i++) {
+	             					myChart2.data.datasets[i].label = dataSetLabel[i];
+	             				}
+	             				ci.update();
+	             			});
+	             			//실패
+	             			request.fail(function(jqXHR, textStatus, viewList){
+	             					console.log('Request failed: ' + textStatus);
+	             			});
+                    	}
+                    }
                 },
                 scales: {
                     x: { stacked: true },
                     y: { stacked: true }
                 },
-                onClick: function(e) {                
-                    var activePoints = myChart2.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                onClick: function(e) {
+               		console.log(myChart2);
+               		console.log(myChart2.data.datasets);
+                    var activePoints = myChart2.getElementsAtEventForMode(e,  'nearest', { intersect: true }, true);
                     if (activePoints.length > 0) {
                       var datasetIndex = activePoints[0].datasetIndex;
                       category = myChart2.data.datasets[datasetIndex].label;
@@ -220,13 +298,14 @@
                       console.log('Selected Label:', region);
                       var url = '/mapPopup?region=' + region + '&category=' + category;
                       window.open(url, "popup", "width=1000, height=1100");
+                         
                     }
                   }
                }
         });
         initChart2();
         
-		function initChart2() {
+		function initChart2(list) {
 		  	xval_2 = [];
 		  	natCounts = [];
 		  	culCounts = [];
@@ -278,127 +357,7 @@
         var btnCt3 = document.getElementById('btnCt3');
         var btnCt4 = document.getElementById('btnCt4');
         var btnAll = document.getElementById('btnAll');
-        var cName;
         btnAll.style.border = "4px dashed #ffb727";
-        
-        function btnStyle() {
-        	btnCt1.style.border = "none";
-        	btnCt2.style.border = "none";
-        	btnCt3.style.border = "none";
-        	btnCt4.style.border = "none";
-        	btnAll.style.border = "none";
-        }
-        
-        btnCt1.addEventListener('click', function() {
-        	console.log('버튼1 클릭');
-        	cName = this.name;
-        	doAjax(cName);
-        	btnStyle();
-        	this.style.border = "4px dashed #ffb727";
-        });
-        
-        btnCt2.addEventListener('click', function() {
-        	console.log('버튼2 클릭');
-        	cName = this.name;
-        	doAjax(cName);
-        	btnStyle();
-        	this.style.border = "4px dashed #ffb727";
-        });
-        
-        btnCt3.addEventListener('click', function() {
-        	console.log('버튼3 클릭');
-        	cName = this.name;
-        	doAjax(cName);
-        	btnStyle();
-        	this.style.border = "4px dashed #ffb727";
-        });
-        
-        btnCt4.addEventListener('click', function() {
-        	console.log('버튼4 클릭');
-        	cName = this.name;
-        	doAjax(cName);
-        	btnStyle();
-        	this.style.border = "4px dashed #ffb727";
-        });
-        
-        btnAll.addEventListener('click', function() {
-        	console.log('버튼All 클릭');
-			initChart2();
-        	btnStyle();
-        	this.style.border = "4px dashed #ffb727";
-        	
-		  	for(var i=0; i < myChart2.legend.legendItems.length; i++) {
-		  		console.log(myChart2.legend.legendItems[i].hidden);
-		  		myChart2.legend.legendItems[i].hidden = false;
-		  		console.log(myChart2.legend.legendItems[i].hidden);
-		  	}
-		  	setTimeout(() =>  myChart2.update(), 1000);
-		  	
-        	
-        });
-        
-	  	/* ---- 정렬를 위한 ajax 함수 ----*/
-	  	function doAjax() {
-		    var request = $.ajax({
-		           url: "/changeLegend",
-		           type: "GET",
-		           data: {"cName" : cName}
-			});
-			//성공
-			request.done(function(sortChart2){
-				console.log("success");
-				xval_2 = [], natCounts = [], culCounts = [], themCounts = [], tourCounts = [], dataSetLabel = [];
-			  	
-			  	for(let i = 0; i < 17; i++) {
-			  		xval_2.push(sortChart2[i].region);
-			  	}
-			  	myChart2.data.labels = xval_2;
-			  	
-				for(var i = 0; i < sortChart2.length; i = i + xval_2.length) {
-					dataSetLabel.push(sortChart2[i].category["categoryName"]);
-				}
-			  	
-			  	for(let i = 0; i < sortChart2.length; i++) {
-			  		if(sortChart2[i].category['categoryName']==categoryName[0]) {
-				  		natCounts.push(sortChart2[i].count);
-			  		}
-			  		else if(sortChart2[i].category['categoryName']==categoryName[1]) {
-			  			culCounts.push(sortChart2[i].count);
-			  		}
-			  		else if(sortChart2[i].category['categoryName']==categoryName[2]) {
-			  			themCounts.push(sortChart2[i].count);
-			  		}
-			  		else if(sortChart2[i].category['categoryName']==categoryName[3]) {
-			  			tourCounts.push(sortChart2[i].count);
-			  		}
-			  	}
-			  	for(let i = 0; i < dataSetLabel.length; i++) {
-			  		myChart2.data.datasets[i].label = dataSetLabel[i];
-			  		
-			  		if(myChart2.data.datasets[i].label==categoryName[0]) {
-			  			myChart2.data.datasets[i].data = natCounts;
-			  			myChart2.data.datasets[i].backgroundColor = "yellowgreen";
-			  		}
-			  		else if(myChart2.data.datasets[i].label==categoryName[1]) {
-			  			myChart2.data.datasets[i].data = culCounts;
-			  			myChart2.data.datasets[i].backgroundColor = "darkorange";
-			  		}
-			  		else if(myChart2.data.datasets[i].label==categoryName[2]) {
-			  			myChart2.data.datasets[i].data = themCounts;
-			  			myChart2.data.datasets[i].backgroundColor = "yellow";
-			  		}
-			  		else if(myChart2.data.datasets[i].label==categoryName[3]) {
-			  			myChart2.data.datasets[i].data = tourCounts;
-			  			myChart2.data.datasets[i].backgroundColor = "lightgreen";
-			  		}
-			  	}
-	        	myChart2.update();
-			});
-			//실패
-			request.fail(function(jqXHR, textStatus, viewList){
-					console.log('Request failed: ' + textStatus);
-			});
-	  	}
 	  	
 		/* ----------------------------- 2번째 차트 END ----------------------------- */
 		        
@@ -446,6 +405,14 @@
         var ct3DetailCount = [[${ct3DetailCount}]];
         var ct4Detail = [[${ct4Detail}]];
         var ct4DetailCount = [[${ct4DetailCount}]];
+        
+        function btnStyle() {
+        	btnCt1.style.border = "none";
+        	btnCt2.style.border = "none";
+        	btnCt3.style.border = "none";
+        	btnCt4.style.border = "none";
+        	btnAll.style.border = "none";
+        }
                 
         btnCt1.addEventListener("click", function() {
             myChart3.data.labels = ct1Detail;
@@ -453,6 +420,8 @@
             myChart3.data.datasets[0].data = ct1DetailCount;
             myChart3.data.datasets[0].backgroundColor = "yellowgreen";
             myChart3.update();
+            btnStyle();
+        	this.style.border = "4px dashed #ffb727";
         });
         btnCt2.addEventListener("click", function() {
             myChart3.data.labels = ct2Detail;
@@ -460,6 +429,8 @@
             myChart3.data.datasets[0].data = ct2DetailCount;
             myChart3.data.datasets[0].backgroundColor = "darkorange";
             myChart3.update();
+            btnStyle();
+        	this.style.border = "4px dashed #ffb727";
         });
 
         btnCt3.addEventListener("click", function() {
@@ -468,6 +439,8 @@
             myChart3.data.datasets[0].data = ct3DetailCount;
             myChart3.data.datasets[0].backgroundColor = "yellow";
             myChart3.update();
+            btnStyle();
+        	this.style.border = "4px dashed #ffb727";
         });
 
         btnCt4.addEventListener("click", function() {
@@ -476,6 +449,8 @@
             myChart3.data.datasets[0].data = ct4DetailCount;
             myChart3.data.datasets[0].backgroundColor = "lightgreen";
             myChart3.update();
+            btnStyle();
+        	this.style.border = "4px dashed #ffb727";
         });
         
         btnAll.addEventListener("click", function() {
@@ -484,6 +459,8 @@
             myChart3.data.datasets[0].data = categoryNameCount;
             myChart3.data.datasets[0].backgroundColor=["yellowgreen", "darkorange", "yellow", "lightgreen"];
             myChart3.update();
+            btnStyle();
+        	this.style.border = "4px dashed #ffb727";
         });
         /* ----------------------------- 3번째 차트 END ----------------------------- */
 				

@@ -74,15 +74,9 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Tptp> getRegionList(String region, String category) throws Exception {
+	public List<Tptp> getRegionAndCategoryList(String region, String category) throws Exception {
 		String categoryId = "";
 		List<Tptp> regionAndCategoryList;
-
-		if (category.equals("")) {
-			regionAndCategoryList = tptpMapper.getRegionList(region);
-			return regionAndCategoryList;
-		}
-
 		if (category.equals("자연경관")) {
 			categoryId = "CT1";
 		} else if (category.equals("문화재")) {

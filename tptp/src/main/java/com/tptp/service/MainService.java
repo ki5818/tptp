@@ -1,5 +1,6 @@
 package com.tptp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ public interface MainService {
 		public List<Tptp> getRegionCount() throws Exception;
 
 		// 2. 지역별 카테고리별 관광지 개수
-		public List<Tptp> getRegionCategoryCount() throws Exception;
+		public List<Tptp> getRegionCategoryCount(ArrayList<String> categoryNameArray) throws Exception;
 		
 		// 3. 카테고리별 관광지 개수
 		public List<Tptp> getCategoryCount() throws Exception;
