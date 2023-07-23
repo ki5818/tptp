@@ -92,7 +92,50 @@ public class Tptp {
 	private int count_by_region;
 	private int total;
 	private double distance;
+	private int CT1;
+	private int CT2;
+	private int CT3;
+	private int CT4;
+	private double avgLat;
+	private double avgLng;
 	
+	
+	public double getAvgLat() {
+		return avgLat;
+	}
+	public void setAvgLat(double avgLat) {
+		this.avgLat = avgLat;
+	}
+	public double getAvgLng() {
+		return avgLng;
+	}
+	public void setAvgLng(double avgLng) {
+		this.avgLng = avgLng;
+	}
+	public int getCT1() {
+		return CT1;
+	}
+	public void setCT1(int cT1) {
+		CT1 = cT1;
+	}
+	public int getCT2() {
+		return CT2;
+	}
+	public void setCT2(int cT2) {
+		CT2 = cT2;
+	}
+	public int getCT3() {
+		return CT3;
+	}
+	public void setCT3(int cT3) {
+		CT3 = cT3;
+	}
+	public int getCT4() {
+		return CT4;
+	}
+	public void setCT4(int cT4) {
+		CT4 = cT4;
+	}
 	Category category;
 	Review review;
 	public Category getCategory() {

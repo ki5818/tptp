@@ -19,6 +19,8 @@ import com.tptp.util.Distance;
 
 @Service
 public class MapServiceImpl implements MapService {
+	private static final Integer POSTS_PER_PAGE = 10; // 한 페이지당 보여줄 리스트의 수
+	private static final Integer PAGES_PER_BLOCK = 10;// 하단에 보여줄 페이징의 개수 ex) 10 이면 아래에 1~ 10까지 보이고 다음페이지는 다음을 눌러야 넘어감
 
 	@Autowired
 	private TptpMapper tptpMapper;
@@ -53,7 +55,7 @@ public class MapServiceImpl implements MapService {
 				category.put("ct4", element);
 			}
 		}
-		int num = (currentNum - 1) * 10;
+		int num = (currentNum - 1) * POSTS_PER_PAGE;
 		currentNumber.put("num", num);
 		
 		int total = tptpMapper.getTotal(category, clusterArray).get(0).getTotal();
@@ -72,15 +74,9 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Tptp> getRegionList(String region, String category) throws Exception {
+	public List<Tptp> getRegionAndCategoryList(String region, String category) throws Exception {
 		String categoryId = "";
 		List<Tptp> regionAndCategoryList;
-
-		if (category.equals("")) {
-			regionAndCategoryList = tptpMapper.getRegionList(region);
-			return regionAndCategoryList;
-		}
-
 		if (category.equals("자연경관")) {
 			categoryId = "CT1";
 		} else if (category.equals("문화재")) {

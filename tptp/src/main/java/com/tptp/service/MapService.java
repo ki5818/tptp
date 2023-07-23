@@ -18,7 +18,7 @@ public interface MapService {
 	public List<Tptp> getViewList(ArrayList<String> chekedList, Integer currentNum, ArrayList<String> clusterArray, Map<String, Double> location) throws Exception;
 	
 	// 지역명 기준으로 관광지 리스트
-	public List<Tptp> getRegionList(String region, String category) throws Exception;
+	public List<Tptp> getRegionAndCategoryList(String region, String category) throws Exception;
 	
 	// 클러스터링
 	public ArrayList<String> getClusterList(double geoLat, double geoLng) throws Exception;

@@ -16,19 +16,7 @@ public interface TptpMapper {
 	public List<Tptp> getRegionCount() throws Exception;
 	
 	// 2. 지역별 카테고리별 관광지 개수
-	public List<Tptp> getRegionCategoryCount() throws Exception;
-	
-	// 2-1.  tptpRegionCategoryCountNat
-	public List<Tptp> getRegionCategoryCountNat() throws Exception;
-	
-	// 2-2. tptpRegionCategoryCountCul
-	public List<Tptp> getRegionCategoryCountCul() throws Exception;
-	
-	// 2-3. tptpRegionCategoryCountThem
-	public List<Tptp> getRegionCategoryCountThem() throws Exception;
-		
-	// 2-4. tptpRegionCategoryCountTour
-	public List<Tptp> getRegionCategoryCountTour() throws Exception;
+	public List<Tptp> getRegionCategoryCount(ArrayList<String> categoryNameArray) throws Exception;
 	
 	// 3. 카테고리별 관광지 개수
 	public List<Tptp> getCategoryCount() throws Exception;
@@ -42,6 +30,12 @@ public interface TptpMapper {
 	public List<Tptp> getRegionList(String region) throws Exception;
 	
 	public List<Tptp> getTotal(Map<String, String> category, ArrayList<String> clusterArray) throws Exception;
+	
+	public List<Tptp> makeBoxPlot() throws Exception;
+	
+	public List<Tptp> getDetailCount() throws Exception;
+	
+	public List<Tptp> sortChart2(String cName) throws Exception;
 	
 	
 	
