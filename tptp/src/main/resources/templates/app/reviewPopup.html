@@ -70,7 +70,6 @@
 	    <!-- End Breadcrumbs -->
 	    
 	    <!-- Review  -->
-	    <section id="services" class="services">
          <div class="container">
             <div class="section-title">
 		    	<span>BOARD</span>
@@ -93,9 +92,11 @@
 				</div>
 			</form>
 			<hr>
-                <ul class="area_card_item" th:if="${not #lists.isEmpty(reviewList)}" th:each="r : ${reviewList}">
+			<div th:if="${not #lists.isEmpty(reviewList)}" th:each="r : ${reviewList}">
+			<form th:action=@{"/reviewModify"} method="post" id="obj" name="modify">
+                <ul class="area_card_item" >
                     <li>
-						<textarea class="contents_mod" th:text = "${r.contents}" maxlength="100" style="width: 100%; height: 80px; box-sizing: border-box; overflow: hidden;" disabled></textarea>
+						<p th:text = "${r.contents}" ></p>
 							
 					</li>  
 					<div class="place_date">
@@ -107,7 +108,7 @@
                     	</li> 
                     	<li class="view_reviewId" hidden>
 							<span>아이디 : </span>
-                        		<span class="reviewId" th:text="${r.reviewId}"></span>
+                        		<span class="reviewId" th:text="${r.reviewId}" name="reviewId"></span>
                     	</li> 
 						<li class="view_date">
                         	<span class=""> 작성일 :</span>
@@ -116,13 +117,16 @@
                			
                			<li>
 							<div class="mod_del_button">
-								<a role="button"  href="#" class="btnModify" style="margin-right: 0;"  >수정</a>
+								<a role="button" class="btnModify" style="margin-right: 0;"  >수정</a>									
 								<a role="button" href="#" class="btnDelete" style="margin-right: 0;"  >삭제</a>
 								<span class="reviewId" th:text="${r.reviewId}"></span>
-							</div>	   
+							</div>
 						</li>
 					</div>
 				</ul>
+				</form>
+			</div>
+				
 				    <span th:unless="${not #lists.isEmpty(reviewList)}">해당 장소는 작성된 리뷰가 없습니다.</span>
             </div>
             
@@ -139,6 +143,23 @@
 	console.log(reviewList);
 
 	$(document).ready(function(){
+		/*수정*/
+		$('.btnModify').click(function () {
+			console.log("수정버튼 클릭");
+			var reviewId = $(this).next().next()[0].innerText;
+			var result = confirm('이 리뷰글을 수정하시겠습니까?');
+		
+			if(result) {
+	        	var insertPw = prompt('글을 작성하실 때 입력하신 비밀번호를 입력해주세요');
+	        	var url = '/reviewModify?reviewId=' + reviewId +'&insertPw=' + insertPw;
+	        	window.open(url, "popup");
+	        }
+	        else {
+				return false;
+			}
+		});
+
+		/*삭제*/
 		$('.btnDelete').click(function () {
 			//$(this).parents('tr').children().eq(3);
 			console.log($(this).next()[0].innerText);
@@ -175,7 +196,10 @@
 	        }
 			
 			});
-	});
+			
+			
+	
+	}); // window onload
 	
 </script>
 </th:block>
