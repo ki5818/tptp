@@ -12,14 +12,11 @@
 		<result property="photo" column="photo" />
 		<result property="password" column="password" />
 		<result property="writeDate" column="write_date" />
-		
 		<!-- 조인할 테이블은 컬렉션 태그에 필요한 컬럼들만 가져오기 -->
 		<collection property="tptp" javaType="Tptp">
 			<id property="id" column="id"></id> <!-- tptp 테이블에 있는 id와 review에 있는 id -->
 			<result property="place" column="place"/> <!-- tptp테이블에만 있는 place 컬럼 -->
 		</collection>
-		
-		
 	</resultMap>
 	<!-- END reviewResultMap -->
 	
@@ -102,22 +99,33 @@
 	</delete>
 	
 	<!--  07-19 리뷰 게시판 글 수정 -->
-	<update id="modReviewList" parameterType="Review">
+	<update id="modReviewList" parameterType="Review" >
 		UPDATE review
 		SET
 			contents = #{contents},
-			password = #{password},
 			write_date = NOW()
 		WHERE 
 			review_id = #{reviewId};
 	</update>
 	
 	<!--  getPassword -->
-	<select id="getPassword" parameterType="String" resultType="Review">
+	<select id="getPassword" parameterType="String" resultType="Review" resultMap="reviewResultMap">
 		SELECT
 			password 
 		FROM review 
 		WHERE 
 			review_id = #{reviewId};
+	</select>
+	<!--  reviewId를 기준으로 리뷰를 가져오는 쿼리문 -->
+	<select id="getReviewListParamReviewId" parameterType="String" resultType="Review"  resultMap="reviewResultMap">
+		SELECT
+			t.place, r.review_id, r.contents, r.`password`, r.place_id
+		FROM
+		review AS r
+		INNER JOIN
+		tptp AS t
+		ON r.place_id = t.id
+		WHERE 
+		review_id = #{reviewId};
 	</select>
 </mapper>
