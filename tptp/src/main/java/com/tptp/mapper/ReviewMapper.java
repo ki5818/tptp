@@ -24,7 +24,7 @@ public interface ReviewMapper { //인터페이스이다!!!
 	public List<Review> getPlaceIDReviewList(String placeId) throws Exception; 
 
 	//5. 리뷰게시판에서 장소를 삽입해 {place}의 리뷰입니다. 라고 select문으로 장소를 구하는 쿼리문
-	public List<Review> getPlaceList() throws Exception;
+	public String getPlaceList(String placeId) throws Exception;
 	
 	//6. password를 가져오는 쿼리문
 	public Review getPassword(String reviewId) throws Exception; 
