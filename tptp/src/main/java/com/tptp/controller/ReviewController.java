@@ -52,6 +52,7 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewPopup", method = RequestMethod.GET )
 	public String reviewPopup(Model model,
 										@RequestParam("placeId") String placeId) throws Exception{
+		System.out.println("reviewPopup()");
 		System.out.println(placeId);
 		List<Review> reviewList = reviewMapper.getPlaceIDReviewList(placeId);
 	
@@ -165,7 +166,7 @@ public class ReviewController {
 	
 	/*게시판 수정하기 */
 	@GetMapping("/reviewModify")
-	public String reviewModify( Model model, HttpServletResponse response,
+	public String reviewModify( Model model,
 								@RequestParam("reviewId") String reviewId,
 								@RequestParam("insertPw") String insertPw) throws Exception {
 		System.out.println("/reviewModify");
@@ -194,10 +195,8 @@ public class ReviewController {
         	return "/app/modReview";
         }
         else {
-        	Alert.alertMiss(response);
-        	String url = "/reviewPopup?placeId=" + reviewList.get(0).getPlaceId();
-    		return url;
-
+        	String url = "redirect:/reviewPopup?placeId=" + reviewList.get(0).getPlaceId();
+        	return url;
         }
 
 	}
@@ -216,10 +215,8 @@ public class ReviewController {
 		System.out.println(contents);
 		
 		reviewMapper.modReviewList(contents, reviewId);
-		
-		String url = "redirect:/reviewPopup?placeId=" + placeId;
-		//System.out.println(modReview);
-		return url;
+		String referer = request.getHeader("Referer");
+	    return "redirect:"+ referer;
 	}
 	
 	/*

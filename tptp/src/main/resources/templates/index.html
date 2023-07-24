@@ -207,14 +207,17 @@
                     legend : {
                     	onClick: function(e, legendItem) {
                     		legendItemHidden = [];
-                    		console.log('ssssss');
                     		console.log(legendItem);
+                    		
                     		var index = legendItem.datasetIndex;
                     		var ci = this.chart;
                     	    var meta = ci.getDatasetMeta(index);
-                    	    meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;                    	    
+                    	    
+                    	    meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;                	    
                     	    console.log(ci.legend.legendItems.length);
                     	    ci.update();
+                    	    
+                    	    
                     	    for(var i = 0; i < ci.legend.legendItems.length; i++) {
                     	    	if(ci.legend.legendItems[i].hidden) {
                     	    		legendItemHidden.push(ci.legend.legendItems[i].text);

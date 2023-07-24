@@ -39,11 +39,11 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, ArrayList<String> clusterArray, Map<String, Double> location) throws Exception {
+	public List<Tptp> getViewList(ArrayList<String> checkedList, Integer currentNum, 
+								  ArrayList<String> clusterArray, Map<String, Double> location) throws Exception {
 
 		Map<String, String> category = new HashMap<String, String>();
 		Map<String, Integer> currentNumber = new HashMap<String, Integer>();
-
 		for (String element : checkedList) {
 			if (element.equals("CT1")) {
 				category.put("ct1", element);
@@ -57,19 +57,11 @@ public class MapServiceImpl implements MapService {
 		}
 		int num = (currentNum - 1) * POSTS_PER_PAGE;
 		currentNumber.put("num", num);
-		
-		int total = tptpMapper.getTotal(category, clusterArray).get(0).getTotal();
-		System.out.println(total);
-		
+		int total = tptpMapper.getTotal(category, clusterArray).get(0).getTotal();		
 		List<Tptp> viewList = tptpMapper.getListOffset(category, currentNumber, clusterArray, location);
-		
 		for(int i=0; i<viewList.size(); i++) {
 			viewList.get(i).setTotal(total);
 		}
-		
-		System.out.println(viewList);
-
-
 		return viewList;
 	}
 
