@@ -39,7 +39,6 @@
 	</select>
 	
 	<!-- map 목록에서 클릭한 장소의 리뷰글 조회 -->
-	<!-- 07-17 날짜 기준으로 내림차순 수정 -->
 	<select id="getPlaceIDReviewList" resultMap="reviewResultMap" resultType="Review" parameterType="String">
 		SELECT
 			r.review_id,
@@ -68,7 +67,7 @@
 	</select>
 	
 	
-	<!-- 07-17 리뷰 게시판 글 추가  -->
+	<!-- 07-17 리뷰 게시판 글 작성하기  -->
 	<insert id="addReviewList" parameterType="Review">
 		INSERT INTO review
 				(
