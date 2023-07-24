@@ -6,6 +6,8 @@
 <th:block layout:fragment="customContents" >
 
 	<style>
+		#header {visibility:hidden; }
+		#footer {visibility:hidden;}
 		ul, li {
 			list-style: none;
 		}		
@@ -19,7 +21,6 @@
 			height: 80px;
 			padding: 10px;
 			box-sizing: border-box;
-			border: solid 2px #1E90FF;
             resize: none;
 			border-radius: 5px;
 			font-size: 16px;
@@ -56,7 +57,7 @@
     </style>
 	<main id="main">
 	    <!-- ======= Breadcrumbs ======= -->
-	    <section class="breadcrumbs">
+	    <section class="breadcrumbs" style="margin-top:0;">
 	      <div class="container">
 	        <div class="d-flex justify-content-between align-items-center">
 	          <h2>BOARD</h2>
@@ -64,73 +65,72 @@
 	            <li><a th:href="@{/}">HOME</a></li>
 	            <li>BOARD</li>
 	          </ol>
-	        </div>
+	        </div> 
 	      </div>
 	    </section>
 	    <!-- End Breadcrumbs -->
-	    
+	   <section id="contact" class="contact">
 	    <!-- Review  -->
          <div class="container">
             <div class="section-title">
 		    	<span>BOARD</span>
 		        <h2>BOARD</h2>
-		        <!--0718 해야한다.  -->
-		        <!-- 장소 넣어야 함  -->
-        		<strong th:value="${place}"></strong><p>의 리뷰입니다.</p>
+		        	<div th:if="${title}">
+						<strong th:text="${title}"></strong>의 리뷰입니다.</p>
+					</div>
+					<div th:unless="${title}">
+						<p>해당 장소는 등록된 리뷰가 없습니다.</p>
+					</div>
 		   	</div>
 		   	
 			<div class="review_area">
 				
 			<!--리뷰 작성 폼(addReview) -->
-            <form th:action="@{/reviewWrite}" method="post">
-				<div class="review_write">
-					<textarea name="contents" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100" style="width: 100%; height: 80px; box-sizing: border-box; overflow: hidden;"></textarea>
+            <form th:action="@{/reviewWrite}" method="post" class="php-email-form">
+				<div class="review_area">
+					<textarea name="contents" id="write_content" placeholder="리뷰를 입력해주세요" maxlength="100" style="width: 100%; height: 80px; border: 1px solid#ccc; box-sizing: border-box; overflow: hidden;"></textarea>
 					<input type="text" name="placeId" th:value="${placeId}" hidden>
-					<input type="password" name="password" placeholder="비밀번호">
-					<input type="submit" class="write_submit" value="입력하기">
+					<input type="password" name="password" placeholder="비밀번호" style="border: 1px solid#ccc">
+					<input type="submit" class="write_submit" value="SUBMIT" style="background-color: #ffb727; border: none;">
 					
 				</div>
 			</form>
-			<hr>
 			<div th:if="${not #lists.isEmpty(reviewList)}" th:each="r : ${reviewList}">
-			<form th:action=@{"/reviewModify"} method="post" id="obj" name="modify">
-                <ul class="area_card_item" >
-                    <li>
-						<p th:text = "${r.contents}" ></p>
-							
-					</li>  
-					<div class="place_date">
-						<li class="view_place">
-							<span>장소 : </span>
-								<th:block th:object="${r.tptp}">
-                        		<span th:text="*{place}"></span>
-					      	</th:block>
-                    	</li> 
-                    	<li class="view_reviewId" hidden>
-							<span>아이디 : </span>
-                        		<span class="reviewId" th:text="${r.reviewId}" name="reviewId"></span>
-                    	</li> 
-						<li class="view_date">
-                        	<span class=""> 작성일 :</span>
-                        	<span th:text="${r.writeDate}"></span>    
-                    	</li>
-               			
-               			<li>
-							<div class="mod_del_button">
-								<a role="button" class="btnModify" style="margin-right: 0;"  >수정</a>									
-								<a role="button" href="#" class="btnDelete" style="margin-right: 0;"  >삭제</a>
-								<span class="reviewId" th:text="${r.reviewId}"></span>
-							</div>
-						</li>
-					</div>
-				</ul>
+				<form th:action=@{"/reviewModify"} method="post" id="obj" name="modify" class="php-email-form">
+	                <ul class="area_card_item" >
+	                    <li>
+							<p th:text = "${r.contents}" ></p>	
+						</li>  
+						<div class="place_date form-group">
+							<li class="view_place">
+								<span>장소 : </span>
+									<th:block th:object="${r.tptp}">
+	                        		<span th:text="*{place}"></span>
+						      	</th:block>
+	                    	</li> 
+	                    	<li class="view_reviewId" hidden>
+								<span>아이디 : </span>
+	                        		<span class="reviewId" th:text="${r.reviewId}" name="reviewId"></span>
+	                    	</li> 
+							<li class="view_date">
+	                        	<span class=""> 작성일 :</span>
+	                        	<span th:text="${r.writeDate}"></span>    
+	                    	</li>
+	               			
+	               			<li>
+								<div class="mod_del_button">
+									<a role="button" class="btnModify" style="margin-right: 0;"  >수정</a>									
+									<a role="button" href="#" class="btnDelete" style="margin-right: 0;"  >삭제</a>
+									<span class="reviewId" th:text="${r.reviewId}" hidden></span>
+								</div>
+							</li>
+						</div>
+					</ul>
 				</form>
-			</div>
-				
-				    <span th:unless="${not #lists.isEmpty(reviewList)}">해당 장소는 작성된 리뷰가 없습니다.</span>
+				</div>
             </div>
-            
         </div>
+        </section>
     </div>
     </section>
 	</main>

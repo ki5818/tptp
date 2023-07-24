@@ -37,6 +37,7 @@ public class ReviewController {
 	}
 	
 
+	/* 모든 리뷰 모아보기 */
 	@GetMapping("/review")
 	public String review(Model model) throws Exception{
 		List<Review> reviewList = reviewMapper.getReviewList();
@@ -54,11 +55,13 @@ public class ReviewController {
 										@RequestParam("placeId") String placeId) throws Exception{
 		System.out.println(placeId);
 		List<Review> reviewList = reviewMapper.getPlaceIDReviewList(placeId);
-	
+		if(!reviewMapper.getPlaceIDReviewList(placeId).isEmpty()) {
+			String title = reviewMapper.getPlaceIDReviewList(placeId).get(0).getTptp().getPlace();
+			model.addAttribute("title", title);
+		}
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("placeId", placeId);
 		return "/app/reviewPopup";
-
 	}	
 
 	/*07-17 게시글 작성창 만들기*/
@@ -131,55 +134,24 @@ public class ReviewController {
 	}
 	
 	
-	/* 게시글 수정하기 위한 준비 -> 비밀번호 체크 */
-	@ResponseBody /*responseBody는 redirect를 못쓴다. ajax도 비동기라 그거도 responsebody로*/
-	@RequestMapping(value = "/review/checkPassword" , method = RequestMethod.GET)
-	public String checkPassword( @RequestParam("reviewId") String reviewId,
-								@RequestParam("insertPw") String insertPw ,
-								@RequestParam("placeId") String placeId) throws Exception {
-		/*비밀번호 암호화 된 걸 풀어서 확인해야함*/
-		SHA256 sha256 = new SHA256();
-		
-		//비밀번호
-        String password = insertPw;
-        //SHA256으로 암호화된 비밀번호
-        String cryptogram = sha256.encrypt(password);
-        
-        System.out.println(cryptogram);
-        String reviewPassword = reviewMapper.getPassword(reviewId).getPassword();
-        System.out.println(reviewPassword);
-        //비밀번호 일치 여부
-        System.out.println(cryptogram.equals(reviewPassword));
-        
-        String message="";
-        
-        if(cryptogram.equals(reviewPassword)) {
-        	message = "true";
-        }
-        else {
-        	message = "false";
 
-        }
-		return message;
-	}
-	
 	/*게시판 수정하기 */
-	@GetMapping("/reviewModify")
-	public String reviewModify( Model model, HttpServletResponse response,
-								@RequestParam("reviewId") String reviewId,
-								@RequestParam("insertPw") String insertPw) throws Exception {
-		System.out.println("/reviewModify");
-		System.out.println(reviewId + " " + insertPw);
-	
-		// 수정 화면에 수정 전 내용 보내주기
-		List<Review> reviewList= reviewMapper.getReviewListParamReviewId(reviewId);
-		model.addAttribute("reviewList", reviewList);
-		
-		//비밀번호 체크
-		/*비밀번호 암호화 된 걸 풀어서 확인해야함*/
-		SHA256 sha256 = new SHA256();
-		
-		//비밀번호
+   @GetMapping("/reviewModify")
+   public String reviewModify( Model model,
+                        @RequestParam("reviewId") String reviewId,
+                        @RequestParam("insertPw") String insertPw) throws Exception {
+      System.out.println("/reviewModify");
+      System.out.println(reviewId + " " + insertPw);
+   
+      // 수정 화면에 수정 전 내용 보내주기
+      List<Review> reviewList= reviewMapper.getReviewListParamReviewId(reviewId);
+      model.addAttribute("reviewList", reviewList);
+      
+      //비밀번호 체크
+      /*비밀번호 암호화 된 걸 풀어서 확인해야함*/
+      SHA256 sha256 = new SHA256();
+      
+      //비밀번호
         String password = insertPw;
         //SHA256으로 암호화된 비밀번호
         String cryptogram = sha256.encrypt(password);
@@ -191,19 +163,19 @@ public class ReviewController {
         System.out.println(cryptogram.equals(reviewPassword));
 
         if(cryptogram.equals(reviewPassword)) {
-        	return "/app/modReview";
+           return "/app/modReview";
         }
         else {
-        	Alert.alertMiss(response);
-        	String url = "/reviewPopup?placeId=" + reviewList.get(0).getPlaceId();
-    		return url;
-
+           String url = "redirect:/reviewPopup?placeId=" + reviewList.get(0).getPlaceId();
+           return url;
         }
 
-	}
+   }
+	   
 	
 	
 	
+	/*게시판 수정하기*/
 	@PostMapping("/reviewModifyController")
 	public String reviewModifyController(HttpServletRequest request) throws Exception {
 		System.out.println("reviewModifyController()");
@@ -222,17 +194,6 @@ public class ReviewController {
 		return url;
 	}
 	
-	/*
-	@GetMapping("/reviewDelete/getPassword")
-	@ResponseBody
-	private Review getPassword(@RequestParam("reviewId") String reviewId, @RequestParam("password") String password, Model model) throws Exception{	
-		Review delReview = new Review();
-		delReview.setReviewId(reviewId);
-		Review 
-		BoardDto result = boardservice.getContentByidx(boardDto);
-		return result;	
-	}
- 	*/
 	
 
 }

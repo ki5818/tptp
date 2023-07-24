@@ -82,29 +82,27 @@
 	    <!-- End Breadcrumbs -->
 	    
 	    <!-- Review  -->
-	    <section id="services" class="services">
+	    <section id="contact" class="contact">
          <div class="container">
             <div class="section-title">
 		    	<span>BOARD</span>
 		        <h2>BOARD</h2>
 		        <p>여러분들이 등록한 모든 리뷰를 보여드립니다!</p>
 		   	</div>
-		   	
-			<div class="review_area">
+			<div class="review_area php-email-form form-group">
                 <ul class="area_card_item" th:each="r : ${reviewList}">
-                    <li class="" th:text = "${r.contents}"></li>  
-					<div class="place_date">
-						<li class="view_place">
-							<span>장소 : </span>
-								<th:block th:object="${r.tptp}">
-                        		<span th:text="*{place}"></span>
-					      	</th:block>
-                    	</li> 
-						<li class="view_date">
-                        	<span class=""> 작성일 :</span>
-                        	<span th:text="${r.writeDate}"></span>    
-                    	</li>
-					</div>   	
+                    <li class="place_date" th:text = "${r.contents}">
+					</li>  
+					<li class="view_place">
+						<span>장소 : </span>
+							<th:block th:object="${r.tptp}">
+                    		<span th:text="*{place}"></span>
+				      	</th:block>
+                	</li> 
+					<li class="view_date">
+                    	<span class=""> 작성일 :</span>
+                    	<span th:text="${r.writeDate}"></span>    
+                	</li>  	
 				</ul>
             </div>   	
         </div>
@@ -114,10 +112,5 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script th:inline="javascript">
 	
-    <p onclick="openPopup()">리뷰보기</p>
-    function openPopup() {
-            var popup = window.open("reviewPopup.html", "popup",
-                                    "width=700px, height=1100px, resizable=no, scrollbars=yes");
-        }
 </script>
 </html>
