@@ -101,11 +101,7 @@
 								<th:block th:object="${r.tptp}">
 	                        		<span th:text="*{place}"></span>
 						      	</th:block>
-	                    	</li> 
-	                    	<li class="view_reviewId">
-								<span>아이디 : </span>
-	                        		<input type="hidden" class="reviewId" th:value="${r.reviewId}" name="reviewId">
-	                    	</li> 
+	                    	</li>
 							<li class="view_date">
 	                        	<span class=""> 작성일 :</span>
 	                        	<span th:text="${r.writeDate}"></span>    
@@ -134,10 +130,7 @@
 	}
 
 	const reviewList = [[${reviewList}]];
-	console.log(reviewList);
 	const placeId = reviewList[0].placeId;
-		console.log(placeId);
-	console.log(reviewList);
 
 	$(document).ready(function(){
 		/*수정*/
