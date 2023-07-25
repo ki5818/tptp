@@ -89,8 +89,8 @@ public class ReviewController {
 		addReview.setPassword(password);
 		reviewMapper.addReviewList(addReview);
 		
-		String url = "redirect:/reviewPopup?placeId=" + addReview.getPlaceId();
-		return url;
+		String url = "reviewPopup?placeId=" + addReview.getPlaceId();
+		return "redirect:/" + url;
 	}
 	
 
@@ -136,12 +136,15 @@ public class ReviewController {
 	
 
 	/*게시판 수정하기 */
-   @GetMapping("/reviewModify")
-   public String reviewModify( Model model,
-                        @RequestParam("reviewId") String reviewId,
-                        @RequestParam("insertPw") String insertPw) throws Exception {
-      System.out.println("/reviewModify");
-      System.out.println(reviewId + " " + insertPw);
+   @PostMapping("/reviewModify")
+   public String reviewModify(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    System.out.println("/reviewModify");
+		request.setCharacterEncoding("UTF-8");
+		String reviewId = request.getParameter("reviewId");
+		String insertPw = request.getParameter("insertPw");
+		String placeId = request.getParameter("placeId");
+		System.out.println(reviewId);
+		System.out.println(insertPw);
    
       // 수정 화면에 수정 전 내용 보내주기
       List<Review> reviewList= reviewMapper.getReviewListParamReviewId(reviewId);
@@ -166,8 +169,9 @@ public class ReviewController {
            return "/app/modReview";
         }
         else {
-           String url = "redirect:/reviewPopup?placeId=" + reviewList.get(0).getPlaceId();
-           return url;
+        	
+        	String url = "reviewPopup?placeId=" + placeId;
+            return "redirect:/" + url;
         }
 
    }
