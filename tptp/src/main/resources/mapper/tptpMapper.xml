@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapping mybatis -->
+<mapper namespace="com.tptp.mapper.TptpMapper">
+	<!-- tptpResultMap -->
+	<resultMap type="Tptp" id="tptpResultMap">
+		<id property="id" column="id" />
+		<result property="categoryId" column="category_id" />
+		<result property="detail" column="detail" />
+		<result property="lat" column="lat" />
+		<result property="lng" column="lng" />
+		<result property="place" column="place" />
+		<result property="region" column="region" />
+		<result property="address" column="address" />
+		<result property="count" column="count" />
+		<result property="count_by_region" column="count_by_region" />
+		<result property="total" column="total" />
+		<result property="distance" column="distance" />
+		<result property="CT1" column="CT1" />
+		<result property="CT2" column="CT2" />
+		<result property="CT3" column="CT3" />
+		<result property="CT4" column="CT4" />
+		<result property="avgLng" column="avgLng" />
+		<result property="avgLat" column="avgLat" />
+		<collection property="category" javaType="Category">
+			<id property="categoryId" column="category_id"></id>
+			<result property="categoryName" column="category_name"/>
+		</collection>
+		<collection property="review" javaType="Review">
+			<id property="reviewId" column="review_id"></id>
+			<result property="placeId" column="place_id"/>
+			<result property="contents" column="contents"/>
+			<result property="photo" column="photo"/>
+			<result property="password" column="password"/>
+			<result property="writeDate" column="write_date"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getTptpList" resultMap="tptpResultMap" resultType="Tptp">
+		/* 0. 테이블 전체 조회 */
+		SELECT
+			t.id,
+			t.category_id,
+			c.category_name,
+			t.detail,
+			t.lat,
+			t.lng,
+			t.place,
+			t.region,
+			t.address
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		ORDER BY t.id
+		LIMIT 1000;
+	</select>
+	
+	<select id="getRegionCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 1. 지역별 관광지 개수 */
+		SELECT t.region, COUNT(t.id) AS `COUNT`
+		FROM tptp AS t
+		GROUP BY t.region
+		ORDER BY `count` desc;
+	</select>
+	
+	<sql id="withCountByRegion">
+		WITH temp AS (
+			SELECT t.region, COUNT(`id`) AS `count_by_region`
+			FROM tptp t
+			INNER JOIN category c
+			ON t.category_id = c.category_id
+			<if test='!categoryNameArray.isEmpty()'>
+			WHERE c.category_name NOT IN
+			<foreach collection="categoryNameArray" item="item" index="index" separator="," open="(" close=")">
+	        	#{item}
+	        </foreach>
+	        </if>
+			GROUP BY t.region
+		)
+    </sql>
+	<select id="getRegionCategoryCount" resultMap="tptpResultMap" resultType="Tptp" parameterType="arrayList">
+		<include refid="withCountByRegion"><property name="item" value="categoryNameArray"/></include>
+		/* 2. 지역별 카테고리별 관광지 개수 */
+		SELECT t.region, c.category_name, COUNT(t.id) AS `count`, temp.`count_by_region`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		INNER JOIN temp 
+		ON t.region = temp.region
+		<if test='!categoryNameArray.isEmpty()'>
+		WHERE c.category_name NOT IN
+		<foreach collection="categoryNameArray" item="item" index="index" separator="," open="(" close=")">
+	        #{item}
+	     </foreach>
+	    </if>
+		GROUP BY t.region, c.category_id
+		order BY temp.`count_by_region` DESC, t.region ASC;
+		
+	</select>
+		
+	<select id="getCategoryCount" resultMap="tptpResultMap" resultType="Tptp">
+		/* 3. 카테고리별 관광지 개수 */
+		SELECT c.category_name, COUNT(t.id) AS `COUNT`
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		GROUP BY c.category_id;
+	</select>
+	
+	<select id="getRegionList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		/* 4. 지역별 관광지 리스트 */
+		SELECT *
+		FROM tptp AS t
+		WHERE t.region= #{region}
+	</select>
+	
+	<select id="getRegionAndCategoryList" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		/* 4. 지역별 카테고리별 관광지 리스트 */
+		<if test='region != "" and categoryId != ""'>
+			SELECT
+				*, lat, lng,
+				(SELECT AVG(lat) FROM tptp AS t GROUP BY category_id, region HAVING category_id=#{categoryId} AND region=#{region}) AS avgLat,
+				(SELECT AVG(lng) FROM tptp AS t GROUP BY category_id, region HAVING category_id=#{categoryId} AND region=#{region}) AS avgLng
+			FROM
+				tptp AS t
+			WHERE
+				category_id = #{categoryId}
+				AND
+				region= #{region};
+ 		</if>
+ 		<if test='region == ""'>
+			SELECT
+				*, lat, lng,
+				(SELECT AVG(lat) FROM tptp AS t GROUP BY category_id HAVING category_id=#{categoryId}) AS avgLat,
+				(SELECT AVG(lng) FROM tptp AS t GROUP BY category_id HAVING category_id=#{categoryId}) AS avgLng
+			FROM
+				tptp AS t
+			WHERE
+				category_id = #{categoryId};
+ 		</if>
+ 		<if test=' categoryId == ""'>
+			SELECT
+				*, lat, lng,
+				(SELECT AVG(lat) FROM tptp AS t GROUP BY region HAVING region=#{region}) AS avgLat,
+				(SELECT AVG(lng) FROM tptp AS t GROUP BY region HAVING region=#{region}) AS avgLng
+			FROM
+				tptp AS t
+			WHERE
+				region= #{region};
+ 		</if>
+	</select>
+	
+	<select id="getTotal" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
+		/* 리스트의 총 길이 구하기 */
+		SELECT
+		row_number() over(order BY t.id DESC) AS total
+		FROM tptp AS t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		WHERE 
+			(cluster_s_id IN
+			<foreach collection="clusterArray" item="item" index="index" separator="," open="(" close=")">
+	        	#{item}
+	     	</foreach>
+	     		)
+	     		 AND(t.category_id = #{category.ct1}
+				  OR t.category_id = #{category.ct2}
+				  OR t.category_id = #{category.ct3}
+				  OR t.category_id = #{category.ct4}
+				)
+		GROUP BY t.`id`
+		ORDER BY total DESC;
+	</select>
+	
+		
+	<select id="getListOffset" resultMap="tptpResultMap" resultType="Tptp" parameterType="Map">
+	/* offset 적용해서 map 리스트 가져오기 */
+		SELECT
+			t.id, t.category_id, c.category_name, t.detail, t.lat, t.lng,
+			t.place, t.region, t.address, t.cluster_s_id, COUNT(r.review_id) AS `count`,
+			COUNT(t.id) AS total, GET_DISTANCE(t.lat, t.lng, #{location.lat}, #{location.lng}) AS distance
+		FROM
+			tptp AS t
+			INNER JOIN category c ON t.category_id = c.category_id
+			LEFT JOIN review r ON t.`id` = r.place_id
+		WHERE
+			(cluster_s_id IN
+			<foreach collection="clusterArray" item="item" index="index" separator="," open="(" close=")">
+        		#{item}
+     		</foreach>
+     		)AND(t.category_id = #{category.ct1}
+			  OR t.category_id = #{category.ct2}
+			  OR t.category_id = #{category.ct3}
+			  OR t.category_id = #{category.ct4}
+			)
+		GROUP BY t.`id`
+		ORDER BY distance ASC
+		LIMIT 10
+		OFFSET #{currentNumber.num};
+	</select>
+	
+	<select id="makeBoxPlot" resultMap="tptpResultMap" resultType="Tptp">
+		SELECT
+		   t2.region AS `region`,
+		   MAX(if(t1.category_id = 'CT1', `cnt`, 0)) AS 'CT1',
+		   MAX(if(t1.category_id = 'CT2', `cnt`, 0)) AS 'CT2',
+		   MAX(if(t1.category_id = 'CT3', `cnt`, 0)) AS 'CT3',
+		   MAX(if(t1.category_id = 'CT4', `cnt`, 0)) AS 'CT4'
+		FROM
+		   (
+		      SELECT region, category_id, SUM(1) AS `cnt`
+		      FROM tptp t
+		      GROUP BY region, category_id
+		   ) t1
+		RIGHT OUTER JOIN tptp t2
+		ON t1.region = t2.region
+		GROUP BY t2.region;
+	</select>
+	
+	<select id="getDetailCount" resultMap="tptpResultMap" resultType="Tptp">
+		SELECT category_id, detail, COUNT(`id`) AS `count`
+		FROM tptp t
+		GROUP BY category_id, detail
+		ORDER BY `count` DESC;
+	</select>
+	
+	<select id="sortChart2" resultMap="tptpResultMap" resultType="Tptp" parameterType="String">
+		<include refid="withCountByRegion"></include>
+		SELECT t.region, c.category_name, COUNT(t.id) AS `count`, temp.`count_by_region`
+		FROM tptp t
+		INNER JOIN category c
+		ON t.category_id = c.category_id
+		INNER JOIN temp 
+		ON t.region = temp.region
+		GROUP BY t.region, c.category_id
+		order BY t.category_id=#{cName} DESC, t.category_id, `count` DESC
+	</select>
+	
+	
+</mapper>

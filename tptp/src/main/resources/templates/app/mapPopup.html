@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/defaultLayout}">
+	  
+<th:block layout:fragment="customContents" >
+<style>
+#header {visibility:hidden; }
+#footer {visibility:hidden;}
+</style>
+	<main id="main">
+		<!-- ======= Breadcrumbs ======= -->
+	    <section class="breadcrumbs" style="margin-top:0;">
+	      <div class="container">
+	        <div class="d-flex justify-content-between align-items-center">
+	          <h2>MAP</h2>
+	          <ol>
+	            <li><a th:href="@{/}">HOME</a></li>
+	            <li>MAP</li>
+	          </ol>
+	        </div>
+	      </div>
+	    </section>
+	    <!-- End Breadcrumbs -->
+		<!-- Map -->
+			<section id="services" class="services">
+			 <div class="container">
+				 <div class="section-title">
+		          <span>MAP</span>
+		          <h2>MAP</h2>
+		          <strong th:if="${region}" th:text="${region}"></strong><strong th:if="${region}"> </strong><strong th:if="${category}" th:text="${category}"></strong>
+		          <p>자세한 정보가 알고싶다면 메뉴에서 MAP을 클릭해주세요!</p>
+		        </div>
+	          </div>
+			<div class="container d-flex justify-content-between align-items-center" style="height: 500px;" >
+				<div class=" map_wrap d-flex justify-content-between align-items-center">
+				    <div id="map" style="width:100%; height:100%;"></div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=30c6f2e8827ad0eaab4d3083c061ca7f&libraries=services"></script>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+			var markers=[];
+			var regionCategoryList = [[${regionCategoryList}]];
+			var region = [[${region}]];
+			var mapLevel = 13;
+			if(region !== "") {
+				mapLevel = 11;
+			}
+			
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			    mapOption = {
+			        center: new kakao.maps.LatLng(regionCategoryList[0].avgLat, regionCategoryList[0].avgLng), // 지도의 중심좌표 -> 지역별 평균 관광지 위치 사용하는게 좋긴함
+			        level: mapLevel // 지도의 확대 레벨
+			    };
+			
+			// 지도를 생성합니다    
+			var map = new kakao.maps.Map(mapContainer, mapOption);
+			
+			displayPlaces(regionCategoryList);
+			
+		    // 검색 결과 목록과 마커를 표출하는 함수입니다
+		    function displayPlaces(regionCategoryList) {
+		        // 지도에 표시되고 있는 마커를 제거합니다
+		        for (var i = 0; i < regionCategoryList.length; i++ ) {
+		        	// 데이터가 비어있는 경우에는 처리하지 않고 넘어갑니다
+		            if (!regionCategoryList[i]) {
+		              continue;
+		            }
+		            var placePosition = new kakao.maps.LatLng(regionCategoryList[i].lat, regionCategoryList[i].lng),
+		                marker = addMarker(placePosition, i, regionCategoryList[i].categoryId, regionCategoryList[i].place);
+		            
+		            (function(marker, title) {
+		                kakao.maps.event.addListener(marker, 'mouseover', function() {
+		                    displayInfowindow(marker, title);
+		                });
+
+		                kakao.maps.event.addListener(marker, 'mouseout', function() {
+		                    infowindow.close();
+		                });
+
+		            })(marker, regionCategoryList[i].place);
+		        }
+		    }
+			
+			// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+			function addMarker(position, idx, categoryId ,title) {
+				let src;
+				if(categoryId == "CT1") {
+					src = '/assets/img/natureIcon.png';
+				}
+				else if(categoryId == "CT2") {
+					src = '/assets/img/cultureIcon.png';
+				}
+				else if(categoryId == "CT3") {
+					src = '/assets/img/themeparkIcon.png';
+				}
+				else {
+					src = '/assets/img/tourIcon.png';
+				}
+			    var imageSrc = src, // 마커 이미지 url
+			        imageSize = new kakao.maps.Size(30, 30),  // 마커 이미지의 크기
+			        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
+			            marker = new kakao.maps.Marker({
+			            position: position, // 마커의 위치
+			            image: markerImage 
+			        });
+		
+			    marker.setMap(map); // 지도 위에 마커를 표출합니다
+			    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+		
+			    return marker;
+			}
+			// 인포윈도우에 장소명을 표시합니다
+			function displayInfowindow(marker, title) {
+			    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+			    infowindow.setContent(content);
+			    infowindow.open(map, marker);
+			}			
+	    /*]]>*/
+	</script>
+		
+</th:block>
+</html>

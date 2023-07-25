@@ -66,6 +66,11 @@ h6 {
   opacity: 1;
 }
 
+.character {
+	  width:100%;
+	  height: 100%;
+	}
+
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
@@ -112,11 +117,11 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;
+  padding: 20px 50px;
   color: #fff;
   white-space: nowrap;
   transition: 0.3s;
-  font-size: 12px;
+  font-size: 16px;
   font-family: "Raleway", sans-serif;
   text-transform: uppercase;
   font-weight: 600;
@@ -317,13 +322,12 @@ h6 {
 #hero {
   width: 100%;
   height: 100vh;
-  background: url("../img/hero-bg.jpg") top right;
+  background : url("../img/hero-bg.jpg") top right;
   background-size: cover;
   position: relative;
 }
 
 #hero:before {
-  content: "";
   background: rgba(0, 0, 0, 0.65);
   position: absolute;
   bottom: 0;
@@ -346,7 +350,8 @@ h6 {
 }
 
 #hero h1 {
-  margin: 0 0 10px 0;
+  /*margin: 0 0 10px 0;*/
+  margin : 0 auto;
   font-size: 64px;
   font-family: "Satisfy", serif;
   color: #fff;
@@ -355,10 +360,11 @@ h6 {
 #hero h2 {
   color: #eee;
   margin-bottom: 50px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 17px;
+  font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
+  font-family: "Satisfy", serif;
 }
 
 #hero .btn-scroll {
@@ -644,6 +650,12 @@ section {
   background-color: #ffb727;
 }
 
+#ab-title {
+  font-color: #5d6a75;
+  font-size: 20px;
+  font-family: "Raleway", serif;
+}
+
 /*--------------------------------------------------------------
 # My Resume
 --------------------------------------------------------------*/
@@ -724,9 +736,9 @@ section {
   display: inline-block;
   text-align: center;
   border-radius: 50%;
-  width: 72px;
-  height: 72px;
-  background: #fff4df;
+  width: 200px;
+  height: 220px;
+  background: #ffffff;
 }
 
 .services .icon i {
@@ -778,7 +790,7 @@ section {
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(14, 16, 17, 0.7);
+  background: #fff;
 }
 
 .testimonials .section-header {
@@ -792,13 +804,13 @@ section {
 
 .testimonials .testimonial-item {
   text-align: center;
-  color: #fff;
+  color: #ccc;
 }
 
 .testimonials .testimonial-item .testimonial-img {
   width: 100px;
   border-radius: 50%;
-  border: 6px solid rgba(255, 255, 255, 0.15);
+  border: 6px solid #ddd;
   margin: 0 auto;
 }
 
@@ -806,12 +818,12 @@ section {
   font-size: 20px;
   font-weight: bold;
   margin: 10px 0 5px 0;
-  color: #fff;
+  color: #111;
 }
 
 .testimonials .testimonial-item h4 {
   font-size: 14px;
-  color: #ddd;
+  color: #111;
   margin: 0 0 15px 0;
 }
 
@@ -837,7 +849,7 @@ section {
 .testimonials .testimonial-item p {
   font-style: italic;
   margin: 0 auto 15px auto;
-  color: #eee;
+  color: #111;
 }
 
 .testimonials .swiper-pagination {
@@ -849,7 +861,7 @@ section {
   width: 12px;
   height: 12px;
   opacity: 1;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: #ccc
 }
 
 .testimonials .swiper-pagination .swiper-pagination-bullet-active {

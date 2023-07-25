@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapping mybatis -->
+<mapper namespace="com.tptp.mapper.ClusterMapper">
+	<!-- clusterLREsultMap -->
+	<resultMap type="ClusterL" id="clusterLResultMap">
+		<id property="clusterLId" column="cluster_l_id"/>
+		<result property="latCenter" column="lat_center"/>
+		<result property="lngCenter" column="lng_center"/>
+		<result property="dist" column="dist"/>
+		<result property="avg" column="avg"/>
+	</resultMap>
+	
+	<!-- clusterLREsultMap -->
+	<resultMap type="ClusterM" id="clusterMResultMap">
+		<id property="clusterMId" column="cluster_m_id"/>
+		<result property="latCenter" column="lat_center"/>
+		<result property="lngCenter" column="lng_center"/>
+		<result property="dist" column="dist"/>
+		<result property="clusterLId" column="cluster_l_id"/>
+		<result property="avg" column="avg"/>
+	</resultMap>
+	
+	<!-- clusterLREsultMap -->
+	<resultMap type="ClusterS" id="clusterSResultMap">
+		<id property="clusterSId" column="cluster_s_id"/>
+		<result property="latCenter" column="lat_center"/>
+		<result property="lngCenter" column="lng_center"/>
+		<result property="dist" column="dist"/>
+		<result property="clusterMId" column="cluster_s_id"/>
+		<result property="avg" column="avg"/>
+	</resultMap>
+	
+	<select id="getAverageDistLarge" resultMap="clusterLResultMap" resultType="ClusterL">
+		SELECT AVG(dist) as `avg`
+		FROM cluster_l
+	</select>
+	
+	<select id="getAverageDistMedium" resultMap="clusterMResultMap" resultType="ClusterM">
+		SELECT AVG(dist) as `avg`
+		FROM cluster_m
+	</select>
+	
+	<select id="getAverageDistSmall" resultMap="clusterSResultMap" resultType="ClusterS">
+		SELECT AVG(dist) as `avg`
+		FROM cluster_s
+	</select>
+	
+	<select id="getClusterLarge" resultMap="clusterLResultMap" >
+		SELECT cluster_l_id, lat_center, lng_center, dist
+		FROM cluster_l
+	</select>
+	
+	<select id="getClusterMedium" resultMap="clusterMResultMap">
+		SELECT cluster_m_id, lat_center, lng_center, dist
+		FROM cluster_m
+		WHERE cluster_l_id IN
+		<foreach collection="cluster_l_list" item="item" index="index" separator="," open="(" close=")">
+        	#{item}
+     	</foreach>
+	</select>
+	
+	<select id="getClusterSmall" resultMap="clusterSResultMap" resultType="ClusterS">
+		SELECT cluster_s_id, lat_center, lng_center, dist
+		FROM cluster_s
+		WHERE cluster_m_id IN
+		<foreach collection="cluster_m_list" item="item" index="index" separator="," open="(" close=")">
+        	#{item}
+     	</foreach>
+	</select>
+	
+</mapper>

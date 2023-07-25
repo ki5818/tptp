@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/defaultLayout}">
+
+<th:block layout:fragment="customContents" >
+<main id="main">
+	    <!-- ======= Breadcrumbs ======= -->
+	    <section class="breadcrumbs">
+	      <div class="container">
+	        <div class="d-flex justify-content-between align-items-center">
+	          <h2>BOARD</h2>
+	          <ol>
+	            <li><a th:href="@{/}">HOME</a></li>
+	            <li>BOARD</li>
+	          </ol>
+	        </div>
+	      </div>
+	    </section>
+	    <!-- End Breadcrumbs -->
+    <section id="contact" class="contact">
+      <div class="container">
+		 <div class="section-title">
+		    	<span>BOARD</span>
+		        <h2>BOARD</h2>
+		        <p>리뷰를 수정하세요</p>
+		   	</div>
+          <form th:action="@{/reviewModifyController}" method="post" role="form" class="php-email-form">
+          <div class="col-md-12"  th:each="r : ${reviewList}">
+              <div class="row">
+                <div class="col-md-6 form-group" >
+                  <input type="text" name="reviewId" class="form-control" id="reviewId" placeholder="Review Id" th:value="${r.reviewId}" readonly>
+                  <input type="text" name="placeId" class="form-control" id="placeId" th:value="${r.placeId}" readonly hidden>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+					<th:block  th:object="${r.tptp}">						
+	                	<input type="text" class="form-control" name="place" id="place" placeholder="장소명"  readonly th:value="*{place}">
+					</th:block>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="contents" rows="6" required th:text="${r.contents}"></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">리뷰가 수정되었습니다.</div>
+              </div>
+              <div class="text-center"><button type="submit">수정하기</button></div>
+	       </div>
+          </form>
+      </div>
+    </section><!-- End Contact Me Section -->
+</main>
+</th:block>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script th:inline="javascript">
+
+</script>
+</html>
