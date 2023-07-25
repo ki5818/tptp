@@ -15,7 +15,7 @@ public interface ReviewMapper { //인터페이스이다!!!
 	public void addReviewList(Review addReview) throws Exception;
 	
 	//2. 리뷰게시판 데이터 수정 (Update)
-	public void modReviewList(String reviewId) throws Exception;
+	public void modReviewList(String contents, String reviewId) throws Exception;
 	
 	//3. 리뷰게시판 데이터 삭제 (Delete)
 	public void delReviewList(String reviewId) throws Exception; 
@@ -24,8 +24,12 @@ public interface ReviewMapper { //인터페이스이다!!!
 	public List<Review> getPlaceIDReviewList(String placeId) throws Exception; 
 
 	//5. 리뷰게시판에서 장소를 삽입해 {place}의 리뷰입니다. 라고 select문으로 장소를 구하는 쿼리문
-	public List<Review> getPlaceList() throws Exception;
+	public String getPlaceList(String placeId) throws Exception;
 	
-	//6. reviewId를 가져오는 쿼리문
+	//6. password를 가져오는 쿼리문
 	public Review getPassword(String reviewId) throws Exception; 
+	
+	//7. reviewId를 기준으로 리뷰를 가져오는 쿼리문
+	public List<Review> getReviewListParamReviewId(String reviewId) throws Exception;
+	
 }

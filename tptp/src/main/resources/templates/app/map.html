@@ -26,7 +26,7 @@
 				 <div class="section-title">
 		          <span>MAP</span>
 		          <h2>MAP</h2>
-		          <p><strong>가고 싶은 관광지를 클릭하면 반경 10km 이내의 관광지가 모두 표시됩니다!</strong></p>
+		          <p><strong>가고 싶은 여행지를 클릭하면 반경 10km 이내의 여행지가 모두 표시됩니다!</strong></p>
 		        </div>
 		        <div class="container icon-box" style="display: inline-grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #ffb727; margin-bottom:20px;">
 		              <div class="item check"><label id="label"><input type="checkbox" id="CT1" name="checkbox">자연경관</label></div>
@@ -92,10 +92,9 @@
 					geoLat = 37.566826; // 현재 위치 비허용시 초기 위도 경도
 					geoLng = 126.9786567;
 				}
-				
 			}
 			
-			function getAjax() { // ajax 함수 선언
+			function getAjax() { 
 				return $.ajax({
 			           url: "/mapCheck",
 			           type: "GET",
@@ -105,7 +104,7 @@
 			}
 			
 			function displayMap() {
-				console.log(geoLat, geoLng);
+
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				    mapOption = {
 				        center: new kakao.maps.LatLng(geoLat, geoLng), // 지도의 중심좌표(초기값: 사용자 위치)
@@ -169,7 +168,6 @@
 							currentNum = 1;
 							pageCount = 1;
 							displayPagination(viewList);
-							
 						});
 						//실패
 						request.fail(function(jqXHR, textStatus, viewList){
@@ -304,11 +302,13 @@
 			                });
 
 			                kakao.maps.event.addListener(marker, 'mouseout', function() {
-			                    infowindow.close();
+			                    //infowindow.close();
 			                });
 			                
 			                kakao.maps.event.addListener(marker, 'click', function() {
 			                    console.log(marker);
+			                    geoMarker.setMap(null);
+			                    displayInfowindow(marker, title);
 			                    geoLat = marker.getPosition().getLat();
 			                    geoLng = marker.getPosition().getLng();
 								var thisPosition = new kakao.maps.LatLng(geoLat, geoLng);
@@ -329,8 +329,6 @@
 			                    
 			                });
 			                
-			                // 리스트 클릭시 팝업창 생성
-			                // @todo 리뷰게시판으로 이동
 			                itemEl.addEventListener('click', function() {
 			                	var thisLat = $(this).find('.thisLat')[0].innerText;
 			                	var thisLng = $(this).find('.thisLng')[0].innerText;
