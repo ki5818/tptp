@@ -75,22 +75,27 @@
 
 HOME
 
-![home](https://github.com/ki5818/tptp/assets/34762549/7e27e437-05b4-4e3f-ba72-995532e190f3)
+![home](https://github.com/ki5818/tptp/assets/34762549/74b90903-0c6b-4bf0-8521-4207d61cdd23)
 
 
 MAP
 
-![map](https://github.com/ki5818/tptp/assets/34762549/5ad4cb4c-ac5c-45b5-9c42-9fee76ac2bd1)
+![map](https://github.com/ki5818/tptp/assets/34762549/f6ee31c5-9129-411f-80f1-60e2db38b879)
+
+
+BOARD POP UP
+
+![POPUP](https://github.com/ki5818/tptp/assets/34762549/c2e9efc5-e74d-405d-b482-128a0e41ec30)
 
 
 BOARD
 
-![board](https://github.com/ki5818/tptp/assets/34762549/8545d45b-a1cf-4e1c-b432-67cc8591aa73)
+![board](https://github.com/ki5818/tptp/assets/34762549/a8252cbb-b71d-4b42-8b2d-e24456fbbc4f)
 
 
 ABOUT US
 
-![about](https://github.com/ki5818/tptp/assets/34762549/c6d9ef1e-1070-455e-884b-e8827b37a054)
+![about](https://github.com/ki5818/tptp/assets/34762549/31739a4b-d789-4856-8bb6-586b50de489c)
 
 
 
