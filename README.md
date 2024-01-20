@@ -1,6 +1,6 @@
 # 뉴딜 프로젝트
 
-![header](https://capsule-render.vercel.app/api?type=wave&color=f08080&height=150&section=header&text=이곳저곳&fontSize=40&fontColor=000000)   
+![header](https://capsule-render.vercel.app/api?type=wave&color=f08080&height=200&section=header&text=이곳저곳&fontSize=40&fontColor=000000)   
 
 
 > tptp 소개 (this place that place)   
